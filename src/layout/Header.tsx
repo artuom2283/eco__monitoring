@@ -1,6 +1,5 @@
 ﻿import {createElement as e} from "react";
 import {Link} from "react-router-dom";
-import './header.css';
 
 export const Header = () => {
     return e('header', { className: 'header' }, [
