@@ -36,7 +36,6 @@ const PollutionPage: React.FC = () => {
 
   return (
     <div className="container">
-      <Header />
       <main className="main">
         <div className="input-group">
           <input
@@ -73,7 +72,6 @@ const PollutionPage: React.FC = () => {
           ))}
         </ul>
       </main>
-      <Footer />
     </div>
   );
 };

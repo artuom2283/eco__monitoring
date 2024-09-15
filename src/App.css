@@ -19,12 +19,19 @@
   font-size: 2em;
 }
 
+.nav{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
 .nav-link {
   color: white;
   text-decoration: none;
   font-size: 1.2em;
   margin-top: 10px;
-  display: block;
+  display: inline-block;
+  padding: 5px;
 }
 
 .nav-link:hover {

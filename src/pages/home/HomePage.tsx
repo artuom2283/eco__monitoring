@@ -44,9 +44,7 @@ const Main = () => {
 
 const HomePage = () => {
   return e('div', { className: 'container' }, [
-    e(Header, { key: 'header' }),
     e(Main, { key: 'main' }),
-    e(Footer, { key: 'footer' })
   ]);
 };
 
