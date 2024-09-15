@@ -1,21 +1,7 @@
 import React, { createElement as e } from 'react';
 import './home.css';
-import { Link } from 'react-router-dom';
-
-const Header = () => {
-  return e('header', { className: 'header' }, [
-    e('h1', { key: 'header-title' }, 'Environmental monitoring of Kyiv'),
-    e(
-      'nav',
-      { key: 'nav' },
-      e(
-        Link,
-        { to: '/pollution-calculation', className: 'nav-link' },
-        'Data Management'
-      )
-    )
-  ]);
-};
+import { Header } from '../../layout/Header';
+import { Footer } from '../../layout/Footer';
 
 const Main = () => {
   return e('main', { className: 'main' }, [
@@ -53,12 +39,6 @@ const Main = () => {
         )
       )
     )
-  ]);
-};
-
-const Footer = () => {
-  return e('footer', { className: 'footer' }, [
-    e('h3', { key: 'footer-text' }, '© 2024 Environmental monitoring of Kyiv')
   ]);
 };
 

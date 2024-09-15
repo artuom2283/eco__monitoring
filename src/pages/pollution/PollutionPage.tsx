@@ -1,26 +1,7 @@
 import React, { useState } from 'react';
-import './App.css';
-import { Link } from 'react-router-dom';
-
-const Header = () => {
-  return (
-    <header className="header">
-      <h1>Data Management</h1>
-      <nav>
-        <Link to="/HomePage" className="nav-link">Home</Link>
-        {/* <Link to="/pollution-calculation" className="nav-link">Pollution Calculation</Link> */}
-      </nav>
-    </header>
-  );
-};
-
-const Footer = () => {
-  return (
-    <footer className="footer">
-      <h3>© 2024 Environmental Monitoring</h3>
-    </footer>
-  );
-};
+import '../../App.css';
+import { Header } from '../../layout/Header';
+import { Footer } from '../../layout/Footer';
 
 const PollutionPage: React.FC = () => {
   const [data, setData] = useState<{ id: number; name: string }[]>([]);
