@@ -1,5 +1,6 @@
 import React from 'react';
 import './home.css';
+import {AuthorsList} from "../../components/AuthorsList";
 
 const Main = () => {
     return (
@@ -37,6 +38,7 @@ const HomePage = () => {
     return (
         <div className="container">
             <Main/>
+            <AuthorsList/>
         </div>
     );
 };
