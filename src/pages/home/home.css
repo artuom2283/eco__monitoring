@@ -1,76 +1,76 @@
 .container {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .header {
-  background-color: #4caf50;
-  color: white;
-  padding: 20px;
-  text-align: center;
+    background-color: #4caf50;
+    color: white;
+    padding: 20px;
+    text-align: center;
 }
 
 .header h1 {
-  margin: 0;
-  font-size: 2em;
+    margin: 0;
+    font-size: 2em;
 }
 
 .nav-link {
-  color: white;
-  text-decoration: none;
-  font-size: 1.2em;
-  margin-top: 10px;
-  display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    margin-top: 10px;
+    display: block;
 }
 
 .nav-link:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .main {
-  flex: 1 1 auto;
-  padding: 20px;
-  background-color: #f9f9f9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
+    flex: 1 1 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 .main p {
-  font-size: 1.2em;
-  color: #333;
-  line-height: 1.6;
+    font-size: 1.2em;
+    color: #333;
+    line-height: 1.6;
 }
 
 section {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap; 
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 article {
-  flex: 1 1 auto;
-  max-width: 300px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  text-align: left; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1 1 auto;
+    max-width: 300px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .footer {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 10px;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
 }
 
 .footer p {
-  margin: 0;
-  font-size: 0.9em;
+    margin: 0;
+    font-size: 0.9em;
 }
