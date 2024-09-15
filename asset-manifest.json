@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/eco__monitoring/static/css/main.3a714422.css",
+    "main.js": "/eco__monitoring/static/js/main.7d562d8b.js",
+    "index.html": "/eco__monitoring/index.html",
+    "main.3a714422.css.map": "/eco__monitoring/static/css/main.3a714422.css.map",
+    "main.7d562d8b.js.map": "/eco__monitoring/static/js/main.7d562d8b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3a714422.css",
+    "static/js/main.7d562d8b.js"
+  ]
+}
