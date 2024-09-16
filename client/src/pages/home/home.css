@@ -47,6 +47,11 @@
     line-height: 1.6;
 }
 
+#how-it-works{
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
 section {
     display: flex;
     justify-content: center;

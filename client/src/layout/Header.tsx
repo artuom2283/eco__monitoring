@@ -13,6 +13,9 @@ export const Header = () => {
             case '/pollution':
                 setTitle('Data Management - Environmental monitoring of Kyiv');
                 break;
+            case '/calculation':
+                setTitle('Calculation - Environmental monitoring of Kyiv');
+                break;
             default:
                 setTitle('Environmental monitoring of Kyiv');
                 break;
@@ -25,6 +28,7 @@ export const Header = () => {
             <nav>
                 <Link to="/" className="nav-link">About</Link>
                 <Link to="/pollution" className="nav-link">Data Management</Link>
+                <Link to="/calculation" className="nav-link">Calculation</Link>
             </nav>
         </header>
     );
