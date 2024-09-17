@@ -10,13 +10,13 @@ services:
     container_name: postgres
     restart: always
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "5432:5432"
     networks:
       - deploy-guide
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: newpassword
+      POSTGRES_DB: eco-monitoring
     volumes:
       - /path/to/local/data:/var/lib/postgresql/data
       - /path/to/local/postgresql.conf:/etc/postgresql/postgresql.conf
@@ -28,7 +28,8 @@ services:
       context: .
       dockerfile: server/Dockerfile
     ports:
-      - "${SERVER_PORT}:8080"
+      - "8080:8080"
+      - "8081:8081"
     networks:
       - deploy-guide
     depends_on:
