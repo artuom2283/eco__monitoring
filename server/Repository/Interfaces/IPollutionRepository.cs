@@ -10,8 +10,9 @@ namespace server.Repository.Interfaces
     {
         Task<IEnumerable<Pollution>> GetAllAsync();
         Task<Pollution> GetByIdAsync(long id);
-        Task<bool> InsertAsync(Pollution pollution);
-        Task<bool> UpdateAsync(Pollution pollution);
-        Task<bool> DeleteAsync(Pollution pollution);
+        Task<Pollution> GetPollutionByNameAsync(string name);
+        Task InsertAsync(Pollution pollution);
+        Task UpdateAsync(Pollution pollution);
+        Task DeleteAsync(Pollution pollution);
     }
 }

@@ -2,84 +2,140 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO;
+using server.Exceptions;
+using server.Responses;
 using server.Services.Interfaces;
+using server.Validators;
 
 namespace server.Controllers
 {
-    public class IndustrialFacilitiesController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class IndustrialFacilitiesController : ControllerBase
     {
         private readonly IIndustrialFacilityService _industrialFacilityService;
+        private readonly IndustrialFacilityValidator _facilityValidator;
+        private readonly SearchValidator _searchValidator;
 
-        public IndustrialFacilitiesController(IIndustrialFacilityService industrialFacilityService)
+        public IndustrialFacilitiesController(
+            IIndustrialFacilityService industrialFacilityService,
+            IndustrialFacilityValidator facilityValidator,
+            SearchValidator searchValidator)
         {
             _industrialFacilityService = industrialFacilityService;
+            _facilityValidator = facilityValidator;
+            _searchValidator = searchValidator;
         }
 
-        [HttpGet("fullFacilities")]
-        public async Task<ActionResult<IEnumerable<FullIndustrialFacilityDTO>>> GetFullFacilities()
+        [HttpGet("/fullFacilities")]
+        public async Task<ActionResult<IEnumerable<FullIndustrialFacilityDto>>> GetFullFacilities()
         {
             var fullFacilitiesDto = await _industrialFacilityService.GetFullFacilitiesInfo();
-
-            if (fullFacilitiesDto == null) return NotFound();
 
             return Ok(fullFacilitiesDto);
         }
 
-        [HttpGet("facilities")]
+        [HttpGet("/facilities")]
         public async Task<ActionResult<IEnumerable<IndustrialFacilityDto>>> GetFacilities()
         {
             var facilitiesDto = await _industrialFacilityService.GetFacilitiesInfo();
 
-            if (facilitiesDto == null) return NotFound();
-
             return Ok(facilitiesDto);
         }
 
-        [HttpGet("facility/{id}")]
-        public async Task<ActionResult<IEnumerable<IndustrialFacilityDto>>> GetFacility(long id)
+        [HttpGet("/facilities/{id}")]
+        public async Task<ActionResult<IEnumerable<IndustrialFacilityDto>>> GetFacility([FromRoute] long id)
         {
-            var facilityDto = await _industrialFacilityService.GetFacilityById(id);
+            try
+            {
+                var validationResult = await _searchValidator.ValidateAsync(id);
+                if (validationResult.IsValid == false)
+                    return BadRequest(new ValidationResponse
+                    {
+                        StatusCode = 400,
+                        Errors = validationResult.Errors
+                    });
 
-            if (facilityDto == null) return NotFound();
+                var facilityDto = await _industrialFacilityService.GetFacilityById(id);
 
-            return Ok(facilityDto);
+                return Ok(facilityDto);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
         }
 
-        [HttpPost("addFacility")]
+        [HttpPost("/facilities")]
         public async Task<ActionResult> AddNewFacility(IndustrialFacilityDto industrialFacilityDto)
         {
-            if (industrialFacilityDto == null) return BadRequest();
+            try
+            {
+                var validationResult = await _facilityValidator.ValidateAsync(industrialFacilityDto);
+                if (validationResult.IsValid == false)
+                    return BadRequest(new ValidationResponse
+                    {
+                        StatusCode = 400,
+                        Errors = validationResult.Errors
+                    });
 
-            var result = await _industrialFacilityService.AddFacility(industrialFacilityDto);
+                await _industrialFacilityService.AddFacility(industrialFacilityDto);
 
-            if (result) return Ok(industrialFacilityDto);
-
-            return BadRequest(new ProblemDetails { Title = "Problem adding new facility" });
+                return Ok(industrialFacilityDto);
+            }
+            catch (EntityAlreadyExistsException ex)
+            {
+                return StatusCode(StatusCodes.Status409Conflict, ex.Message);
+            }
         }
 
-        [HttpPut("updateFacility")]
+        [HttpPut("/facilities")]
         public async Task<ActionResult> UpdateFacility(IndustrialFacilityDto industrialFacilityDto)
         {
-            if (industrialFacilityDto == null) return BadRequest();
+            try
+            {
+                var validationResult = await _facilityValidator.ValidateAsync(industrialFacilityDto);
+                if (validationResult.IsValid == false)
+                    return BadRequest(new ValidationResponse
+                    {
+                        StatusCode = 400,
+                        Errors = validationResult.Errors
+                    });
 
-            var result = await _industrialFacilityService.UpdateFacility(industrialFacilityDto);
+                await _industrialFacilityService.UpdateFacility(industrialFacilityDto);
 
-            if (result) return Ok(industrialFacilityDto);
-
-            return BadRequest(new ProblemDetails { Title = "Problem updating facility" });
+                return Ok(industrialFacilityDto);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
         }
 
-        [HttpPut("deleteFacility/{id}")]
-        public async Task<ActionResult> DeleteFacility(long id)
+        [HttpDelete("/facilities/{id}")]
+        public async Task<ActionResult> DeleteFacility([FromRoute] long id)
         {
-            var result = await _industrialFacilityService.RemoveFacility(id);
+            try
+            {
+                var validationResult = await _searchValidator.ValidateAsync(id);
+                if (validationResult.IsValid == false)
+                    return BadRequest(new ValidationResponse
+                    {
+                        StatusCode = 400,
+                        Errors = validationResult.Errors
+                    });
 
-            if (result) return Ok();
+                await _industrialFacilityService.DeleteFacility(id);
 
-            return BadRequest(new ProblemDetails { Title = "Problem deleting facility" });
+                return Ok(id);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
         }
     }
-
 }

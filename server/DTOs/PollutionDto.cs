@@ -10,9 +10,9 @@ namespace server.DTO
         public long Id { get; set; }
         public long IndustrialFacilityId { get; set; }
         public string Name { get; set; }
-        public long Volume { get; set; }
-        public long Tax { get; set; }
-        public long MassFlowRate { get; set; }
-        public long EmissionsLimit { get; set; }
+        public float Volume { get; set; }
+        public float Tax { get; set; }
+        public float MassFlowRate { get; set; }
+        public float EmissionsLimit { get; set; }
     }
 }

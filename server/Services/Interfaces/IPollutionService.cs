@@ -10,8 +10,8 @@ namespace server.Services.Interfaces
     {
         Task<IEnumerable<PollutionDto>> GetAllPollution();
         Task<PollutionDto> GetPollutionById(long id);
-        Task<bool> AddPollution(PollutionDto pollutionDto);
-        Task<bool> UpdatePollution(PollutionDto pollutionDto);
-        Task<bool> DeletePollution(long id);
+        Task AddPollution(PollutionDto pollutionDto);
+        Task UpdatePollution(PollutionDto pollutionDto);
+        Task DeletePollution(long id);
     }
 }

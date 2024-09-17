@@ -2,73 +2,125 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using server.DTO;
+using server.Exceptions;
+using server.Responses;
 using server.Services.Interfaces;
+using server.Validators;
 
 namespace server.Controllers
 {
-    public class PollutionController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class PollutionController : ControllerBase
     {
         private readonly IPollutionService _pollutionService;
+        private readonly PollutionValidator _pollutionValidator;
+        private readonly SearchValidator _searchValidator;
 
-        public PollutionController(IPollutionService pollutionService)
+        public PollutionController(
+            IPollutionService pollutionService,
+            PollutionValidator pollutionValidator,
+            SearchValidator searchValidator)
         {
             _pollutionService = pollutionService;
+            _pollutionValidator = pollutionValidator;
+            _searchValidator = searchValidator;
         }
 
-        [HttpGet("pollutions")]
+        [HttpGet("/pollutions")]
         public async Task<ActionResult<IEnumerable<PollutionDto>>> GetPollutions()
         {
             var pollutions = await _pollutionService.GetAllPollution();
 
-            if (pollutions == null) return NotFound();
-
             return Ok(pollutions);
         }
 
-        [HttpGet("pollution/{id}")]
-        public async Task<ActionResult<PollutionDto>> GetPollution(long id)
+        [HttpGet("/pollutions/{id}")]
+        public async Task<ActionResult<PollutionDto>> GetPollution([FromRoute] long id)
         {
-            var pollutionDto = await _pollutionService.GetPollutionById(id);
+            try
+            {
+                var validationResult = await _searchValidator.ValidateAsync(id);
+                if (validationResult.IsValid == false)
+                    return BadRequest(new ValidationResponse
+                    {
+                        StatusCode = 400,
+                        Errors = validationResult.Errors
+                    });
 
-            if (pollutionDto == null) return NotFound();
+                var pollutionDto = await _pollutionService.GetPollutionById(id);
+
+                return Ok(pollutionDto);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
+        }
+
+        [HttpPost("/pollutions")]
+        public async Task<ActionResult> AddPollution(PollutionDto pollutionDto)
+        {
+            var validationResult = await _pollutionValidator.ValidateAsync(pollutionDto);
+            if (validationResult.IsValid == false)
+                return BadRequest(new ValidationResponse
+                {
+                    StatusCode = 400,
+                    Errors = validationResult.Errors
+                });
+
+            await _pollutionService.AddPollution(pollutionDto);
 
             return Ok(pollutionDto);
         }
 
-        [HttpPost("addPollution")]
-        public async Task<ActionResult> AddPollution(PollutionDto pollutionDto)
-        {
-            if (pollutionDto == null) return BadRequest();
-
-            var result = await _pollutionService.AddPollution(pollutionDto);
-
-            if (result) return Ok(pollutionDto);
-
-            return BadRequest(new ProblemDetails { Title = "Problem adding new pollution" });
-        }
-
-        [HttpPut("updatePollution")]
+        [HttpPut("/pollutions")]
         public async Task<ActionResult> UpdatePollution(PollutionDto pollutionDto)
         {
-            if (pollutionDto == null) return BadRequest();
+            try
+            {
+                var validationResult = await _pollutionValidator.ValidateAsync(pollutionDto);
+                if (validationResult.IsValid == false)
+                    return BadRequest(new ValidationResponse
+                    {
+                        StatusCode = 400,
+                        Errors = validationResult.Errors
+                    });
 
-            var result = await _pollutionService.UpdatePollution(pollutionDto);
+                await _pollutionService.UpdatePollution(pollutionDto);
 
-            if (result) return Ok(pollutionDto);
-
-            return BadRequest(new ProblemDetails { Title = "Problem updating pollution" });
+                return Ok(pollutionDto);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
         }
 
-        [HttpPut("deletePollution/{id}")]
-        public async Task<ActionResult> DeletePollution(long id)
+        [HttpDelete("/pollutions/{id}")]
+        public async Task<ActionResult> DeletePollution([FromRoute] long id)
         {
-            var result = await _pollutionService.DeletePollution(id);
+            try
+            {
+                var validationResult = await _searchValidator.ValidateAsync(id);
+                if (validationResult.IsValid == false)
+                    return BadRequest(new ValidationResponse
+                    {
+                        StatusCode = 400,
+                        Errors = validationResult.Errors
+                    });
 
-            if (result) return Ok();
+                await _pollutionService.DeletePollution(id);
 
-            return BadRequest(new ProblemDetails { Title = "Problem deleting pollution" });
+                return Ok(id);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
+            }
         }
     }
 }

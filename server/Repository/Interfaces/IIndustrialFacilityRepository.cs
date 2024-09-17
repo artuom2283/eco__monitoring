@@ -9,11 +9,12 @@ namespace server.Repository.Interfaces
 {
     public interface IIndustrialFacilityRepository
     {
-        Task<IEnumerable<FullIndustrialFacilityDTO>> GetFacilityWithPollutionAsync();
+        Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionAsync();
         Task<IEnumerable<IndustrialFacility>> GetAllAsync();
         Task<IndustrialFacility> GetByIdAsync(long id);
-        Task<bool> InsertAsync(IndustrialFacility facility);
-        Task<bool> UpdateAsync(IndustrialFacility facility);
-        Task<bool> DeleteAsync(IndustrialFacility facility);
+        Task<IndustrialFacility> GetByNameAsync(string name);
+        Task InsertAsync(IndustrialFacility facility);
+        Task UpdateAsync(IndustrialFacility facility);
+        Task DeleteAsync(IndustrialFacility facility);
     }
 }

@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 
 namespace server.DTO
 {
-    public class FullIndustrialFacilityDTO
+    public class FullIndustrialFacilityDto
     {
         public long Id { get; set; }
+        public long PollutionId { get; set; }
         public string FacilityName { get; set; }
         public string PollutionName { get; set; }
-        public long Volume { get; set; }
-        public long Tax { get; set; }
-        public long MassFlowRate { get; set; }
-        public long EmissionsLimit { get; set; }
+        public float Volume { get; set; }
+        public float Tax { get; set; }
+        public float MassFlowRate { get; set; }
+        public float EmissionsLimit { get; set; }
     }
 }
