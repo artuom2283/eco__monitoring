@@ -2860,24 +2860,32 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Мирослав\\.nuget\\packages\\": {}
+    "C:\\Users\\denis\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\VScode_projects\\eco__monitoring\\server\\server.csproj",
+      "projectUniqueName": "C:\\Users\\denis\\OneDrive\\Рабочий стол\\eco-monitoring\\eco__monitoring\\server\\server.csproj",
       "projectName": "server",
-      "projectPath": "D:\\VScode_projects\\eco__monitoring\\server\\server.csproj",
-      "packagesPath": "C:\\Users\\Мирослав\\.nuget\\packages\\",
-      "outputPath": "D:\\VScode_projects\\eco__monitoring\\server\\obj\\",
+      "projectPath": "C:\\Users\\denis\\OneDrive\\Рабочий стол\\eco-monitoring\\eco__monitoring\\server\\server.csproj",
+      "packagesPath": "C:\\Users\\denis\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\denis\\OneDrive\\Рабочий стол\\eco-monitoring\\eco__monitoring\\server\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Мирослав\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\denis\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2961,7 +2969,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.304/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
