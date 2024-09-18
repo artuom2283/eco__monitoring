@@ -23,7 +23,6 @@ const PollutionPage: React.FC = () => {
         if (!pollutionsLoaded) {
             dispatch(fetchPollutionsAsync());
             console.log(fullFacilities);
-
         }
         if (!facilitiesLoaded) {
             dispatch(fetchFacilitiesAsync());

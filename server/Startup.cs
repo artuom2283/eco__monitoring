@@ -41,7 +41,7 @@ public class Startup
 
         app.UseRouting();
 
-        app.UseCors();
+        app.UseCors("AllowSpecificOrigin");
 
         app.UseAuthorization();
 

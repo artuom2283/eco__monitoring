@@ -68,13 +68,12 @@ public static class ServiceCollectionExtension
     {
         services.AddCors(options =>
         {
-            options.AddDefaultPolicy(policy =>
+            options.AddPolicy("AllowSpecificOrigin", builder =>
             {
-                policy.WithOrigins("http://localhost", "http://localhost:3000")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials();
-
+                builder.WithOrigins("http://localhost:3000")
+                       .AllowAnyHeader()
+                       .AllowAnyMethod()
+                       .AllowCredentials();
             });
         });
 
