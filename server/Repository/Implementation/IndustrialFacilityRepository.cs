@@ -61,7 +61,7 @@ namespace server.Repository
                 }
 
                 var sqlQuery = @"
-                SELECT i.id AS Id, i.name AS FacilityName, p.id as PollutionId, p.Name AS PollutionName, p.Volume as Volume, p.Tax as Tax,
+                SELECT i.id AS Id, i.name AS FacilityName, p.id as PollutionId, p.year as Year, p.Name AS PollutionName, p.Volume as Volume, p.Tax as Tax,
 	 p.mass_flow_rate as MassFlowRate,
                     p.emissions_limit as EmissionsLimit
                 FROM public.industrial_facilities i

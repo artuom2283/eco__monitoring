@@ -9,6 +9,7 @@ namespace server.DTO
     {
         public long Id { get; set; }
         public long IndustrialFacilityId { get; set; }
+        public int Year { get; set; }
         public string Name { get; set; }
         public float Volume { get; set; }
         public float Tax { get; set; }

@@ -15,6 +15,8 @@ namespace server.Entities
         public string Name { get; set; }
         [Column("volume")]
         public float Volume { get; set; }
+        [Column("year")]
+        public int Year { get; set; }
         [Column("tax")]
         public float Tax { get; set; }
         [Column("mass_flow_rate")]

@@ -8,6 +8,7 @@ namespace server.DTO
     public class FullIndustrialFacilityDto
     {
         public long Id { get; set; }
+        public int Year { get; set; }
         public long PollutionId { get; set; }
         public string FacilityName { get; set; }
         public string PollutionName { get; set; }

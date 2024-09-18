@@ -72,6 +72,10 @@ namespace server.Migrations
                         .HasColumnType("real")
                         .HasColumnName("volume");
 
+                    b.Property<int>("Year")
+                        .HasColumnType("integer")
+                        .HasColumnName("year");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IndustrialFacilityId");

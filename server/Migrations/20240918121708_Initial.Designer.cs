@@ -11,7 +11,7 @@ using server.Data;
 namespace server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240916201523_Initial")]
+    [Migration("20240918121708_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -74,6 +74,10 @@ namespace server.Migrations
                     b.Property<float>("Volume")
                         .HasColumnType("real")
                         .HasColumnName("volume");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("integer")
+                        .HasColumnName("year");
 
                     b.HasKey("Id");
 

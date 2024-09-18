@@ -32,6 +32,7 @@ namespace server.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "text", nullable: true),
                     volume = table.Column<float>(type: "real", nullable: false),
+                    year = table.Column<int>(type: "integer", nullable: false),
                     tax = table.Column<float>(type: "real", nullable: false),
                     mass_flow_rate = table.Column<float>(type: "real", nullable: false),
                     emissions_limit = table.Column<float>(type: "real", nullable: false),

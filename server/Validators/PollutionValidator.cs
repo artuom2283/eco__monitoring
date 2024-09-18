@@ -17,6 +17,11 @@ public class PollutionValidator : AbstractValidator<PollutionDto>
             .NotEmpty()
             .GreaterThan(0);
         
+        RuleFor(p => p.Year)
+            .NotEmpty()
+            .GreaterThan(0)
+            .LessThanOrEqualTo(DateTime.Now.Year);
+        
         RuleFor(p => p.Tax)
             .NotEmpty()
             .GreaterThan(0);
