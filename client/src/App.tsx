@@ -5,20 +5,24 @@ import PollutionPage from './features/pollution/PollutionPage';
 import CalculationPage from "./features/calculation/CalculationPage";
 import { Header } from './app/layout/Header';
 import { Footer } from './app/layout/Footer';
+import { Provider } from 'react-redux';
+import { store } from './app/store/configureStore';
 
 const App: React.FC = () => {
     return (
-        <Router>
-            <Header />
-            <div className="App">
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/pollution" element={<PollutionPage />} />
-                    <Route path="/calculation" element={<CalculationPage />} />
-                </Routes>
-            </div>
-            <Footer />
-        </Router>
+        <Provider store={store}>
+            <Router>
+                <Header />
+                <div className="App">
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/pollution" element={<PollutionPage />} />
+                        <Route path="/calculation" element={<CalculationPage />} />
+                    </Routes>
+                </div>
+                <Footer />
+            </Router>
+        </Provider>
     );
 };
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../App.css';
 import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
 import { fetchPollutionsAsync, fetchFacilitiesAsync, fetchFacilitiesWithPollutionAsync } from './pollutionSlice';
+import { log } from 'console';
 
 const PollutionPage: React.FC = () => {
     const [data, setData] = useState<{ id: number; name: string }[]>([]);
@@ -21,6 +22,8 @@ const PollutionPage: React.FC = () => {
     useEffect(() => {
         if (!pollutionsLoaded) {
             dispatch(fetchPollutionsAsync());
+            console.log(fullFacilities);
+
         }
         if (!facilitiesLoaded) {
             dispatch(fetchFacilitiesAsync());
@@ -28,7 +31,7 @@ const PollutionPage: React.FC = () => {
         if (!pollutionsWithFacilitiesLoaded) {
             dispatch(fetchFacilitiesWithPollutionAsync());
         }
-    }, [pollutionsLoaded, facilitiesLoaded, pollutionsWithFacilitiesLoaded, dispatch]);
+    }, [pollutionsLoaded, facilitiesLoaded, pollutionsWithFacilitiesLoaded, dispatch, fullFacilities]);
 
 
     const addItem = () => {

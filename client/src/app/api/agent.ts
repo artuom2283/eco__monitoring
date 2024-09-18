@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 
 
-axios.defaults.baseURL = `http://localhost:5000/api/`; //change root
+axios.defaults.baseURL = `http://localhost:8080/`;
 axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -17,15 +17,15 @@ const requests = {
 };
 
 const Pollution = {
-    getPollutions: () => requests.get("pollution/pollutions"),
-    getPollution: (id: number) => requests.get(`pollution/pollutions/${id}`),
+    getPollutions: () => requests.get("pollutions"),
+    getPollution: (id: number) => requests.get(`pollutions/${id}`),
     //addPollution: (id: number) =
 }
 
 const Facilities = {
-    getFacilities: () => requests.get("industrialFacilities/facilities"),
-    getFacilitiesWithPollution: () => requests.get("industrialFacilities/fullFacilities"),
-    getFacility: (id: number) => requests.get(`industrialFacilities/facilities/${id}`),
+    getFacilities: () => requests.get("facilities"),
+    getFacilitiesWithPollution: () => requests.get("fullFacilities"),
+    getFacility: (id: number) => requests.get(`facilities/${id}`),
 
 }
 

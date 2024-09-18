@@ -38,9 +38,9 @@ public class Startup
         }
 
         app.UseHttpsRedirection();
-        
+
         app.UseRouting();
-        
+
         app.UseCors();
 
         app.UseAuthorization();
