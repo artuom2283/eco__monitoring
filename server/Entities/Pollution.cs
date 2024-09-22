@@ -17,8 +17,8 @@ namespace server.Entities
         public float Volume { get; set; }
         [Column("year")]
         public int Year { get; set; }
-        [Column("tax")]
-        public float Tax { get; set; }
+        /*[Column("tax")]
+        public float Tax { get; set; }*/
         [Column("mass_flow_rate")]
         public float MassFlowRate { get; set; }
         [Column("emissions_limit")]

@@ -13,7 +13,7 @@ namespace server.DTO
         public string FacilityName { get; set; }
         public string PollutionName { get; set; }
         public float Volume { get; set; }
-        public float Tax { get; set; }
+        /*public float Tax { get; set; }*/
         public float MassFlowRate { get; set; }
         public float EmissionsLimit { get; set; }
     }

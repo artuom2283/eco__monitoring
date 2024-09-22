@@ -41,7 +41,7 @@ namespace server.Repository
             
             existingPollution.Name = pollution.Name;
             existingPollution.Volume = pollution.Volume;
-            existingPollution.Tax = pollution.Tax;
+            /*existingPollution.Tax = pollution.Tax;*/
             existingPollution.MassFlowRate = pollution.MassFlowRate;
             existingPollution.EmissionsLimit = pollution.EmissionsLimit;
             existingPollution.IndustrialFacilityId = pollution.IndustrialFacilityId;
