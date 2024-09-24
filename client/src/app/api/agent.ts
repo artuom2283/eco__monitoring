@@ -17,16 +17,18 @@ const requests = {
 };
 
 const Pollution = {
-    getPollutions: () => requests.get("pollutions"),
-    getPollution: (id: number) => requests.get(`pollutions/${id}`),
-    //addPollution: (id: number) =
-}
+  getPollutions: () => requests.get("pollutions"),
+  getPollution: (id: number) => requests.get(`pollutions/${id}`),
+  putPollution: (id: number, body: object) => requests.put(`pollutions`, body),
+  delPollution: (id: number) => requests.del(`pollutions/${id}`)
+};
+
 
 const Facilities = {
-    getFacilities: () => requests.get("facilities"),
-    getFacilitiesWithPollution: () => requests.get("fullFacilities"),
-    getFacility: (id: number) => requests.get(`facilities/${id}`),
-
+  getFacilities: () => requests.get("facilities"),
+  getFacilitiesWithPollution: () => requests.get("fullFacilities"),
+  getFacility: (id: number) => requests.get(`facilities`),
+  addFacility: (facilityData: object) => requests.put("facilities", facilityData)
 }
 
 const agent = {
