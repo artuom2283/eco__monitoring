@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -70,7 +71,69 @@ namespace server.Repository
                 return await connection.QueryAsync<FullIndustrialFacilityDto>(sqlQuery);
             }
         }
+
+        public async Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionByNameAsync(string name)
+        {
+            using (var connection = _context.Database.GetDbConnection())
+            {
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    await connection.OpenAsync();
+                }
+
+                var sqlQuery = @"
+                SELECT i.id AS Id, i.name AS FacilityName, p.id as PollutionId, p.year as Year, p.Name AS PollutionName, p.Volume as Volume, p.Tax as Tax,
+	 p.mass_flow_rate as MassFlowRate,
+                    p.emissions_limit as EmissionsLimit
+                FROM public.industrial_facilities i
+                INNER JOIN public.pollutions p ON i.id = p.industrial_facility_id WHERE i.name = @name;";
+
+                return await connection.QueryAsync<FullIndustrialFacilityDto>(sqlQuery, new {name});
+            }
+        }
+
+        public async Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionSortByAscendingAsync()
+        {
+            using (var connection = _context.Database.GetDbConnection())
+            {
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    await connection.OpenAsync();
+                }
+
+                var sqlQuery = @"
+                SELECT i.id AS Id, i.name AS FacilityName, p.id as PollutionId, p.year as Year, p.Name AS PollutionName, p.Volume as Volume, p.Tax as Tax,
+	 p.mass_flow_rate as MassFlowRate,
+                    p.emissions_limit as EmissionsLimit
+                FROM public.industrial_facilities i
+                INNER JOIN public.pollutions p ON i.id = p.industrial_facility_id ORDER BY p.Volume ASC;";
+
+                return await connection.QueryAsync<FullIndustrialFacilityDto>(sqlQuery);
+            }
+        }
         
+        public async Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionSortByDescendingAsync()
+        {
+            using (var connection = _context.Database.GetDbConnection())
+            {
+                if (connection.State == System.Data.ConnectionState.Closed)
+                {
+                    await connection.OpenAsync();
+                }
+
+                var sqlQuery = @"
+                SELECT i.id AS Id, i.name AS FacilityName, p.id as PollutionId, p.year as Year, p.Name AS PollutionName, p.Volume as Volume, p.Tax as Tax,
+	 p.mass_flow_rate as MassFlowRate,
+                    p.emissions_limit as EmissionsLimit
+                FROM public.industrial_facilities i
+                INNER JOIN public.pollutions p ON i.id = p.industrial_facility_id ORDER BY p.Volume DESC;";
+
+                return await connection.QueryAsync<FullIndustrialFacilityDto>(sqlQuery);
+            }
+        }
+        
+        
+
         public async Task<IndustrialFacility> GetByNameAsync(string name)
         {
             return await _context.Facilities.FirstOrDefaultAsync(f => f.Name == name);

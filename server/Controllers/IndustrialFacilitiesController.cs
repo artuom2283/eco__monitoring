@@ -37,6 +37,30 @@ namespace server.Controllers
 
             return Ok(fullFacilitiesDto);
         }
+        
+        [HttpGet("/fullFacilities/{name}")]
+        public async Task<ActionResult<IEnumerable<FullIndustrialFacilityDto>>> GetFullFacilitiesByName([FromRoute] string name)
+        {
+            var fullFacilitiesDto = await _industrialFacilityService.GetFullFacilitiesInfoByName(name);
+
+            return Ok(fullFacilitiesDto);
+        }
+        
+        [HttpGet("/fullFacilities/sortByAscending")]
+        public async Task<ActionResult<IEnumerable<FullIndustrialFacilityDto>>> GetFullFacilitiesSortByAscending()
+        {
+            var fullFacilitiesDto = await _industrialFacilityService.GetFullFacilitiesInfoSortByAscending();
+
+            return Ok(fullFacilitiesDto);
+        }
+        
+        [HttpGet("/fullFacilities/sortByDescending")]
+        public async Task<ActionResult<IEnumerable<FullIndustrialFacilityDto>>> GetFullFacilitiesSortByDescending()
+        {
+            var fullFacilitiesDto = await _industrialFacilityService.GetFullFacilitiesInfoSortByDescending();
+
+            return Ok(fullFacilitiesDto);
+        }
 
         [HttpGet("/facilities")]
         public async Task<ActionResult<IEnumerable<IndustrialFacilityDto>>> GetFacilities()

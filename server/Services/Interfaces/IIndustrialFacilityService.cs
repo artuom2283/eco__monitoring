@@ -10,6 +10,9 @@ namespace server.Services.Interfaces
     public interface IIndustrialFacilityService
     {
         Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfo();
+        Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfoByName(string name);
+        Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfoSortByAscending();
+        Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfoSortByDescending();
         Task<IEnumerable<IndustrialFacilityDto>> GetFacilitiesInfo();
         Task<IndustrialFacilityDto> GetFacilityById(long id);
         Task AddFacility(IndustrialFacilityDto industrialFacilityDto);

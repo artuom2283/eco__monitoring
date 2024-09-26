@@ -10,6 +10,9 @@ namespace server.Repository.Interfaces
     public interface IIndustrialFacilityRepository
     {
         Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionAsync();
+        Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionByNameAsync(string name);
+        Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionSortByAscendingAsync();
+        Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionSortByDescendingAsync();
         Task<IEnumerable<IndustrialFacility>> GetAllAsync();
         Task<IndustrialFacility> GetByIdAsync(long id);
         Task<IndustrialFacility> GetByNameAsync(string name);

@@ -46,6 +46,27 @@ namespace server.Services
 
             return fullFacilitiesInfo;
         }
+        
+        public async Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfoByName(string name)
+        {
+            var fullFacilitiesInfo = await _industrialFacilityRepository.GetFacilityWithPollutionByNameAsync(name);
+
+            return fullFacilitiesInfo;
+        }
+        
+        public async Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfoSortByAscending()
+        {
+            var fullFacilitiesInfo = await _industrialFacilityRepository.GetFacilityWithPollutionSortByAscendingAsync();
+
+            return fullFacilitiesInfo;
+        }
+        
+        public async Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfoSortByDescending()
+        {
+            var fullFacilitiesInfo = await _industrialFacilityRepository.GetFacilityWithPollutionSortByDescendingAsync();
+
+            return fullFacilitiesInfo;
+        }
 
         public async Task<IndustrialFacilityDto> GetFacilityById(long id)
         {
