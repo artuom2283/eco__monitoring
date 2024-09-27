@@ -12,7 +12,7 @@ namespace server.DTO
         public int Year { get; set; }
         public string Name { get; set; }
         public float Volume { get; set; }
-        /*public float Tax { get; set; }*/
+        /*public float Tax { get; set; } */
         public float MassFlowRate { get; set; }
         public float EmissionsLimit { get; set; }
     }
