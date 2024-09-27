@@ -19,7 +19,7 @@ const requests = {
 const Pollution = {
   getPollutions: () => requests.get("pollutions"),
   getPollution: (id: number) => requests.get(`pollutions/${id}`),
-  putPollution: (body: object) => requests.put(`pollutions`, body),
+  putPollution: (id: number, body: object) => requests.put(`pollutions`, body),
   delPollution: (id: number) => requests.del(`pollutions/${id}`)
 };
 

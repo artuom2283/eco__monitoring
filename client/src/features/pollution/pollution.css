@@ -3,6 +3,7 @@ h1, h2 {
 }
 
 table {
+  width: 100%;
   border-collapse: collapse;
   margin: auto;
   margin-bottom: 30px;
