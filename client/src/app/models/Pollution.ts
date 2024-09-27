@@ -3,7 +3,6 @@ export interface PollutionDto {
     industrialFacilityId: number;
     name: string;
     volume: number;
-    tax: number;
     massFlowRate: number;
     emissionsLimit: number;
     year: number;

@@ -30,3 +30,18 @@ tr:hover {
 tr:active {
   background-color: rgb(243, 243, 182);
 }
+
+.search-bar{
+  display: flex;
+    justify-content: center;
+}
+
+.sorting-buttons{
+    display: flex;
+    align-items: center;
+}
+
+.small-img {
+  width: 15px;
+  height: 15px;
+}
