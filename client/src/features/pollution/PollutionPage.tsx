@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './pollution.css';
 import '../../App.css'
-import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
-import { fetchPollutionsAsync, fetchFacilitiesAsync, fetchFacilitiesWithPollutionAsync, updatePollutionAsync, deletePollutionAsync } from './pollutionSlice';
-import { FullIndustrialFacilityDto } from '../../app/models/Facility';
-import { PollutionDto } from '../../app/models/Pollution';
+import {useAppDispatch, useAppSelector} from '../../app/store/configureStore';
+import {
+    fetchPollutionsAsync,
+    fetchFacilitiesAsync,
+    fetchFacilitiesWithPollutionAsync,
+    updatePollutionAsync,
+    deletePollutionAsync
+} from './pollutionSlice';
+import {FullIndustrialFacilityDto} from '../../app/models/Facility';
+import {PollutionDto} from '../../app/models/Pollution';
 
 const PollutionPage: React.FC = () => {
     interface FullFacilityWithPollution extends FullIndustrialFacilityDto {
@@ -22,14 +28,14 @@ const PollutionPage: React.FC = () => {
     const [editedData, setEditedData] = useState<{ [key: string]: PollutionDto }>({});
 
     useEffect(() => {
+        if (!pollutionsWithFacilitiesLoaded) {
+            dispatch(fetchFacilitiesWithPollutionAsync());
+        }
         if (!pollutionsLoaded) {
             dispatch(fetchPollutionsAsync());
         }
         if (!facilitiesLoaded) {
             dispatch(fetchFacilitiesAsync());
-        }
-        if (!pollutionsWithFacilitiesLoaded) {
-            dispatch(fetchFacilitiesWithPollutionAsync());
         }
     }, [pollutionsLoaded, facilitiesLoaded, pollutionsWithFacilitiesLoaded, dispatch]);
 
@@ -57,13 +63,13 @@ const PollutionPage: React.FC = () => {
 
                 // Clear the editedData for this specific facility after saving
                 setEditedData(prev => {
-                    const newData = { ...prev };
+                    const newData = {...prev};
                     delete newData[facilityKey];
                     return newData;
                 });
 
                 alert("Changes saved successfully!");
-                window.location.reload()
+                await dispatch(fetchFacilitiesWithPollutionAsync());
             } catch (error) {
                 console.error("Save error:", error);
                 alert("Failed to save changes.");
@@ -74,15 +80,14 @@ const PollutionPage: React.FC = () => {
     };
 
     const handleDelete = async (facilityId: number) => {
-        const pollutionToDelete = combinedData.find(facility => facility.id === facilityId)?.pollution;
-
-        if (pollutionToDelete) {
-            try {
-                dispatch(deletePollutionAsync(facilityId))
-                alert("Record deleted successfully!");
-            } catch (error) {
-                alert("Failed to delete record.");
-            }
+        console.log("Combined data:", combinedData);
+        console.log("Facility ID:", facilityId);
+        try {
+            await dispatch(deletePollutionAsync(facilityId))
+            alert("Record deleted successfully!");
+            await dispatch(fetchFacilitiesWithPollutionAsync());
+        } catch (error) {
+            alert("Failed to delete record.");
         }
     };
 
@@ -105,7 +110,7 @@ const PollutionPage: React.FC = () => {
     });
 
     const sortedYears = Object.keys(combinedDataByYear).sort((a, b) =>
-        b.localeCompare(a, undefined, { numeric: true })
+        b.localeCompare(a, undefined, {numeric: true})
     );
 
     // Function to handle input changes
@@ -140,55 +145,57 @@ const PollutionPage: React.FC = () => {
                     <h2>Year: {year}</h2>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Name of the institution</th>
-                                <th>Name of pollution</th>
-                                <th>Volume</th>
-                                <th>Mass flow</th>
-                                <th>Emission limit</th>
-                                <th>Actions</th>
-                            </tr>
+                        <tr>
+                            <th>Name of the institution</th>
+                            <th>Name of pollution</th>
+                            <th>Volume</th>
+                            <th>Mass flow</th>
+                            <th>Emission limit</th>
+                            <th>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {combinedDataByYear[year].length > 0 ? (
-                                combinedDataByYear[year].map((facility) => (
-                                    <tr key={`${facility.pollutionId}-${facility.pollutionName}`}>
-                                        <td>{facility.facilityName}</td>
-                                        <td>
-                                            {editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.name || facility.pollutionName || ''}
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                value={editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.volume || facility.volume || ''}
-                                                onChange={(e) => handleInputChange(facility.pollutionId, facility.pollutionName, 'volume', e.target.value)}
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                value={editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.massFlowRate || facility.massFlowRate || ''}
-                                                onChange={(e) => handleInputChange(facility.pollutionId, facility.pollutionName, 'massFlowRate', e.target.value)}
-                                            />
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="number"
-                                                value={editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.emissionsLimit || facility.emissionsLimit || ''}
-                                                onChange={(e) => handleInputChange(facility.pollutionId, facility.pollutionName, 'emissionsLimit', e.target.value)}
-                                            />
-                                        </td>
-                                        <td>
-                                            <button onClick={() => handleSave(facility.pollutionId, facility.pollutionName)}>Save</button>
-                                            <button onClick={() => handleDelete(facility.pollutionId)}>Delete</button>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan={6}>no data</td>
+                        {combinedDataByYear[year].length > 0 ? (
+                            combinedDataByYear[year].map((facility) => (
+                                <tr key={`${facility.pollutionId}-${facility.pollutionName}`}>
+                                    <td>{facility.facilityName}</td>
+                                    <td>
+                                        {editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.name || facility.pollutionName || ''}
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            value={editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.volume || facility.volume || ''}
+                                            onChange={(e) => handleInputChange(facility.pollutionId, facility.pollutionName, 'volume', e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            value={editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.massFlowRate || facility.massFlowRate || ''}
+                                            onChange={(e) => handleInputChange(facility.pollutionId, facility.pollutionName, 'massFlowRate', e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            value={editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.emissionsLimit || facility.emissionsLimit || ''}
+                                            onChange={(e) => handleInputChange(facility.pollutionId, facility.pollutionName, 'emissionsLimit', e.target.value)}
+                                        />
+                                    </td>
+                                    <td>
+                                        <button
+                                            onClick={() => handleSave(facility.pollutionId, facility.pollutionName)}>Save
+                                        </button>
+                                        <button onClick={() => handleDelete(facility.pollutionId)}>Delete</button>
+                                    </td>
                                 </tr>
-                            )}
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={6}>no data</td>
+                            </tr>
+                        )}
                         </tbody>
                     </table>
                 </div>
