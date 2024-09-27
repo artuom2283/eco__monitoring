@@ -59,6 +59,29 @@ export const fetchPollutionAsync = createAsyncThunk<PollutionDto, number>(
     }
 );
 
+export const updatePollutionAsync = createAsyncThunk<PollutionDto, PollutionDto>(
+    "pollution/updatePollutionAsync",
+    async (pollution, thunkAPI) => {
+        try {
+            return agent.Pollution.putPollution(pollution);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
+export const deletePollutionAsync = createAsyncThunk<number, number>(
+    "pollution/deletePollutionAsync",
+    async (id, thunkAPI) => {
+        try {
+            await agent.Pollution.delPollution(id);
+            return id;
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
 
 export const pollutionSlice = createSlice({
     name: "pollution",
@@ -129,6 +152,35 @@ export const pollutionSlice = createSlice({
         builder.addCase(fetchPollutionAsync.fulfilled, (state, action) => {
             state.pollutions = [...state.pollutions, action.payload];
             state.status = 'idle';
+        });
+
+        // Handle updatePollutionAsync
+        builder.addCase(updatePollutionAsync.pending, (state) => {
+            state.status = 'loading';
+        });
+        builder.addCase(updatePollutionAsync.fulfilled, (state, action) => {
+            const index = state.pollutions.findIndex(p => p.id === action.payload.id);
+            if (index !== -1) {
+                state.pollutions[index] = action.payload;
+            }
+            state.status = 'idle';
+        });
+        builder.addCase(updatePollutionAsync.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message || 'Failed to update pollution';
+        });
+
+        // Handle deletePollutionAsync
+        builder.addCase(deletePollutionAsync.pending, (state) => {
+            state.status = 'loading';
+        });
+        builder.addCase(deletePollutionAsync.fulfilled, (state, action) => {
+            state.pollutions = state.pollutions.filter(p => p.id !== action.payload);
+            state.status = 'idle';
+        });
+        builder.addCase(deletePollutionAsync.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message || 'Failed to delete pollution';
         });
     },
 });

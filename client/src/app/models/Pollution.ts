@@ -6,5 +6,5 @@ export interface PollutionDto {
     tax: number;
     massFlowRate: number;
     emissionsLimit: number;
-    year: number; 
+    year: number;
 }
