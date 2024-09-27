@@ -66,7 +66,7 @@ namespace server.Repository
 	 p.mass_flow_rate as MassFlowRate,
                     p.emissions_limit as EmissionsLimit
                 FROM public.industrial_facilities i
-                INNER JOIN public.pollutions p ON i.id = p.industrial_facility_id;";
+                INNER JOIN public.pollutions p ON i.id = p.industrial_facility_id ORDER BY p.id ASC;";
 
                 return await connection.QueryAsync<FullIndustrialFacilityDto>(sqlQuery);
             }
@@ -132,8 +132,6 @@ namespace server.Repository
             }
         }
         
-        
-
         public async Task<IndustrialFacility> GetByNameAsync(string name)
         {
             return await _context.Facilities.FirstOrDefaultAsync(f => f.Name == name);
