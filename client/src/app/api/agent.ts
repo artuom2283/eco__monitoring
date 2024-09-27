@@ -6,20 +6,20 @@ axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {
-    get: (url: string, params?: URLSearchParams) => axios.get(url, { params }).then(responseBody),
-    post: (url: string, body?: object) => axios.post(url, body, {
-        headers: { 'Content-Type': 'application/json' }
-    }).then(responseBody),
-    put: (url: string, body?: object) => axios.put(url, body, {
-        headers: { 'Content-Type': 'application/json' }
-    }).then(responseBody),
-    del: (url: string) => axios.delete(url).then(responseBody),
+  get: (url: string, params?: URLSearchParams) => axios.get(url, { params }).then(responseBody),
+  post: (url: string, body?: object) => axios.post(url, body, {
+    headers: { 'Content-Type': 'application/json' }
+  }).then(responseBody),
+  put: (url: string, body?: object) => axios.put(url, body, {
+    headers: { 'Content-Type': 'application/json' }
+  }).then(responseBody),
+  del: (url: string) => axios.delete(url).then(responseBody),
 };
 
 const Pollution = {
   getPollutions: () => requests.get("pollutions"),
   getPollution: (id: number) => requests.get(`pollutions/${id}`),
-  putPollution: (id: number, body: object) => requests.put(`pollutions`, body),
+  putPollution: (body: object) => requests.put(`pollutions`, body),
   delPollution: (id: number) => requests.del(`pollutions/${id}`)
 };
 
@@ -32,8 +32,8 @@ const Facilities = {
 }
 
 const agent = {
-    Pollution,
-    Facilities,
+  Pollution,
+  Facilities,
 
 }
 
