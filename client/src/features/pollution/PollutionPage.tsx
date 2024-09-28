@@ -269,8 +269,8 @@ const PollutionPage: React.FC = () => {
                                 <th>
                                     <div className="sorting-buttons">
                                         Volume
-                                    <button onClick={() => handleSort('asc')}><img src={SortAscImg} alt="Sort Ascending" className="small-img"/></button>
-                                    <button onClick={() => handleSort('desc')}><img src={SortDescImg} alt="Sort Descending" className="small-img"/></button>
+                                    <button className='sort-button sort-ascending' onClick={() => handleSort('asc')}><img src={SortAscImg} alt="Sort Ascending" className="small-img"/></button>
+                                    <button className='sort-button sort-descending' onClick={() => handleSort('desc')}><img src={SortDescImg} alt="Sort Descending" className="small-img"/></button>
                                  </div>
                             </th>
                                 <th>Mass flow</th>
@@ -319,6 +319,11 @@ const PollutionPage: React.FC = () => {
                     </div>
                 );
             })}
+            <div className="top-button-container">
+                        <button className="top-button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+                         Top
+                        </button>
+                      </div>
         </div>
     );
 };
