@@ -319,11 +319,11 @@ const PollutionPage: React.FC = () => {
                     </div>
                 );
             })}
-            <div className="top-button-container">
-                        <button className="top-button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                         Top
-                        </button>
-                      </div>
+          <div className="top-button-container">
+            <button className="top-button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              Top
+            </button>
+          </div>
         </div>
     );
 };
