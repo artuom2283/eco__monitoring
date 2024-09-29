@@ -3,21 +3,21 @@ import {Link, useLocation} from 'react-router-dom';
 
 export const Header = () => {
     const location = useLocation();
-    const [title, setTitle] = useState('Environmental monitoring of Kyiv');
+    const [title, setTitle] = useState('Environmental monitoring of Dnipropetrovsk region');
 
     useEffect(() => {
         switch (location.pathname) {
             case '/':
-                setTitle('About - Environmental monitoring of Kyiv');
+                setTitle('About - Environmental monitoring of Dnipropetrovsk region');
                 break;
             case '/pollution':
-                setTitle('Data Management - Environmental monitoring of Kyiv');
+                setTitle('Data Management - Environmental monitoring of Dnipropetrovsk region');
                 break;
             case '/calculation':
-                setTitle('Calculation - Environmental monitoring of Kyiv');
+                setTitle('Calculation - Environmental monitoring of Dnipropetrovsk region');
                 break;
             default:
-                setTitle('Environmental monitoring of Kyiv');
+                setTitle('Environmental monitoring of Dnipropetrovsk region');
                 break;
         }
     }, [location.pathname]);
