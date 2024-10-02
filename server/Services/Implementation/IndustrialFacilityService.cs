@@ -1,5 +1,4 @@
 using AutoMapper;
-using server.DTO;
 using server.Entities;
 using server.Exceptions;
 using server.Repository.Interfaces;
@@ -39,35 +38,7 @@ namespace server.Services
             
             return facilitiesDto;
         }
-
-        public async Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfo()
-        {
-            var fullFacilitiesInfo = await _industrialFacilityRepository.GetFacilityWithPollutionAsync();
-
-            return fullFacilitiesInfo;
-        }
         
-        public async Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfoByName(string name)
-        {
-            var fullFacilitiesInfo = await _industrialFacilityRepository.GetFacilityWithPollutionByNameAsync(name);
-
-            return fullFacilitiesInfo;
-        }
-        
-        public async Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfoSortByAscending()
-        {
-            var fullFacilitiesInfo = await _industrialFacilityRepository.GetFacilityWithPollutionSortByAscendingAsync();
-
-            return fullFacilitiesInfo;
-        }
-        
-        public async Task<IEnumerable<FullIndustrialFacilityDto>> GetFullFacilitiesInfoSortByDescending()
-        {
-            var fullFacilitiesInfo = await _industrialFacilityRepository.GetFacilityWithPollutionSortByDescendingAsync();
-
-            return fullFacilitiesInfo;
-        }
-
         public async Task<IndustrialFacilityDto> GetFacilityById(long id)
         {
             var facility = await _industrialFacilityRepository.GetByIdAsync(id);

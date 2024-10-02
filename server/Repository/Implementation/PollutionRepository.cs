@@ -23,6 +23,13 @@ namespace server.Repository
             return await _context.Pollutions.ToListAsync();
         }
 
+        public async Task<long> GetPollutionIdByNameAsync(string name)
+        {
+            var pollution = await _context.Pollutions.FirstOrDefaultAsync(p => p.Name == name);
+
+            return pollution.Id;
+        }
+
         public async Task InsertAsync(Pollution pollution)
         {
             _context.Pollutions.Add(pollution);
@@ -40,11 +47,8 @@ namespace server.Repository
             var existingPollution = await _context.Pollutions.FindAsync(pollution.Id);
             
             existingPollution.Name = pollution.Name;
-            existingPollution.Volume = pollution.Volume;
-            /*existingPollution.Tax = pollution.Tax;*/
             existingPollution.MassFlowRate = pollution.MassFlowRate;
             existingPollution.EmissionsLimit = pollution.EmissionsLimit;
-            existingPollution.IndustrialFacilityId = pollution.IndustrialFacilityId;
             
             await _context.SaveChangesAsync();
         }

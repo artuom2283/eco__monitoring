@@ -11,6 +11,7 @@ namespace server.Repository.Interfaces
         Task<IEnumerable<Pollution>> GetAllAsync();
         Task<Pollution> GetByIdAsync(long id);
         Task<Pollution> GetPollutionByNameAsync(string name);
+        Task<long> GetPollutionIdByNameAsync(string name);
         Task InsertAsync(Pollution pollution);
         Task UpdateAsync(Pollution pollution);
         Task DeleteAsync(Pollution pollution);

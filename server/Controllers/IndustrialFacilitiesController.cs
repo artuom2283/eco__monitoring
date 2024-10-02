@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using server.DTO;
 using server.Exceptions;
 using server.Responses;
 using server.Services.Interfaces;
@@ -29,39 +28,7 @@ namespace server.Controllers
             _facilityValidator = facilityValidator;
             _searchValidator = searchValidator;
         }
-
-        [HttpGet("/fullFacilities")]
-        public async Task<ActionResult<IEnumerable<FullIndustrialFacilityDto>>> GetFullFacilities()
-        {
-            var fullFacilitiesDto = await _industrialFacilityService.GetFullFacilitiesInfo();
-
-            return Ok(fullFacilitiesDto);
-        }
         
-        [HttpGet("/fullFacilities/{name}")]
-        public async Task<ActionResult<IEnumerable<FullIndustrialFacilityDto>>> GetFullFacilitiesByName([FromRoute] string name)
-        {
-            var fullFacilitiesDto = await _industrialFacilityService.GetFullFacilitiesInfoByName(name);
-
-            return Ok(fullFacilitiesDto);
-        }
-        
-        [HttpGet("/fullFacilities/sortByAscending")]
-        public async Task<ActionResult<IEnumerable<FullIndustrialFacilityDto>>> GetFullFacilitiesSortByAscending()
-        {
-            var fullFacilitiesDto = await _industrialFacilityService.GetFullFacilitiesInfoSortByAscending();
-
-            return Ok(fullFacilitiesDto);
-        }
-        
-        [HttpGet("/fullFacilities/sortByDescending")]
-        public async Task<ActionResult<IEnumerable<FullIndustrialFacilityDto>>> GetFullFacilitiesSortByDescending()
-        {
-            var fullFacilitiesDto = await _industrialFacilityService.GetFullFacilitiesInfoSortByDescending();
-
-            return Ok(fullFacilitiesDto);
-        }
-
         [HttpGet("/facilities")]
         public async Task<ActionResult<IEnumerable<IndustrialFacilityDto>>> GetFacilities()
         {
