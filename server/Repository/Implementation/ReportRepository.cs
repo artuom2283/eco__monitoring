@@ -10,17 +10,11 @@ namespace server.Repository;
 public class ReportRepository : IReportRepository
 {
     private readonly DatabaseContext _context;
-    private readonly IIndustrialFacilityRepository _industrialFacilityRepository;
-    private readonly IPollutionRepository _pollutionRepository;
 
     public ReportRepository(
-        DatabaseContext context,
-        IIndustrialFacilityRepository industrialFacilityRepository,
-        IPollutionRepository pollutionRepository)
+        DatabaseContext context)
     {
         _context = context;
-        _industrialFacilityRepository = industrialFacilityRepository;
-        _pollutionRepository = pollutionRepository;
     }
 
     public async Task AddReportAsync(Report report)
