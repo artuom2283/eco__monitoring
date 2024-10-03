@@ -10,12 +10,16 @@ import {
     fetchFacilitiesWithPollutionAsync,
     updatePollutionAsync,
     deletePollutionAsync,
-    fetchFacilitiesWithPollutionByNameAsync,
     fetchFacilitiesWithPollutionByAscendingAsync,
-    fetchFacilitiesWithPollutionByDescendingAsync, addPollutionAsync
+    fetchFacilitiesWithPollutionByDescendingAsync
 } from './pollutionSlice';
-import {FullIndustrialFacilityDto} from '../../app/models/Facility';
+import {FullIndustrialFacilityDto, IndustrialFacilityDto} from '../../app/models/Facility';
 import {PollutionDto} from '../../app/models/Pollution';
+import {AddFacilityForm} from "../../components/AddFacilityForm";
+import {AddPollutionForm} from "../../components/AddPollutionForm";
+import {SearchBar} from "../../components/SearchBar";
+import {TopButton} from "../../components/TopButton";
+import {FacilityInfoTable} from "../../components/FacilityInfoTable";
 
 const PollutionPage: React.FC = () => {
     interface FullFacilityWithPollution extends FullIndustrialFacilityDto {
@@ -30,7 +34,6 @@ const PollutionPage: React.FC = () => {
     const facilitiesLoaded = useAppSelector(state => state.pollution.facilitiesLoaded);
     const pollutionsWithFacilitiesLoaded = useAppSelector(state => state.pollution.pollutionsWithFacilitiesLoaded);
     const [editedData, setEditedData] = useState<{ [key: string]: PollutionDto }>({});
-    const [searchTerm, setSearchTerm] = useState('');
     const [_, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
@@ -45,13 +48,6 @@ const PollutionPage: React.FC = () => {
         }
     }, []);
 
-    const handleSearch = async () => {
-        if (searchTerm.trim()) {
-            await dispatch(fetchFacilitiesWithPollutionByNameAsync(searchTerm));
-        } else {
-            await dispatch(fetchFacilitiesWithPollutionAsync());
-        }
-    };
 
     const handleSort = async (order: 'asc' | 'desc') => {
         setSortOrder(order);
@@ -91,47 +87,6 @@ const PollutionPage: React.FC = () => {
             console.log("No changes to save.");
         }
     };
-
-    const [newPollution, setNewPollution] = useState({
-        id: 0,
-        industrialFacilityId: 0,
-        name: '',
-        volume: 0,
-        massFlowRate: 0,
-        emissionsLimit: 0,
-        year: 0
-    });
-
-    const handleAddPollutionChange = (field: keyof PollutionDto, value: any) => {
-        setNewPollution(prev => ({
-            ...prev,
-            [field]: value
-        }));
-    };
-
-    const handleAddPollution = async () => {
-        try {
-            console.log("Adding new pollution:", newPollution);
-            await dispatch(addPollutionAsync(newPollution));
-            console.log("New pollution added successfully!");
-            setNewPollution({
-                id: 0,
-                industrialFacilityId: 0,
-                name: '',
-                volume: 0,
-                massFlowRate: 0,
-                emissionsLimit: 0,
-                year: 0
-            });
-        } catch (error) {
-            console.error("Error adding pollution:", error);
-        }
-    };
-
-    const clearSearch = async () => {
-        setSearchTerm('');
-        await dispatch(fetchFacilitiesWithPollutionAsync());
-    }
 
     const handleDelete = async (facilityId: number) => {
         try {
@@ -188,69 +143,10 @@ const PollutionPage: React.FC = () => {
 
     return (
         <div>
-            <div className="add-pollution-form">
-                <h2>Add New Pollution</h2>
-                <label htmlFor="facility-id">Facility Id:</label>
-                <input
-                    id={"facility-id"}
-                    type="number"
-                    placeholder="Facility Id"
-                    value={newPollution.industrialFacilityId}
-                    onChange={(e) => handleAddPollutionChange('industrialFacilityId', e.target.value)}
-                />
-                <label htmlFor="pollution-name">Pollution Name:</label>
-                <input
-                    id={"pollution-name"}
-                    type="text"
-                    placeholder="Pollution Name"
-                    value={newPollution.name}
-                    onChange={(e) => handleAddPollutionChange('name', e.target.value)}
-                />
-                <label htmlFor="pollution-year">Year:</label>
-                <input
-                    id={"pollution-year"}
-                    type="number"
-                    placeholder="Pollution Year"
-                    value={newPollution.year}
-                    onChange={(e) => handleAddPollutionChange('year', e.target.value)}
-                />
-                <label htmlFor="pollution-volume">Volume:</label>
-                <input
-                    id={"pollution-volume"}
-                    type="number"
-                    placeholder="Volume"
-                    value={newPollution.volume}
-                    onChange={(e) => handleAddPollutionChange('volume', parseFloat(e.target.value))}
-                />
-                <label htmlFor="pollution-massFlowRate">Mass Flow Rate:</label>
-                <input
-                    id={"pollution-massFlowRate"}
-                    type="number"
-                    placeholder="Mass Flow Rate"
-                    value={newPollution.massFlowRate}
-                    onChange={(e) => handleAddPollutionChange('massFlowRate', parseFloat(e.target.value))}
-                />
-                <label htmlFor="pollution-emissionsLimit">Emissions Limit:</label>
-                <input
-                    id={"pollution-emissionsLimit"}
-                    type="number"
-                    placeholder="Emissions Limit"
-                    value={newPollution.emissionsLimit}
-                    onChange={(e) => handleAddPollutionChange('emissionsLimit', parseFloat(e.target.value))}
-                />
-                <button onClick={handleAddPollution}>Add Pollution</button>
-            </div>
+            <AddFacilityForm></AddFacilityForm>
+            <AddPollutionForm></AddPollutionForm>
             <h1>Pollution and Institution Data by Year</h1>
-            <div className="search-bar">
-                <input
-                    type="text"
-                    placeholder="Search by facilitiy name..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <button onClick={handleSearch}>Search</button>
-                <button onClick={clearSearch}>Clear</button>
-            </div>
+            <SearchBar></SearchBar>
             {sortedYears.map((year) => {
                 const validFacilities = combinedDataByYear[year].filter(facility => facility.pollution?.volume !== null && facility.pollution?.volume !== undefined);
 
@@ -319,11 +215,8 @@ const PollutionPage: React.FC = () => {
                     </div>
                 );
             })}
-          <div className="top-button-container">
-            <button className="top-button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              Top
-            </button>
-          </div>
+            <FacilityInfoTable></FacilityInfoTable>
+            <TopButton></TopButton>
         </div>
     );
 };

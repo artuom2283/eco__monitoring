@@ -113,11 +113,33 @@ export const addPollutionAsync = createAsyncThunk<void, PollutionDto>(
     }
 );
 
+export const addFacilityAsync = createAsyncThunk<void, IndustrialFacilityDto>(
+    "facilities/addFacilityAsync",
+    async (facilityDto, thunkAPI) => {
+        try {
+            await agent.Facilities.addFacility(facilityDto);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
 export const deletePollutionAsync = createAsyncThunk<void, number>(
     "pollution/deletePollutionAsync",
     async (pollutionId, thunkAPI) => {
         try {
             await agent.Pollution.delPollution(pollutionId);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
+export const deleteFacilityAsync = createAsyncThunk<void, number>(
+    "facilities/deleteFacilityAsync",
+    async (facilityId, thunkAPI) => {
+        try {
+            await agent.Facilities.delFacility(facilityId);
         } catch (error: any) {
             return thunkAPI.rejectWithValue({ error: error.data });
         }
@@ -211,6 +233,12 @@ export const pollutionSlice = createSlice({
             state.status = 'idle';
         });
 
+        // Handle deleteFacilityAsync
+        builder.addCase(deleteFacilityAsync.fulfilled, (state, action) => {
+            state.facilities = state.facilities.filter(p => p.id !== action.meta.arg);
+            state.status = 'idle';
+        });
+
         // Handle fetchFacilitiesWithPollutionByNameAsync
         builder.addCase(fetchFacilitiesWithPollutionByNameAsync.pending, (state) => {
             state.status = 'loading';
@@ -272,6 +300,24 @@ export const pollutionSlice = createSlice({
             state.status = 'failed';
             state.error = action.error.message || 'Failed to fetch facilities with pollution';
         });
+
+        // Handle addFacilityAsync
+        builder.addCase(addFacilityAsync.pending, (state, action) => {
+            if (action.payload) {
+                state.pollutions = action.payload;
+            }
+            state.status = 'loading';
+            state.facilitiesLoaded = false;
+        });
+        builder.addCase(addFacilityAsync.fulfilled, (state) => {
+            state.facilitiesLoaded = true;
+            state.status = 'idle';
+        });
+        builder.addCase(addFacilityAsync.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message || 'Failed to fetch facilities';
+        });
+
     },
 });
 
