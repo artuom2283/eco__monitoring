@@ -3,8 +3,6 @@ INSERT INTO industrial_facilities(name) VALUES ('ПАТ «АрселорМітт
 INSERT INTO industrial_facilities(name) VALUES ('АТ «Південний гірничо - збагачувальний комбінат»');
 INSERT INTO industrial_facilities(name) VALUES ('ДТЕК «Придніпровська ТЕС»');
 
-ALTER TABLE reports ALTER COLUMN total_tax SET GENERATED ALWAYS AS (air_tax + water_tax) STORED;
-
 -- Додаємо забруднювачі
 INSERT INTO pollutions(name, mass_flow_rate, emissions_limit) VALUES ('Оксид азоту', 5000, 500);
 INSERT INTO pollutions(name, mass_flow_rate, emissions_limit) VALUES ('Сірки діоксид', 5000, 500);

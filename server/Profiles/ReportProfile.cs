@@ -8,10 +8,9 @@ public class ReportProfile : Profile
 {
     public ReportProfile()
     {
-        CreateMap<Report, ReportDto>()
-            .ForMember(dest => dest.FacilityName, opt => opt.MapFrom(src => src.IndustrialFacility.Name))
-            .ForMember(dest => dest.PollutionName, opt => opt.MapFrom(src => src.Pollution.Name));
-        
+        CreateMap<Report, ReportDto>();
         CreateMap<ReportDto, Report>();
+        CreateMap<FullReportDto, Report>();
+        CreateMap<Report, FullReportDto>();
     }
 }

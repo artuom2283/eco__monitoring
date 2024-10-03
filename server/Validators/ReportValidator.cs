@@ -7,13 +7,13 @@ public class ReportValidator : AbstractValidator<ReportDto>
 {
     public ReportValidator()
     {
-        RuleFor(p => p.FacilityName)
+        RuleFor(p => p.PollutionId)
             .NotEmpty()
-            .MaximumLength(100);
+            .GreaterThan(0);
         
-        RuleFor(p => p.PollutionName)
+        RuleFor(p => p.IndustrialFacilityId)
             .NotEmpty()
-            .MaximumLength(100);
+            .GreaterThan(0);
         
         RuleFor(p => p.Year)
             .NotEmpty()

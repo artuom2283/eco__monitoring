@@ -35,21 +35,23 @@ public class ReportRepository : IReportRepository
 
     public async Task<Report> GetByIdAsync(long id)
     {
-        return await _context.Reports.FindAsync(id);
+        var report = await _context.Reports.FirstOrDefaultAsync(x => x.Id == id);
+        
+        return report;
     }
 
-    public async Task DeleteReportAsync(long id)
+    public async Task DeleteReportAsync(Report report)
     {
-        var report = await _context.Reports.FindAsync(id);
-
         _context.Reports.Remove(report);
         await _context.SaveChangesAsync();
     }
 
     public async Task UpdateReportAsync(Report report)
     {
-        var existingReport = await _context.Reports.FindAsync(report.Id);
+        var existingReport = await GetByIdAsync(report.Id);
 
+        existingReport.IndustrialFacilityId = report.IndustrialFacilityId;
+        existingReport.PollutionId = report.PollutionId;
         existingReport.Year = report.Year;
         existingReport.Volume = report.Volume;
         existingReport.AirTax = report.AirTax;
@@ -59,7 +61,7 @@ public class ReportRepository : IReportRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<ReportDto>> GetReportsAsync()
+    public async Task<IEnumerable<FullReportDto>> GetReportsAsync()
     {
         using (var connection = _context.Database.GetDbConnection())
         {
@@ -76,11 +78,11 @@ FROM reports JOIN public.pollutions on  pollutions.id = reports.pollution_id
              JOIN public.industrial_facilities on industrial_facilities.id = reports.industrial_facility_id
 ORDER BY reports.id ASC;";
 
-            return await connection.QueryAsync<ReportDto>(sqlQuery);
+            return await connection.QueryAsync<FullReportDto>(sqlQuery);
         }
     }
 
-    public async Task<IEnumerable<ReportDto>> GetReportsByNameAsync(string name)
+    public async Task<IEnumerable<FullReportDto>> GetReportsByNameAsync(string name)
     {
         using (var connection = _context.Database.GetDbConnection())
         {
@@ -98,29 +100,17 @@ FROM reports JOIN public.pollutions on  pollutions.id = reports.pollution_id
              WHERE public.industrial_facilities.name = @name OR public.pollutions.name = @name
 ORDER BY reports.id ASC;";
 
-            return await connection.QueryAsync<ReportDto>(sqlQuery, new { name });
+            return await connection.QueryAsync<FullReportDto>(sqlQuery, new { name });
         }
     }
 
-    public async Task<IEnumerable<ReportDto>> GetSortedReportsAsync(string param, string orderBy)
+    public async Task<IEnumerable<FullReportDto>> GetSortedReportsAsync(string param, string orderBy)
     {
         using (var connection = _context.Database.GetDbConnection())
         {
             if (connection.State == System.Data.ConnectionState.Closed)
             {
                 await connection.OpenAsync();
-            }
-
-            var validParams = new List<string>
-            {
-                "reports.year", "reports.volume", "pollutions.mass_flow_rate", "pollutions.emissions_limit",
-                "reports.air_tax", "reports.water_tax", "reports.total_tax"
-            };
-            var validOrder = new List<string> { "ASC", "DESC" };
-
-            if (!validParams.Contains(param.ToLower()) || !validOrder.Contains(orderBy.ToUpper()))
-            {
-                throw new ArgumentException("Invalid parameters");
             }
 
             var sqlQuery = @"
@@ -132,8 +122,8 @@ FROM reports JOIN public.pollutions on  pollutions.id = reports.pollution_id
 
             sqlQuery += $" ORDER BY {param} {orderBy};";
 
-            return await connection.QueryAsync<ReportDto>(sqlQuery,
-                new { param = param.ToLower(), orderBy = orderBy.ToUpper() });
+            return await connection.QueryAsync<FullReportDto>(sqlQuery,
+                new { param = param, orderBy = orderBy });
         }
     }
 }

@@ -26,7 +26,7 @@ public class ReportController : ControllerBase
     }
 
     [HttpGet("/reports")]
-    public async Task<ActionResult<IEnumerable<ReportDto>>> GetReports()
+    public async Task<ActionResult<IEnumerable<FullReportDto>>> GetReports()
     {
         var reports = await _reportService.GetAllReports();
 
@@ -34,7 +34,7 @@ public class ReportController : ControllerBase
     }
 
     [HttpGet("/reports/name-{name}")]
-    public async Task<ActionResult<IEnumerable<ReportDto>>> GetReportsByName([FromRoute] string name)
+    public async Task<ActionResult<IEnumerable<FullReportDto>>> GetReportsByName([FromRoute] string name)
     {
         try
         {
@@ -49,7 +49,7 @@ public class ReportController : ControllerBase
     }
 
     [HttpGet("/reports/sort/{param}-{orderBy}")]
-    public async Task<ActionResult<IEnumerable<ReportDto>>> GetReportsSorted([FromRoute] string param,
+    public async Task<ActionResult<IEnumerable<FullReportDto>>> GetReportsSorted([FromRoute] string param,
         [FromRoute] string orderBy)
     {
         try
@@ -61,30 +61,6 @@ public class ReportController : ControllerBase
         catch (ArgumentException ex)
         {
             return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-        }
-    }
-
-
-    [HttpGet("/reports/{id}")]
-    public async Task<ActionResult<ReportDto>> GetReport([FromRoute] long id)
-    {
-        try
-        {
-            var validationResult = await _searchValidator.ValidateAsync(id);
-            if (validationResult.IsValid == false)
-                return BadRequest(new ValidationResponse
-                {
-                    StatusCode = 400,
-                    Errors = validationResult.Errors
-                });
-
-            var reportDto = await _reportService.GetReportById(id);
-
-            return Ok(reportDto);
-        }
-        catch (EntityNotFoundException ex)
-        {
-            return StatusCode(StatusCodes.Status404NotFound, ex.Message);
         }
     }
 
