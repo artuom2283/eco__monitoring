@@ -12,6 +12,10 @@ public class PollutionValidator : AbstractValidator<PollutionDto>
             .MinimumLength(3)
             .MaximumLength(50);
         
+        RuleFor(p => p.DangerClass)
+            .NotEmpty()
+            .InclusiveBetween(0, 4);
+        
         RuleFor(p => p.MassFlowRate)
             .NotEmpty()
             .GreaterThan(0);

@@ -12,7 +12,7 @@ using server.Data;
 namespace server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241002173158_Initial")]
+    [Migration("20241003102418_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -51,6 +51,10 @@ namespace server.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("DangerClass")
+                        .HasColumnType("integer")
+                        .HasColumnName("danger_class");
 
                     b.Property<float>("EmissionsLimit")
                         .HasColumnType("real")

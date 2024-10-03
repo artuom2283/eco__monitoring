@@ -49,6 +49,10 @@ namespace server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<int>("DangerClass")
+                        .HasColumnType("integer")
+                        .HasColumnName("danger_class");
+
                     b.Property<float>("EmissionsLimit")
                         .HasColumnType("real")
                         .HasColumnName("emissions_limit");

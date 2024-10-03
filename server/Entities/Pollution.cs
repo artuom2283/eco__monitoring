@@ -16,6 +16,8 @@ namespace server.Entities
 
         [Column("mass_flow_rate")]
         public float MassFlowRate { get; set; }
+        [Column("danger_class")]
+        public int DangerClass { get; set; }
         [Column("emissions_limit")]
         public float EmissionsLimit { get; set; }
     }

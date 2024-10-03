@@ -13,5 +13,8 @@ public static class MigrationExtension
         using DatabaseContext context = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
         context.Database.Migrate();
+
+        if (!context.Reports.Any())
+            SeedDataFromSqlFile.ExecuteSqlFromFile(app);
     }
 }
