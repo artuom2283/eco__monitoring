@@ -20,6 +20,8 @@ import {AddPollutionForm} from "../../components/AddPollutionForm";
 import {SearchBar} from "../../components/SearchBar";
 import {TopButton} from "../../components/TopButton";
 import {FacilityInfoTable} from "../../components/FacilityInfoTable";
+import {AddReportForm} from "../../components/AddReportForm";
+import {PollutionInfoTable} from "../../components/PollutionInfoTable";
 
 const PollutionPage: React.FC = () => {
     interface FullFacilityWithPollution extends FullIndustrialFacilityDto {
@@ -143,8 +145,11 @@ const PollutionPage: React.FC = () => {
 
     return (
         <div>
+            <div className="flex-form">
             <AddFacilityForm></AddFacilityForm>
             <AddPollutionForm></AddPollutionForm>
+            </div>
+            <AddReportForm></AddReportForm>
             <h1>Pollution and Institution Data by Year</h1>
             <SearchBar></SearchBar>
             {sortedYears.map((year) => {
@@ -216,6 +221,7 @@ const PollutionPage: React.FC = () => {
                 );
             })}
             <FacilityInfoTable></FacilityInfoTable>
+          {/*  <PollutionInfoTable></PollutionInfoTable>*/}
             <TopButton></TopButton>
         </div>
     );

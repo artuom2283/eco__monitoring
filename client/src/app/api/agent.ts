@@ -23,7 +23,6 @@ const Pollution = {
   addPollution: (body: object) => requests.post(`pollutions`, body)
 };
 
-
 const Facilities = {
   getFacilities: () => requests.get("facilities"),
   getFacilitiesWithPollution: () => requests.get("fullFacilities"),
@@ -35,9 +34,17 @@ const Facilities = {
   delFacility: (id: number) => requests.del(`facilities/${id}`),
 }
 
+const Reports = {
+    getReports: () => requests.get("reports"),
+    getReport: (id: number) => requests.get("reports/${id}"),
+    addReport: (reportData: object) => requests.put("reports", reportData),
+    delReport: (id: number) => requests.del(`reports/${id}`),
+}
+
 const agent = {
   Pollution,
   Facilities,
+  Reports
 }
 
 export default agent;

@@ -122,8 +122,9 @@ td button:nth-child(2):active {
   background-color: #c62828;
 }
 
-.add-pollution-form {
-  width: 60%;
+.add-form {
+  width: 45%;
+  height: max-content;
   margin: 20px auto;
   padding: 20px;
   border: 1px solid #ddd;
@@ -131,19 +132,19 @@ td button:nth-child(2):active {
   border-radius: 8px;
 }
 
-.add-pollution-form h2 {
+.add-form h2 {
   text-align: center;
   color: #333;
 }
 
-.add-pollution-form label {
+.add-form label {
   display: block;
   margin: 10px 0 5px;
   font-weight: bold;
   color: #555;
 }
 
-.add-pollution-form input {
+.add-form input {
   width: calc(100% - 20px);
   padding: 8px;
   margin-bottom: 15px;
@@ -152,9 +153,9 @@ td button:nth-child(2):active {
   box-sizing: border-box;
 }
 
-.add-pollution-form button {
+.add-form button {
   display: block;
-  width: 100%;
+  width: calc(100% - 20px);
   padding: 10px;
   background-color: #4CAF50;
   color: white;
@@ -165,11 +166,15 @@ td button:nth-child(2):active {
   margin-top: 10px;
 }
 
-.add-pollution-form button:hover {
+#add-report-form{
+  width: 60%;
+}
+
+.add-form button:hover {
   background-color: #45a049;
 }
 
-.add-pollution-form button:active {
+.add-form button:active {
   background-color: #367c3a;
 }
 
@@ -228,4 +233,9 @@ td button:nth-child(2):active {
 
 .top-button:active {
   background-color: #367c3a;
+}
+
+.flex-form{
+    display: flex;
+    justify-content: center;
 }
