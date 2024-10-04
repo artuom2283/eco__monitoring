@@ -31,7 +31,8 @@ const Facilities = {
   getFacilitiesWithPollutionByAsc: () => requests.get("fullFacilities/sortByAscending"),
   getFacilitiesWithPollutionByDesc: () => requests.get("fullFacilities/sortByDescending"),
   getFacility: (id: number) => requests.get(`facilities`),
-  addFacility: (facilityData: object) => requests.put("facilities", facilityData)
+  addFacility: (facilityData: object) => requests.put("facilities", facilityData),
+  delFacility: (id: number) => requests.del(`facilities/${id}`),
 }
 
 const agent = {
