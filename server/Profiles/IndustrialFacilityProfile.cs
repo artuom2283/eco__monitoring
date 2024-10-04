@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using server.DTO;
 using server.Entities;
 
 namespace server.Profiles;

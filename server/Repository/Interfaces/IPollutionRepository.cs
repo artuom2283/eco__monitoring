@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using server.Entities;
+using server.Repository.Base;
 
 namespace server.Repository.Interfaces
 {
-    public interface IPollutionRepository
+    public interface IPollutionRepository : IBaseRepository<Pollution>
     {
-        Task<IEnumerable<Pollution>> GetAllAsync();
-        Task<Pollution> GetByIdAsync(long id);
-        Task<Pollution> GetPollutionByNameAsync(string name);
-        Task InsertAsync(Pollution pollution);
-        Task UpdateAsync(Pollution pollution);
-        Task DeleteAsync(Pollution pollution);
+        Task<Pollution> GetByNameAsync(string name);
+        Task<long> GetIdByNameAsync(string name);
     }
 }

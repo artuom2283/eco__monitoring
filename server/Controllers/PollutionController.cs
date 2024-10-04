@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using server.DTO;
 using server.Exceptions;
 using server.Responses;
 using server.Services.Interfaces;
@@ -13,7 +12,7 @@ using server.Validators;
 namespace server.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/")]
     public class PollutionController : ControllerBase
     {
         private readonly IPollutionService _pollutionService;
@@ -30,7 +29,8 @@ namespace server.Controllers
             _searchValidator = searchValidator;
         }
 
-        [HttpGet("/pollutions")]
+        [HttpGet("pollutions")]
+        [ProducesResponseType(type: typeof(IEnumerable<PollutionDto>), StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<PollutionDto>>> GetPollutions()
         {
             var pollutions = await _pollutionService.GetAllPollution();
@@ -38,30 +38,29 @@ namespace server.Controllers
             return Ok(pollutions);
         }
 
-        [HttpGet("/pollutions/{id}")]
+        [HttpGet("pollutions/{id}")]
+        [ProducesResponseType(type: typeof(PollutionDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<PollutionDto>> GetPollution([FromRoute] long id)
         {
-            try
-            {
-                var validationResult = await _searchValidator.ValidateAsync(id);
-                if (validationResult.IsValid == false)
-                    return BadRequest(new ValidationResponse
-                    {
-                        StatusCode = 400,
-                        Errors = validationResult.Errors
-                    });
+            var validationResult = await _searchValidator.ValidateAsync(id);
+            if (validationResult.IsValid == false)
+                return BadRequest(new ValidationResponse
+                {
+                    StatusCode = 400,
+                    Errors = validationResult.Errors
+                });
 
-                var pollutionDto = await _pollutionService.GetPollutionById(id);
+            var pollutionDto = await _pollutionService.GetPollutionById(id);
 
-                return Ok(pollutionDto);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
+            return Ok(pollutionDto);
         }
 
-        [HttpPost("/pollutions")]
+        [HttpPost("pollutions")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult> AddPollution(PollutionDto pollutionDto)
         {
             var validationResult = await _pollutionValidator.ValidateAsync(pollutionDto);
@@ -77,50 +76,42 @@ namespace server.Controllers
             return Ok(pollutionDto);
         }
 
-        [HttpPut("/pollutions")]
+        [HttpPut("pollutions")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> UpdatePollution(PollutionDto pollutionDto)
         {
-            try
-            {
-                var validationResult = await _pollutionValidator.ValidateAsync(pollutionDto);
-                if (validationResult.IsValid == false)
-                    return BadRequest(new ValidationResponse
-                    {
-                        StatusCode = 400,
-                        Errors = validationResult.Errors
-                    });
+            var validationResult = await _pollutionValidator.ValidateAsync(pollutionDto);
+            if (validationResult.IsValid == false)
+                return BadRequest(new ValidationResponse
+                {
+                    StatusCode = 400,
+                    Errors = validationResult.Errors
+                });
 
-                await _pollutionService.UpdatePollution(pollutionDto);
+            await _pollutionService.UpdatePollution(pollutionDto);
 
-                return Ok(pollutionDto);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
+            return Ok(pollutionDto);
         }
 
-        [HttpDelete("/pollutions/{id}")]
+        [HttpDelete("pollutions/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeletePollution([FromRoute] long id)
         {
-            try
-            {
-                var validationResult = await _searchValidator.ValidateAsync(id);
-                if (validationResult.IsValid == false)
-                    return BadRequest(new ValidationResponse
-                    {
-                        StatusCode = 400,
-                        Errors = validationResult.Errors
-                    });
+            var validationResult = await _searchValidator.ValidateAsync(id);
+            if (validationResult.IsValid == false)
+                return BadRequest(new ValidationResponse
+                {
+                    StatusCode = 400,
+                    Errors = validationResult.Errors
+                });
 
-                await _pollutionService.DeletePollution(id);
+            await _pollutionService.DeletePollution(id);
 
-                return Ok(id);
-            }
-            catch (EntityNotFoundException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
+            return Ok(id);
         }
     }
 }

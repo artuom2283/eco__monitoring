@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using server.Data;
+using server.Handlers;
 using server.Repository;
 using server.Repository.Interfaces;
 using server.Services;
@@ -36,6 +38,7 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<IPollutionRepository, PollutionRepository>();
         services.AddScoped<IIndustrialFacilityRepository, IndustrialFacilityRepository>();
+        services.AddScoped<IReportRepository, ReportRepository>();
 
         return services;
     }
@@ -44,6 +47,8 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped<IPollutionService, PollutionService>();
         services.AddScoped<IIndustrialFacilityService, IndustrialFacilityService>();
+        services.AddScoped<IReportService, ReportService>();
+        services.AddScoped<ICalculationService, CalculationService>();
 
         return services;
     }
@@ -76,6 +81,25 @@ public static class ServiceCollectionExtension
                        .AllowCredentials();
             });
         });
+
+        return services;
+    }
+    
+    public static IServiceCollection AddExceptionHandlers(this IServiceCollection services)
+    {
+        services.AddExceptionHandler<AlreadyExistsExceptionHandler>();
+        services.AddExceptionHandler<NotFoundExceptionHandler>();
+
+        return services;
+    }
+    
+    public static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .CreateLogger();
+        
+        services.AddSerilog();
 
         return services;
     }

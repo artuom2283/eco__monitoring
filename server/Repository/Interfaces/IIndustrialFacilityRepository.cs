@@ -2,22 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using server.DTO;
 using server.Entities;
+using server.Repository.Base;
 
 namespace server.Repository.Interfaces
 {
-    public interface IIndustrialFacilityRepository
+    public interface IIndustrialFacilityRepository : IBaseRepository<IndustrialFacility>
     {
-        Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionAsync();
-        Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionByNameAsync(string name);
-        Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionSortByAscendingAsync();
-        Task<IEnumerable<FullIndustrialFacilityDto>> GetFacilityWithPollutionSortByDescendingAsync();
-        Task<IEnumerable<IndustrialFacility>> GetAllAsync();
-        Task<IndustrialFacility> GetByIdAsync(long id);
         Task<IndustrialFacility> GetByNameAsync(string name);
-        Task InsertAsync(IndustrialFacility facility);
-        Task UpdateAsync(IndustrialFacility facility);
-        Task DeleteAsync(IndustrialFacility facility);
+        Task<long> GetFacilityIdByNameAsync(string name);
     }
 }

@@ -1,4 +1,5 @@
-﻿using server.Extensions;
+﻿using Serilog;
+using server.Extensions;
 
 namespace server;
 
@@ -21,7 +22,9 @@ public class Startup
             .AddServices()
             .AddAutoMapper()
             .AddFluentValidation()
-            .AddCorsPolicy();
+            .AddCorsPolicy()
+            .AddExceptionHandlers()
+            .AddSerilog(Configuration);
 
         services.AddControllers();
         services.AddEndpointsApiExplorer();
@@ -42,6 +45,8 @@ public class Startup
         app.UseRouting();
 
         app.UseCors("AllowSpecificOrigin");
+        
+        app.UseSerilogRequestLogging();
 
         app.UseAuthorization();
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using server.DTO;
 using server.Entities;
 using server.Exceptions;
 using server.Repository.Interfaces;
@@ -26,6 +25,12 @@ namespace server.Services
 
         public async Task AddPollution(PollutionDto pollutionDto)
         {
+            var pollutionExist = await _pollutionRepository.GetByNameAsync(pollutionDto.Name);
+            if (pollutionExist != null)
+            {
+                throw new EntityAlreadyExistsException();
+            }
+
             var pollutionEntity = _mapper.Map<Pollution>(pollutionDto);
 
             await _pollutionRepository.InsertAsync(pollutionEntity);
@@ -34,7 +39,7 @@ namespace server.Services
         public async Task DeletePollution(long id)
         {
             var pollution = await _pollutionRepository.GetByIdAsync(id);
-            if (pollution == null)  
+            if (pollution == null)
                 throw new EntityNotFoundException();
 
             await _pollutionRepository.DeleteAsync(pollution);
@@ -56,14 +61,14 @@ namespace server.Services
                 throw new EntityNotFoundException();
 
             var pollutionDto = _mapper.Map<PollutionDto>(pollution);
-            
+
             return pollutionDto;
         }
 
         public async Task UpdatePollution(PollutionDto pollutionDto)
         {
             var pollutionExist = await _pollutionRepository.GetByIdAsync(pollutionDto.Id);
-            if(pollutionExist == null)
+            if (pollutionExist == null)
                 throw new EntityNotFoundException();
 
             var pollution = _mapper.Map<Pollution>(pollutionDto);

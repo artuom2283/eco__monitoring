@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using server.Data;
 using server.Entities;
+using server.Repository.Base;
 using server.Repository.Interfaces;
 
 namespace server.Repository
@@ -21,6 +22,13 @@ namespace server.Repository
         public async Task<IEnumerable<Pollution>> GetAllAsync()
         {
             return await _context.Pollutions.ToListAsync();
+        }
+
+        public async Task<long> GetIdByNameAsync(string name)
+        {
+            var pollution = await _context.Pollutions.FirstOrDefaultAsync(p => p.Name == name);
+
+            return pollution.Id;
         }
 
         public async Task InsertAsync(Pollution pollution)
@@ -40,11 +48,9 @@ namespace server.Repository
             var existingPollution = await _context.Pollutions.FindAsync(pollution.Id);
             
             existingPollution.Name = pollution.Name;
-            existingPollution.Volume = pollution.Volume;
-            /*existingPollution.Tax = pollution.Tax;*/
             existingPollution.MassFlowRate = pollution.MassFlowRate;
             existingPollution.EmissionsLimit = pollution.EmissionsLimit;
-            existingPollution.IndustrialFacilityId = pollution.IndustrialFacilityId;
+            existingPollution.DangerClass = pollution.DangerClass;
             
             await _context.SaveChangesAsync();
         }
@@ -54,7 +60,7 @@ namespace server.Repository
             return await _context.Pollutions.FindAsync(id);
         }
         
-        public async Task<Pollution> GetPollutionByNameAsync(string name)
+        public async Task<Pollution> GetByNameAsync(string name)
         {
             return await _context.Pollutions.FirstOrDefaultAsync(p => p.Name == name);
         }

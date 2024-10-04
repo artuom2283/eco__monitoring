@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using FluentValidation;
-using server.DTO;
 
 namespace server.Validators;
 
@@ -12,19 +11,10 @@ public class PollutionValidator : AbstractValidator<PollutionDto>
             .NotEmpty()
             .MinimumLength(3)
             .MaximumLength(50);
-
-        RuleFor(p => p.Volume)
-            .NotEmpty()
-            .GreaterThan(0);
         
-        RuleFor(p => p.Year)
+        RuleFor(p => p.DangerClass)
             .NotEmpty()
-            .GreaterThan(0)
-            .LessThanOrEqualTo(DateTime.Now.Year);
-        
-        /*RuleFor(p => p.Tax)
-            .NotEmpty()
-            .GreaterThan(0);*/
+            .InclusiveBetween(0, 4);
         
         RuleFor(p => p.MassFlowRate)
             .NotEmpty()
@@ -34,8 +24,5 @@ public class PollutionValidator : AbstractValidator<PollutionDto>
             .NotEmpty()
             .GreaterThan(0);
         
-        RuleFor(p => p.IndustrialFacilityId)
-            .NotEmpty()
-            .GreaterThan(0);
     }
 }

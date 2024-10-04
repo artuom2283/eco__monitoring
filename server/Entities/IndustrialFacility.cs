@@ -13,8 +13,5 @@ namespace server.Entities
         public long Id { get; set; }
         [Column("name")]
         public string Name { get; set; }
-        [Column("pollutions")]
-
-        public List<Pollution> Pollutions { get; set; }
     }
 }
