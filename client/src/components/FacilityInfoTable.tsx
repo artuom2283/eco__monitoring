@@ -3,16 +3,15 @@ import {useAppSelector} from "../app/store/configureStore";
 import React, {useEffect, useState} from "react";
 import {
     deleteFacilityAsync,
-    fetchFacilitiesAsync,
-    updatePollutionAsync
+    updateFacilityAsync,
 } from "../features/pollution/pollutionSlice";
-import {IndustrialFacilityDto} from "../app/models/Facility";
 
 export const FacilityInfoTable = () => {
     const dispatch = useDispatch<any>();
 
-    const facilitiesLoaded = useAppSelector(state => state.pollution.facilitiesLoaded);
-    const facilities: IndustrialFacilityDto[] = useAppSelector(state => state.facilities);
+    const facilities = useAppSelector(state => state.pollution.facilities);
+
+    console.log(facilities);
 
     const [editValues, setEditValues] = useState<{ [key: number]: string }>({});
 
@@ -23,30 +22,31 @@ export const FacilityInfoTable = () => {
         }));
     };
 
-    useEffect(() => {
-        const fetchFacilities = async () => {
-            await dispatch(fetchFacilitiesAsync());
-        };
-
-        if (!facilitiesLoaded) {
-            fetchFacilities();
-        }
-    }, []);
-
-    const handleSave = (facilityId: number) => {
+    const handleSave = async(facilityId: number) => {
         const updatedName = editValues[facilityId] || "";
-        await dispatch(updateFacility(facilityId, updatedName));
+        const facility = facilities.find(f => f.id === facilityId);
+        if (!facility) {
+            console.log("Facility not found!");
+            return;
+        }
+
+        facility.name = updatedName;
+        try {
+            await dispatch(updateFacilityAsync(facility));
+            console.log("Facility updated successfully!");
+        } catch (error) {
+            console.log("Failed to update facility.");
+        }
     };
 
     const handleDelete = async (facilityId: number) => {
         try {
             await dispatch(deleteFacilityAsync(facilityId));
-            console.log("Record deleted successfully!");
+            console.log("Facility deleted successfully!");
         } catch (error) {
-            console.log("Failed to delete record.");
+            console.log("Failed to delete facility.");
         }
     };
-
 
     return (
         <div className="facility-info-table">
@@ -60,18 +60,13 @@ export const FacilityInfoTable = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {facilities.map(facility => (
+                {facilities?.map(facility => (
                     <tr key={facility.id}>
-                        <td><input
-                            type="text"
-                            value={editValues[facility.id] ?? facility.id}
-                            onChange={(e) => handleInputChange(facility.id, e.target.value)}
-                        />
-                        </td>
+                        <td>{facility.id}</td>
                         <td><input
                             type="text"
                             value={editValues[facility.id] ?? facility.name}
-                            onChange={(e) => handleInputChange(facility.name, e.target.value)}
+                            onChange={(e) => handleInputChange(facility.id, e.target.value)}
                         /></td>
                         <td>
                             <button

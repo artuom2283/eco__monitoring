@@ -1,4 +1,4 @@
-add-pollution-form* {
+* {
   scroll-behavior: smooth;
 }
 
@@ -122,7 +122,7 @@ td button:nth-child(2):active {
   background-color: #c62828;
 }
 
-.add-pollution-form, .add-facility-form {
+.add-pollution-form {
   width: 60%;
   margin: 20px auto;
   padding: 20px;
@@ -131,19 +131,19 @@ td button:nth-child(2):active {
   border-radius: 8px;
 }
 
-.add-pollution-form h2, .add-facility-form h2 {
+.add-pollution-form h2 {
   text-align: center;
   color: #333;
 }
 
-.add-pollution-form label, .add-facility-form label {
+.add-pollution-form label {
   display: block;
   margin: 10px 0 5px;
   font-weight: bold;
   color: #555;
 }
 
-.add-pollution-form input, .add-facility-form input {
+.add-pollution-form input {
   width: calc(100% - 20px);
   padding: 8px;
   margin-bottom: 15px;
@@ -152,7 +152,7 @@ td button:nth-child(2):active {
   box-sizing: border-box;
 }
 
-.add-pollution-form button, .add-facility-form button {
+.add-pollution-form button {
   display: block;
   width: 100%;
   padding: 10px;
@@ -165,11 +165,11 @@ td button:nth-child(2):active {
   margin-top: 10px;
 }
 
-.add-pollution-form button:hover, .add-facility-form button:hover {
+.add-pollution-form button:hover {
   background-color: #45a049;
 }
 
-.add-pollution-form button:active, .add-facility-form button:active {
+.add-pollution-form button:active {
   background-color: #367c3a;
 }
 
@@ -228,11 +228,4 @@ td button:nth-child(2):active {
 
 .top-button:active {
   background-color: #367c3a;
-}
-
-.facility-info-table{
-    width: 60%;
-    border-collapse: collapse;
-    margin: auto;
-    margin-bottom: 30px;
 }

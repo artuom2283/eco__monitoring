@@ -34,7 +34,7 @@ export const AddFacilityForm = ({}) => {
     };
 
     return (
-        <div className="add-facility-form">
+        <div className="add-form">
             <h2>Add New Industrial Facility</h2>
             <label htmlFor="facility-name">Facility Name:</label>
             <input

@@ -3,8 +3,6 @@ import {PollutionDto} from "../app/models/Pollution";
 import {addPollutionAsync} from "../features/pollution/pollutionSlice";
 import {useAppDispatch} from "../app/store/configureStore";
 
-
-
 export const AddPollutionForm = () => {
     const dispatch = useAppDispatch();
 
@@ -41,7 +39,7 @@ export const AddPollutionForm = () => {
     };
 
     return (
-        <div className="add-pollution-form">
+        <div className="add-form">
             <h2>Add New Pollution</h2>
             <label htmlFor="pollution-name">Pollution Name:</label>
             <input
