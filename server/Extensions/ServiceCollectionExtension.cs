@@ -96,9 +96,10 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration)
     {
         Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Verbose() 
             .ReadFrom.Configuration(configuration)
             .CreateLogger();
-        
+
         services.AddSerilog();
 
         return services;

@@ -12,11 +12,14 @@ namespace server.Repository;
 public class ReportRepository : IReportRepository
 {
     private readonly DatabaseContext _context;
+    private readonly ILogger<ReportRepository> _logger;
 
     public ReportRepository(
-        DatabaseContext context)
+        DatabaseContext context,
+        ILogger<ReportRepository> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     async Task<IEnumerable<Report>> IBaseRepository<Report>.GetAllAsync()
@@ -28,6 +31,8 @@ public class ReportRepository : IReportRepository
     {
         _context.Reports.Add(report);
         await _context.SaveChangesAsync();
+        
+        _logger.LogInformation("Report was added to the database");
     }
 
     public async Task<Report> GetByParamsAsync(Report report)
@@ -36,6 +41,8 @@ public class ReportRepository : IReportRepository
             .FirstOrDefaultAsync(r => r.PollutionId == report.PollutionId
                                       && r.IndustrialFacilityId == report.IndustrialFacilityId
                                       && r.Year == report.Year);
+        
+        _logger.LogInformation("Report was fetched from the database by parameters");
 
         return reportExist;
     }
@@ -44,6 +51,8 @@ public class ReportRepository : IReportRepository
     {
         var report = await _context.Reports.FirstOrDefaultAsync(x => x.Id == id);
         
+        _logger.LogInformation("Report was fetched from the database by id");
+        
         return report;
     }
 
@@ -51,6 +60,8 @@ public class ReportRepository : IReportRepository
     {
         _context.Reports.Remove(report);
         await _context.SaveChangesAsync();
+        
+        _logger.LogInformation("Report was deleted from the database");
     }
 
     public async Task UpdateAsync(Report report)
@@ -66,6 +77,8 @@ public class ReportRepository : IReportRepository
         existingReport.TotalTax = report.TotalTax;
 
         await _context.SaveChangesAsync();
+        
+        _logger.LogInformation("Report was updated in the database");
     }
 
     public async Task<IEnumerable<FullReportDto>> GetAllAsync()
