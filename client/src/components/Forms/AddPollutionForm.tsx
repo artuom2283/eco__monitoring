@@ -1,7 +1,7 @@
 ﻿import React from "react";
-import {PollutionDto} from "../app/models/Pollution";
-import {addPollutionAsync} from "../features/pollution/pollutionSlice";
-import {useAppDispatch} from "../app/store/configureStore";
+import {PollutionDto} from "../../app/models/Pollution";
+import {addPollutionAsync, fetchPollutionsAsync} from "../../features/pollution/pollutionSlice";
+import {useAppDispatch} from "../../app/store/configureStore";
 
 export const AddPollutionForm = () => {
     const dispatch = useAppDispatch();
@@ -33,6 +33,7 @@ export const AddPollutionForm = () => {
                 emissionsLimit: 0,
                 dangerClass: 0
             });
+            await dispatch(fetchPollutionsAsync());
         } catch (error) {
             console.error("Error adding pollution:", error);
         }

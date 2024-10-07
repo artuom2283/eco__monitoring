@@ -1,7 +1,7 @@
 ﻿import React, {useState} from "react";
-import {IndustrialFacilityDto} from "../app/models/Facility";
-import {addFacilityAsync} from "../features/pollution/pollutionSlice";
-import {useAppDispatch} from "../app/store/configureStore";
+import {IndustrialFacilityDto} from "../../app/models/Facility";
+import {addFacilityAsync, fetchFacilitiesAsync} from "../../features/pollution/pollutionSlice";
+import {useAppDispatch} from "../../app/store/configureStore";
 
 
 export const AddFacilityForm = ({}) => {
@@ -28,6 +28,7 @@ export const AddFacilityForm = ({}) => {
                 id: 0,
                 name: ''
             });
+            await dispatch(fetchFacilitiesAsync());
         } catch (error) {
             console.error("Error adding pollution:", error);
         }

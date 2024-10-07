@@ -1,7 +1,7 @@
 ﻿export interface ReportDto{
     id: number;
     pollutionId: number;
-    facilityId: number;
+    industrialFacilityId: number;
     year: number;
     volume: number;
     waterTax: number;

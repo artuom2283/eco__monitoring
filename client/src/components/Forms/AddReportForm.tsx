@@ -1,15 +1,20 @@
-﻿import {useAppDispatch} from "../app/store/configureStore";
-import React from "react";
-import {ReportDto} from "../app/models/Report";
-import {addReportAsync} from "../features/pollution/pollutionSlice";
+﻿import {useAppDispatch, useAppSelector} from "../../app/store/configureStore";
+import React, {useEffect, useState} from "react";
+import {ReportDto} from "../../app/models/Report";
+import {addReportAsync, fetchPollutionsAsync, fetchReportsAsync} from "../../features/pollution/pollutionSlice";
+import {PollutionDto} from "../../app/models/Pollution";
+import {IndustrialFacilityDto} from "../../app/models/Facility";
 
 export const AddReportForm = () => {
     const dispatch = useAppDispatch();
 
+    const pollutions = useAppSelector(state => state.pollution.pollutions);
+    const facilities = useAppSelector((state: any) => state.pollution.facilities);
+
     const [newReport, setNewReport] = React.useState({
         id: 0,
         pollutionId: 0,
-        facilityId: 0,
+        industrialFacilityId: 0,
         year: 0,
         volume: 0,
         waterTax: 0,
@@ -31,12 +36,13 @@ export const AddReportForm = () => {
             setNewReport({
                 id: 0,
                 pollutionId: 0,
-                facilityId: 0,
+                industrialFacilityId: 0,
                 year: 0,
                 volume: 0,
                 waterTax: 0,
                 airTax: 0,
             });
+            await dispatch(fetchReportsAsync());
         } catch (error) {
             console.error("Error adding report:", error);
         }
@@ -45,22 +51,32 @@ export const AddReportForm = () => {
     return (
         <div className="add-form" id="add-report-form">
             <h2>Add New Report</h2>
-            <label htmlFor="pollution-id">Pollution Id:</label>
-            <input
-                id={"pollution-id"}
-                type="number"
-                placeholder="Pollution Id"
+            <label htmlFor="facility-id">Facility Name:</label>
+            <select
+                id="facility-id"
+                value={newReport.industrialFacilityId}
+                onChange={(e) => handleAddReportChange('industrialFacilityId', parseInt(e.target.value))}
+            >
+                <option value={0} disabled>Select Facility</option>
+                {facilities.map((facility: IndustrialFacilityDto) => (
+                    <option key={facility.id} value={facility.id}>
+                        {facility.name}
+                    </option>
+                ))}
+            </select>
+            <label htmlFor="pollution-id">Pollution Name:</label>
+            <select
+                id="pollution-id"
                 value={newReport.pollutionId}
-                onChange={(e) => handleAddReportChange('pollutionId', parseFloat(e.target.value))}
-            />
-            <label htmlFor="facility-id">Facility Id:</label>
-            <input
-                id={"facility-id"}
-                type="number"
-                placeholder="Facility Id"
-                value={newReport.facilityId}
-                onChange={(e) => handleAddReportChange('facilityId', parseFloat(e.target.value))}
-            />
+                onChange={(e) => handleAddReportChange('pollutionId', parseInt(e.target.value))}
+            >
+                <option value={0} disabled>Select Pollution</option>
+                {pollutions.map((pollution: PollutionDto) => (
+                    <option key={pollution.id} value={pollution.id}>
+                        {pollution.name}
+                    </option>
+                ))}
+            </select>
             <label htmlFor="report-year">Year:</label>
             <input
                 id={"report-year"}

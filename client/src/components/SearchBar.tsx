@@ -1,37 +1,31 @@
-﻿import React, {useState} from "react";
-import {
-    fetchFacilitiesWithPollutionAsync,
-    fetchFacilitiesWithPollutionByNameAsync
-} from "../features/pollution/pollutionSlice";
-import {useAppDispatch} from "../app/store/configureStore";
+﻿import React, { useState } from "react";
 
-export const SearchBar = () => {
-    const dispatch = useAppDispatch();
+interface SearchBarProps {
+    onSearch: (searchTerm: string) => void;
+}
 
-    const clearSearch = async () => {
-        setSearchTerm('');
-        await dispatch(fetchFacilitiesWithPollutionAsync());
-    }
-
+export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
-    const handleSearch = async () => {
-        if (searchTerm.trim()) {
-            await dispatch(fetchFacilitiesWithPollutionByNameAsync(searchTerm));
-        } else {
-            await dispatch(fetchFacilitiesWithPollutionAsync());
-        }
+    const clearSearch = () => {
+        setSearchTerm('');
+        onSearch('');
+    }
+
+    const handleSearch = () => {
+        onSearch(searchTerm);
     };
+
     return (
         <div className="search-bar">
             <input
                 type="text"
-                placeholder="Search by facilitiy name..."
+                placeholder="Search by facility or pollution name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button onClick={handleSearch}>Search</button>
             <button onClick={clearSearch}>Clear</button>
         </div>
-    )
-}
+    );
+};

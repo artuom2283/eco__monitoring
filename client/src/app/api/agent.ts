@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-axios.defaults.baseURL = `http://localhost:8080/`;
+axios.defaults.baseURL = `http://localhost:8080/api/`;
 axios.defaults.withCredentials = true;
 const responseBody = (response: AxiosResponse) => response.data;
 
@@ -18,27 +18,27 @@ const requests = {
 const Pollution = {
   getPollutions: () => requests.get("pollutions"),
   getPollution: (id: number) => requests.get(`pollutions/${id}`),
-  putPollution: (id: number, body: object) => requests.put(`pollutions`, body),
+  putPollution: (body: object) => requests.put(`pollutions`, body),
   delPollution: (id: number) => requests.del(`pollutions/${id}`),
   addPollution: (body: object) => requests.post(`pollutions`, body)
 };
 
 const Facilities = {
   getFacilities: () => requests.get("facilities"),
-  getFacilitiesWithPollution: () => requests.get("fullFacilities"),
-  getFacilitiesWithPollutionByName: (name: string) => requests.get(`fullFacilities/${name}`),
-  getFacilitiesWithPollutionByAsc: () => requests.get("fullFacilities/sortByAscending"),
-  getFacilitiesWithPollutionByDesc: () => requests.get("fullFacilities/sortByDescending"),
   getFacility: (id: number) => requests.get(`facilities`),
-  addFacility: (facilityData: object) => requests.put("facilities", facilityData),
+  addFacility: (body: object) => requests.post("facilities", body),
   delFacility: (id: number) => requests.del(`facilities/${id}`),
+  putFacility: (body: object) => requests.put("facilities", body)
 }
 
 const Reports = {
     getReports: () => requests.get("reports"),
     getReport: (id: number) => requests.get("reports/${id}"),
-    addReport: (reportData: object) => requests.put("reports", reportData),
+    addReport: (body: object) => requests.post("reports", body),
     delReport: (id: number) => requests.del(`reports/${id}`),
+    putReport: (body: object) => requests.put("reports", body),
+    getReportsByName: (name: string) => requests.get(`reports/name-${name}`),
+    getSortedReports: (param: string, orderBy: string) => requests.get(`reports/sort/${param}-${orderBy}`)
 }
 
 const agent = {

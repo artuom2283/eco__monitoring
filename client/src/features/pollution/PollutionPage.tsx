@@ -1,228 +1,242 @@
 import React, {useEffect, useState, useMemo} from 'react';
 import './pollution.css';
 import '../../App.css';
-import SortAscImg from '../../assets/arrow-up.png';
-import SortDescImg from '../../assets/arrow-down.png';
-import {useAppDispatch, useAppSelector} from '../../app/store/configureStore';
+import {useAppSelector} from '../../app/store/configureStore';
 import {
+    fetchReportsAsync,
+    deleteReportAsync,
     fetchPollutionsAsync,
     fetchFacilitiesAsync,
-    fetchFacilitiesWithPollutionAsync,
-    updatePollutionAsync,
-    deletePollutionAsync,
-    fetchFacilitiesWithPollutionByAscendingAsync,
-    fetchFacilitiesWithPollutionByDescendingAsync
+    updateReportAsync, fetchReportsByNameAsync, fetchSortedReportsAsync,
 } from './pollutionSlice';
-import {FullIndustrialFacilityDto, IndustrialFacilityDto} from '../../app/models/Facility';
-import {PollutionDto} from '../../app/models/Pollution';
-import {AddFacilityForm} from "../../components/AddFacilityForm";
-import {AddPollutionForm} from "../../components/AddPollutionForm";
+import {AddFacilityForm} from "../../components/Forms/AddFacilityForm";
+import {AddPollutionForm} from "../../components/Forms/AddPollutionForm";
 import {SearchBar} from "../../components/SearchBar";
-import {TopButton} from "../../components/TopButton";
-import {FacilityInfoTable} from "../../components/FacilityInfoTable";
-import {AddReportForm} from "../../components/AddReportForm";
-import {PollutionInfoTable} from "../../components/PollutionInfoTable";
+import {TopButton} from "../../components/Buttons/TopButton";
+import {FacilityInfoTable} from "../../components/Tables/FacilityInfoTable";
+import {AddReportForm} from "../../components/Forms/AddReportForm";
+import {PollutionInfoTable} from "../../components/Tables/PollutionInfoTable";
+import {FullReportDto, ReportDto} from "../../app/models/Report";
+import {useDispatch} from "react-redux";
+import {SortBy} from "../../app/Enums/SortBy";
+import {AscButton} from "../../components/Buttons/AscButton";
+import {DescButton} from "../../components/Buttons/DescButton";
 
 const PollutionPage: React.FC = () => {
-    interface FullFacilityWithPollution extends FullIndustrialFacilityDto {
-        pollution: PollutionDto | null;
-    }
-
-    const dispatch = useAppDispatch();
-    const pollutions = useAppSelector(state => state.pollution.pollutions);
-    const facilities = useAppSelector(state => state.pollution.facilities);
-    const fullFacilities = useAppSelector(state => state.pollution.fullFacilities);
-    const pollutionsLoaded = useAppSelector(state => state.pollution.pollutionsLoaded);
+    const dispatch = useDispatch<any>();
+    const reportsLoaded = useAppSelector(state => state.pollution.reportsLoaded);
     const facilitiesLoaded = useAppSelector(state => state.pollution.facilitiesLoaded);
-    const pollutionsWithFacilitiesLoaded = useAppSelector(state => state.pollution.pollutionsWithFacilitiesLoaded);
-    const [editedData, setEditedData] = useState<{ [key: string]: PollutionDto }>({});
+    const pollutionsLoaded = useAppSelector(state => state.pollution.pollutionsLoaded);
+    const reports = useAppSelector((state: any) => state.pollution.reports);
     const [_, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+    console.log(reports);
+
+    const [searchResults, setSearchResults] = useState<FullReportDto[]>([]);
+    const [editReport, setEditReport] = useState<{ [key: number]: FullReportDto }>({});
 
     useEffect(() => {
         const loadData = async () => {
-            await dispatch(fetchPollutionsAsync());
-            await dispatch(fetchFacilitiesAsync());
-            await dispatch(fetchFacilitiesWithPollutionAsync());
+            if (!pollutionsLoaded) await dispatch(fetchPollutionsAsync());
+            if (!facilitiesLoaded) await dispatch(fetchFacilitiesAsync());
+            if (!reportsLoaded) await dispatch(fetchReportsAsync());
         };
 
-        if (!pollutionsLoaded || !facilitiesLoaded || !pollutionsWithFacilitiesLoaded) {
-            loadData();
-        }
-    }, []);
+        loadData();
+    }, [pollutionsLoaded, facilitiesLoaded, reportsLoaded, dispatch]);
 
-
-    const handleSort = async (order: 'asc' | 'desc') => {
-        setSortOrder(order);
-        if (order === 'asc') {
-            await dispatch(fetchFacilitiesWithPollutionByAscendingAsync());
+    const handleSearch = async (searchTerm: string) => {
+        if (searchTerm.trim()) {
+            const result = await dispatch(fetchReportsByNameAsync(searchTerm));
+            setSearchResults(result.payload || []);
         } else {
-            await dispatch(fetchFacilitiesWithPollutionByDescendingAsync());
+            setSearchResults([]);
+            await dispatch(fetchReportsAsync());
         }
     };
 
-    const handleSave = async (pollutionId: number, pollutionName: string) => {
-        const facilityKey = `${pollutionId}-${pollutionName}`;
-        const existingFacility = combinedData.find(facility => facility.pollutionId === pollutionId && facility.pollutionName === pollutionName);
-        const editedPollution = editedData[facilityKey];
+    const handleSave = async (reportId: number) => {
+        const report = reports.find((r: FullReportDto) => r.id === reportId);
 
-        if (editedPollution && existingFacility && existingFacility.pollution) {
-            const updatedPollution = {
-                ...existingFacility.pollution,
-                ...editedPollution
-            };
-
-            try {
-                console.log("Saving pollution data:", updatedPollution);
-                await dispatch(updatePollutionAsync(updatedPollution));
-                setEditedData(prev => {
-                    const newData = {...prev};
-                    delete newData[facilityKey];
-                    return newData;
-                });
-
-                console.log("Changes saved successfully!");
-            } catch (error) {
-                console.error("Save error:", error);
-                console.log("Failed to save changes.");
-            }
-        } else {
-            console.log("No changes to save.");
+        if (!report) {
+            console.log("Report not found!");
+            return;
         }
-    };
 
-    const handleDelete = async (facilityId: number) => {
         try {
-            await dispatch(deletePollutionAsync(facilityId));
-            console.log("Record deleted successfully!");
+            const updatedReport = {
+                ...report,
+                ...editReport[reportId],
+            };
+            console.log("Saving pollution data:", updatedReport);
+            await dispatch(updateReportAsync(updatedReport));
+            console.log("Changes saved successfully!");
+            await dispatch(fetchReportsAsync());
         } catch (error) {
-            console.log("Failed to delete record.");
+            console.error("Save error:", error);
+            console.log("Failed to save changes.");
         }
     };
 
-    const combinedData: FullFacilityWithPollution[] = useMemo(() => {
-        return fullFacilities.map((facility: any) => ({
-            ...facility,
-            pollution: pollutions.find((p: any) => p.id === facility.pollutionId) || null,
-        }));
-    }, [fullFacilities, pollutions]);
-
-    const [combinedDataByYear, setCombinedDataByYear] = useState<{ [key: string]: FullFacilityWithPollution[] }>({});
-
-    useEffect(() => {
-        const dataByYear: { [key: string]: FullFacilityWithPollution[] } = {};
-        combinedData.forEach((facility) => {
-            const year = facility.pollution?.year || 'no data xD';
-            if (!dataByYear[year]) {
-                dataByYear[year] = [];
-            }
-            dataByYear[year].push(facility);
-        });
-        setCombinedDataByYear(dataByYear);
-    }, [combinedData]);
-
-    const sortedYears = Object.keys(combinedDataByYear).sort((a, b) => b.localeCompare(a, undefined, {numeric: true}));
-
-    const handleInputChange = (pollutionId: number, pollutionName: string, fieldName: keyof FullIndustrialFacilityDto, value: any) => {
-        setEditedData(prev => {
-            const facilityKey = `${pollutionId}-${pollutionName}`;
-            const updatedFacility = combinedData.find(
-                facility => facility.pollutionId === pollutionId && facility.pollutionName === pollutionName
-            );
-
-            if (!updatedFacility) return prev;
-
-            const updatedPollution = {
-                ...prev[facilityKey],
-                [fieldName]: value
-            };
-
-            return {
-                ...prev,
-                [facilityKey]: updatedPollution
-            };
-        });
+    const handleDelete = async (reportId: number) => {
+        try {
+            await dispatch(deleteReportAsync(reportId));
+            console.log("Report deleted successfully!");
+            await dispatch(fetchReportsAsync());
+        } catch (error) {
+            console.log("Failed to delete report.");
+        }
     };
+
+    const handleSort = async (param: string, order: 'asc' | 'desc') => {
+        setSortOrder(order);
+        const FetchSortedReportsAsync = {
+            param: param,
+            orderBy: "asc"
+        }
+        if (order === 'asc') {
+            const result = await dispatch(fetchSortedReportsAsync(FetchSortedReportsAsync));
+            setSearchResults(result.payload || []);
+        } else {
+            FetchSortedReportsAsync.orderBy = "desc";
+            const search = await dispatch(fetchSortedReportsAsync(FetchSortedReportsAsync));
+            setSearchResults(search.payload || []);
+        }
+    };
+
+    const handleInputChangeReport = (id: number, field: keyof FullReportDto, value: any) => {
+        setEditReport((prevValues) => ({
+            ...prevValues,
+            [id]: {
+                ...prevValues[id],
+                [field]: value,
+            },
+        }));
+    };
+
+    const displayedReports = searchResults.length > 0 ? searchResults : reports;
 
     return (
         <div>
             <div className="flex-form">
-            <AddFacilityForm></AddFacilityForm>
-            <AddPollutionForm></AddPollutionForm>
+                <AddFacilityForm/>
+                <AddPollutionForm/>
             </div>
-            <AddReportForm></AddReportForm>
-            <h1>Pollution and Institution Data by Year</h1>
-            <SearchBar></SearchBar>
-            {sortedYears.map((year) => {
-                const validFacilities = combinedDataByYear[year].filter(facility => facility.pollution?.volume !== null && facility.pollution?.volume !== undefined);
-
-                if (validFacilities.length === 0) {
-                    return null;
-                }
-
-                return (
-                    <div key={year}>
-                        <h2>Year: {year}</h2>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Name of the institution</th>
-                                <th>Name of pollution</th>
-                                <th>
-                                    <div className="sorting-buttons">
-                                        Volume
-                                    <button className='sort-button sort-ascending' onClick={() => handleSort('asc')}><img src={SortAscImg} alt="Sort Ascending" className="small-img"/></button>
-                                    <button className='sort-button sort-descending' onClick={() => handleSort('desc')}><img src={SortDescImg} alt="Sort Descending" className="small-img"/></button>
-                                 </div>
-                            </th>
-                                <th>Mass flow</th>
-                                <th>Emission limit</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {validFacilities.map((facility) => (
-                                <tr key={`${facility.pollutionId}-${facility.pollutionName}`}>
-                                    <td>{facility.facilityName}</td>
-                                    <td>
-                                        {editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.name || facility.pollution?.name || ''}
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            value={editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.volume || facility.pollution?.volume || ''}
-                                            onChange={(e) => handleInputChange(facility.pollutionId, facility.pollutionName, 'volume', parseFloat(e.target.value))}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            value={editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.massFlowRate || facility.pollution?.massFlowRate || ''}
-                                            onChange={(e) => handleInputChange(facility.pollutionId, facility.pollutionName, 'massFlowRate', parseFloat(e.target.value))}
-                                        />
-                                    </td>
-                                    <td>
-                                        <input
-                                            type="number"
-                                            value={editedData[`${facility.pollutionId}-${facility.pollutionName}`]?.emissionsLimit || facility.pollution?.emissionsLimit || ''}
-                                            onChange={(e) => handleInputChange(facility.pollutionId, facility.pollutionName, 'emissionsLimit', parseFloat(e.target.value))}
-                                        />
-                                    </td>
-                                    <td>
-                                        <button
-                                            onClick={() => handleSave(facility.pollutionId, facility.pollutionName)}>Save
-                                        </button>
-                                        <button onClick={() => handleDelete(facility.pollutionId)}>Delete</button>
-                                    </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-                    </div>
-                );
-            })}
-            <FacilityInfoTable></FacilityInfoTable>
-          {/*  <PollutionInfoTable></PollutionInfoTable>*/}
-            <TopButton></TopButton>
+            <AddReportForm/>
+            <h1>Reports (Pollution and Facility By Year)</h1>
+            <SearchBar onSearch={handleSearch}/>
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name of the facility</th>
+                        <th>Name of pollution</th>
+                        <th>
+                            <div className="sorting-buttons">
+                                Year
+                                <AscButton param={SortBy.Year} sort={handleSort}/>
+                                <DescButton param={SortBy.Year} sort={handleSort}/>
+                            </div>
+                        </th>
+                        <th>
+                            <div className="sorting-buttons">
+                                Volume
+                                <AscButton param={SortBy.Volume} sort={handleSort}/>
+                                <DescButton param={SortBy.Volume} sort={handleSort}/>
+                            </div>
+                        </th>
+                        <th>
+                            <div className="sorting-buttons">
+                                Mass Flow Rate
+                                <AscButton param={SortBy.MassFlowRate} sort={handleSort}/>
+                                <DescButton param={SortBy.MassFlowRate}  sort={handleSort}/>
+                            </div>
+                        </th>
+                        <th>
+                            <div className="sorting-buttons">
+                                Emissions Limit
+                                <AscButton param={SortBy.EmissionsLimit} sort={handleSort}/>
+                                <DescButton param={SortBy.EmissionsLimit} sort={handleSort}/>
+                            </div>
+                        </th>
+                        <th>
+                            <div className="sorting-buttons">
+                                Water Tax
+                                <AscButton param={SortBy.WaterTax} sort={handleSort}/>
+                                <DescButton param={SortBy.WaterTax} sort={handleSort}/>
+                            </div>
+                        </th>
+                        <th>
+                            <div className="sorting-buttons">
+                                Air Tax
+                                <AscButton param={SortBy.AirTax} sort={handleSort}/>
+                                <DescButton param={SortBy.AirTax} sort={handleSort}/>
+                            </div>
+                        </th>
+                        <th>
+                            <div className="sorting-buttons">
+                                Total Tax
+                                <AscButton param={SortBy.TotalTax} sort={handleSort}/>
+                                <DescButton param={SortBy.TotalTax} sort={handleSort}/>
+                            </div>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {displayedReports.map((report: FullReportDto) => (
+                        <tr>
+                            <td>{report.facilityName}</td>
+                            <td>{report.pollutionName}</td>
+                            <td><input
+                                type="text"
+                                value={editReport[report.id]?.year ?? report.year}
+                                onChange={(e) => handleInputChangeReport(report.id, 'year', e.target.value)}
+                            /></td>
+                            <td><input
+                                type="text"
+                                value={editReport[report.id]?.volume ?? report.volume}
+                                onChange={(e) => handleInputChangeReport(report.id, 'volume', e.target.value)}
+                            /></td>
+                            <td><input
+                                type="text"
+                                value={editReport[report.id]?.massFlowRate ?? report.massFlowRate}
+                                onChange={(e) => handleInputChangeReport(report.id, 'massFlowRate', e.target.value)}
+                            /></td>
+                            <td><input
+                                type="text"
+                                value={editReport[report.id]?.emissionsLimit ?? report.emissionsLimit}
+                                onChange={(e) => handleInputChangeReport(report.id, 'emissionsLimit', e.target.value)}
+                            /></td>
+                            <td><input
+                                type="text"
+                                value={editReport[report.id]?.waterTax ?? report.waterTax}
+                                onChange={(e) => handleInputChangeReport(report.id, 'waterTax', e.target.value)}
+                            /></td>
+                            <td><input
+                                type="text"
+                                value={editReport[report.id]?.airTax ?? report.airTax}
+                                onChange={(e) => handleInputChangeReport(report.id, 'airTax', e.target.value)}
+                            /></td>
+                            <td><input
+                                type="text"
+                                value={editReport[report.id]?.totalTax ?? report.totalTax}
+                                onChange={(e) => handleInputChangeReport(report.id, 'totalTax', e.target.value)}
+                            /></td>
+                            <td>
+                                <button
+                                    onClick={() => handleSave(report.id)}>Save
+                                </button>
+                                <button onClick={() => handleDelete(report.id)}>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+            <FacilityInfoTable/>
+            <PollutionInfoTable/>
+            <TopButton/>
         </div>
     );
 };

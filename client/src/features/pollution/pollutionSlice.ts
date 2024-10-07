@@ -2,53 +2,15 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { FullIndustrialFacilityDto, IndustrialFacilityDto } from "../../app/models/Facility";
 import agent from "../../app/api/agent";
 import { PollutionDto } from "../../app/models/Pollution";
+import {FullReportDto, ReportDto} from "../../app/models/Report";
 
-export const fetchFacilitiesWithPollutionAsync = createAsyncThunk<FullIndustrialFacilityDto[]>(
-    "pollution/fetchFacilitiesWithPollutionAsync",
-    async (_, thunkAPI) => {
-        try {
-            return agent.Facilities.getFacilitiesWithPollution();
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue({ error: error.data });
-        }
-    }
-);
-
-export const fetchFacilitiesWithPollutionByNameAsync = createAsyncThunk<FullIndustrialFacilityDto[], string>(
-    "pollution/fetchFacilitiesWithPollutionByNameAsync",
-    async (name, thunkAPI) => {
-        try {
-            return agent.Facilities.getFacilitiesWithPollutionByName(name);
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue({ error: error.data });
-        }
-    }
-);
-
-export const fetchFacilitiesWithPollutionByAscendingAsync = createAsyncThunk<FullIndustrialFacilityDto[]>(
-    "pollution/fetchFacilitiesWithPollutionByAscAsync",
-    async (_, thunkAPI) => {
-        try {
-            return agent.Facilities.getFacilitiesWithPollutionByAsc();
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue({ error: error.data });
-        }
-    }
-);
-
-export const fetchFacilitiesWithPollutionByDescendingAsync = createAsyncThunk<FullIndustrialFacilityDto[]>(
-    "pollution/fetchFacilitiesWithPollutionByDescAsync",
-    async (_, thunkAPI) => {
-        try {
-            return agent.Facilities.getFacilitiesWithPollutionByDesc();
-        } catch (error: any) {
-            return thunkAPI.rejectWithValue({ error: error.data });
-        }
-    }
-);
+interface FetchSortedReportsParams {
+    param: string;
+    orderBy: string;
+}
 
 export const fetchFacilitiesAsync = createAsyncThunk<IndustrialFacilityDto[]>(
-    "pollution/fetchFacilitiesAsync",
+    "pollutions/fetchFacilitiesAsync",
     async (_, thunkAPI) => {
         try {
             return agent.Facilities.getFacilities();
@@ -59,7 +21,7 @@ export const fetchFacilitiesAsync = createAsyncThunk<IndustrialFacilityDto[]>(
 );
 
 export const fetchFacilityAsync = createAsyncThunk<IndustrialFacilityDto, number>(
-    "pollution/fetchFacilityAsync",
+    "pollutions/fetchFacilityAsync",
     async (id, thunkAPI) => {
         try {
             return agent.Facilities.getFacility(id);
@@ -70,7 +32,7 @@ export const fetchFacilityAsync = createAsyncThunk<IndustrialFacilityDto, number
 );
 
 export const fetchPollutionsAsync = createAsyncThunk<PollutionDto[]>(
-    "pollution/fetchPollutionsAsync",
+    "pollutions/fetchPollutionsAsync",
     async (_, thunkAPI) => {
         try {
             return agent.Pollution.getPollutions();
@@ -81,7 +43,7 @@ export const fetchPollutionsAsync = createAsyncThunk<PollutionDto[]>(
 );
 
 export const fetchPollutionAsync = createAsyncThunk<PollutionDto, number>(
-    "pollution/fetchPollutionAsync",
+    "pollutions/fetchPollutionAsync",
     async (id, thunkAPI) => {
         try {
             return agent.Pollution.getPollution(id);
@@ -91,11 +53,44 @@ export const fetchPollutionAsync = createAsyncThunk<PollutionDto, number>(
     }
 );
 
+export const fetchReportsAsync = createAsyncThunk<FullReportDto[]>(
+    "reports/fetchReportsAsync",
+    async (_, thunkAPI) => {
+        try {
+            return agent.Reports.getReports();
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
 export const updatePollutionAsync = createAsyncThunk<PollutionDto, PollutionDto>(
-    "pollution/updatePollutionAsync",
+    "pollutions/updatePollutionAsync",
     async (pollution, thunkAPI) => {
         try {
-            return agent.Pollution.putPollution(pollution.id, pollution);
+            return agent.Pollution.putPollution(pollution);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
+export const updateFacilityAsync = createAsyncThunk<IndustrialFacilityDto, IndustrialFacilityDto>(
+    "facilities/updateFacilityAsync",
+    async (facility, thunkAPI) => {
+        try {
+            return agent.Facilities.putFacility(facility);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
+export const updateReportAsync = createAsyncThunk<FullReportDto, FullReportDto>(
+    "reports/updateReportAsync",
+    async (report, thunkAPI) => {
+        try {
+            return agent.Reports.putReport(report);
         } catch (error: any) {
             return thunkAPI.rejectWithValue({ error: error.data });
         }
@@ -103,7 +98,7 @@ export const updatePollutionAsync = createAsyncThunk<PollutionDto, PollutionDto>
 );
 
 export const addPollutionAsync = createAsyncThunk<void, PollutionDto>(
-    "pollution/addPollutionAsync",
+    "pollutions/addPollutionAsync",
     async (pollutionDto, thunkAPI) => {
         try {
             await agent.Pollution.addPollution(pollutionDto);
@@ -124,8 +119,19 @@ export const addFacilityAsync = createAsyncThunk<void, IndustrialFacilityDto>(
     }
 );
 
+export const addReportAsync = createAsyncThunk<void, ReportDto>(
+    "reports/addReportAsync",
+    async (reportDto, thunkAPI) => {
+        try {
+            await agent.Reports.addReport(reportDto);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
 export const deletePollutionAsync = createAsyncThunk<void, number>(
-    "pollution/deletePollutionAsync",
+    "pollutions/deletePollutionAsync",
     async (pollutionId, thunkAPI) => {
         try {
             await agent.Pollution.delPollution(pollutionId);
@@ -146,35 +152,54 @@ export const deleteFacilityAsync = createAsyncThunk<void, number>(
     }
 );
 
+export const deleteReportAsync = createAsyncThunk<void, number>(
+    "reports/deleteReportAsync",
+    async (reportId, thunkAPI) => {
+        try {
+            await agent.Reports.delReport(reportId);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
+export const fetchReportsByNameAsync = createAsyncThunk<FullReportDto, string>(
+    "reports/fetchReportsByNameAsync",
+    async (name, thunkAPI) => {
+        try {
+            return agent.Reports.getReportsByName(name);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
+export const fetchSortedReportsAsync = createAsyncThunk<FullReportDto, FetchSortedReportsParams>(
+    "reports/fetchSortedReportsAsync",
+    async (params, thunkAPI) => {
+        try {
+            return agent.Reports.getSortedReports(params.param, params.orderBy);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
 
 export const pollutionSlice = createSlice({
     name: "pollution",
     initialState: {
         pollutions: [] as PollutionDto[],
         facilities: [] as IndustrialFacilityDto[],
-        fullFacilities: [] as FullIndustrialFacilityDto[],
+        reports: [] as FullReportDto[],
         pollutionsLoaded: false,
         facilitiesLoaded: false,
-        pollutionsWithFacilitiesLoaded: false,
+        reportsLoaded: false,
         status: 'idle',
         error: null as string | null,
     },
     reducers: {},
     extraReducers: (builder) => {
-        // Handle fetchFacilitiesWithPollutionAsync
-        builder.addCase(fetchFacilitiesWithPollutionAsync.pending, (state) => {
-            state.status = 'loading';
-            state.pollutionsWithFacilitiesLoaded = false;
-        });
-        builder.addCase(fetchFacilitiesWithPollutionAsync.fulfilled, (state, action) => {
-            state.fullFacilities = action.payload;
-            state.pollutionsWithFacilitiesLoaded = true;
-            state.status = 'idle';
-        });
-        builder.addCase(fetchFacilitiesWithPollutionAsync.rejected, (state, action) => {
-            state.status = 'failed';
-            state.error = action.error.message || 'Failed to fetch facilities with pollution';
-        });
 
         // Handle fetchFacilitiesAsync
         builder.addCase(fetchFacilitiesAsync.pending, (state) => {
@@ -206,6 +231,21 @@ export const pollutionSlice = createSlice({
             state.error = action.error.message || 'Failed to fetch pollutions';
         });
 
+        // Handle fetchReportsAsync
+        builder.addCase(fetchReportsAsync.pending, (state) => {
+            state.status = 'loading';
+            state.reportsLoaded = false;
+        });
+        builder.addCase(fetchReportsAsync.fulfilled, (state, action) => {
+            state.reports = action.payload;
+            state.reportsLoaded = true;
+            state.status = 'idle';
+        });
+        builder.addCase(fetchReportsAsync.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message || 'Failed to fetch reports';
+        });
+
         // Handle individual facility fetch
         builder.addCase(fetchFacilityAsync.fulfilled, (state, action) => {
             state.facilities = [...state.facilities, action.payload];
@@ -218,11 +258,41 @@ export const pollutionSlice = createSlice({
             state.status = 'idle';
         });
 
+        // Handle individual report fetch
+        builder.addCase(fetchReportsByNameAsync.fulfilled, (state, action) => {
+            state.reports = [...state.reports, action.payload];
+            state.status = 'idle';
+        });
+
+        // Handle individual report sorted fetch
+        builder.addCase(fetchSortedReportsAsync.fulfilled, (state, action) => {
+            state.reports = [...state.reports, action.payload];
+            state.status = 'idle';
+        });
+
         // Handle updatePollutionAsync
         builder.addCase(updatePollutionAsync.fulfilled, (state, action) => {
             const updatedPollutionIndex = state.pollutions.findIndex(p => p.id === action.payload.id);
             if (updatedPollutionIndex !== -1) {
                 state.pollutions[updatedPollutionIndex] = action.payload;
+            }
+            state.status = 'idle';
+        });
+
+        // Handle updateFacilityAsync
+        builder.addCase(updateFacilityAsync.fulfilled, (state, action) => {
+            const updatedFacilityIndex = state.facilities.findIndex(f => f.id === action.payload.id);
+            if (updatedFacilityIndex !== -1) {
+                state.facilities[updatedFacilityIndex] = action.payload;
+            }
+            state.status = 'idle';
+        });
+
+        // Handle updateReportAsync
+        builder.addCase(updateReportAsync.fulfilled, (state, action) => {
+            const updatedReportIndex = state.reports.findIndex(r => r.id === action.payload.id);
+            if (updatedReportIndex !== -1) {
+                state.reports[updatedReportIndex] = action.payload;
             }
             state.status = 'idle';
         });
@@ -239,49 +309,10 @@ export const pollutionSlice = createSlice({
             state.status = 'idle';
         });
 
-        // Handle fetchFacilitiesWithPollutionByNameAsync
-        builder.addCase(fetchFacilitiesWithPollutionByNameAsync.pending, (state) => {
-            state.status = 'loading';
-            state.pollutionsWithFacilitiesLoaded = false;
-        });
-        builder.addCase(fetchFacilitiesWithPollutionByNameAsync.fulfilled, (state, action) => {
-            state.fullFacilities = action.payload;
-            state.pollutionsWithFacilitiesLoaded = true;
+        // Handle deleteReportAsync
+        builder.addCase(deleteReportAsync.fulfilled, (state, action) => {
+            state.reports = state.reports.filter(p => p.id !== action.meta.arg);
             state.status = 'idle';
-        });
-        builder.addCase(fetchFacilitiesWithPollutionByNameAsync.rejected, (state, action) => {
-            state.status = 'failed';
-            state.error = action.error.message || 'Failed to fetch facilities with pollution';
-        });
-
-        // Handle fetchFacilitiesWithPollutionByAscAsync
-        builder.addCase(fetchFacilitiesWithPollutionByAscendingAsync.pending, (state) => {
-            state.status = 'loading';
-            state.pollutionsWithFacilitiesLoaded = false;
-        });
-        builder.addCase(fetchFacilitiesWithPollutionByAscendingAsync.fulfilled, (state, action) => {
-            state.fullFacilities = action.payload;
-            state.pollutionsWithFacilitiesLoaded = true;
-            state.status = 'idle';
-        });
-        builder.addCase(fetchFacilitiesWithPollutionByAscendingAsync.rejected, (state, action) => {
-            state.status = 'failed';
-            state.error = action.error.message || 'Failed to fetch facilities with pollution';
-        });
-
-        // Handle fetchFacilitiesWithPollutionByDescAsync
-        builder.addCase(fetchFacilitiesWithPollutionByDescendingAsync.pending, (state) => {
-            state.status = 'loading';
-            state.pollutionsWithFacilitiesLoaded = false;
-        });
-        builder.addCase(fetchFacilitiesWithPollutionByDescendingAsync.fulfilled, (state, action) => {
-            state.fullFacilities = action.payload;
-            state.pollutionsWithFacilitiesLoaded = true;
-            state.status = 'idle';
-        });
-        builder.addCase(fetchFacilitiesWithPollutionByDescendingAsync.rejected, (state, action) => {
-            state.status = 'failed';
-            state.error = action.error.message || 'Failed to fetch facilities with pollution';
         });
 
         // Handle addPollutionAsync
@@ -290,10 +321,10 @@ export const pollutionSlice = createSlice({
                 state.pollutions = action.payload;
             }
             state.status = 'loading';
-            state.pollutionsWithFacilitiesLoaded = false;
+            state.pollutionsLoaded = false;
         });
         builder.addCase(addPollutionAsync.fulfilled, (state) => {
-            state.pollutionsWithFacilitiesLoaded = true;
+            state.pollutionsLoaded = true;
             state.status = 'idle';
         });
         builder.addCase(addPollutionAsync.rejected, (state, action) => {
@@ -316,6 +347,23 @@ export const pollutionSlice = createSlice({
         builder.addCase(addFacilityAsync.rejected, (state, action) => {
             state.status = 'failed';
             state.error = action.error.message || 'Failed to fetch facilities';
+        });
+
+        // Handle addReportAsync
+        builder.addCase(addReportAsync.pending, (state, action) => {
+            if (action.payload) {
+                state.pollutions = action.payload;
+            }
+            state.status = 'loading';
+            state.reportsLoaded = false;
+        });
+        builder.addCase(addReportAsync.fulfilled, (state) => {
+            state.reportsLoaded = true;
+            state.status = 'idle';
+        });
+        builder.addCase(addReportAsync.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message || 'Failed to fetch reports';
         });
 
     },
