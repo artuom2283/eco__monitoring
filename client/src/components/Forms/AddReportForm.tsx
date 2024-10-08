@@ -17,8 +17,8 @@ export const AddReportForm = () => {
         industrialFacilityId: 0,
         year: 0,
         volume: 0,
-        waterTax: 0,
-        airTax: 0,
+        taxType: '',
+        taxRate: 0,
     });
 
     const handleAddReportChange = (field: keyof ReportDto, value: any) => {
@@ -39,8 +39,8 @@ export const AddReportForm = () => {
                 industrialFacilityId: 0,
                 year: 0,
                 volume: 0,
-                waterTax: 0,
-                airTax: 0,
+                taxType: '',
+                taxRate: 0,
             });
             await dispatch(fetchReportsAsync());
         } catch (error) {
@@ -93,21 +93,21 @@ export const AddReportForm = () => {
                 value={newReport.volume}
                 onChange={(e) => handleAddReportChange('volume', parseFloat(e.target.value))}
             />
-            <label htmlFor="report-waterTax">Water Tax:</label>
+            <label htmlFor="report-taxRate">Tax Rate:</label>
             <input
-                id={"report-waterTax"}
+                id={"report-taxRate"}
                 type="number"
-                placeholder="Water Tax"
-                value={newReport.waterTax}
-                onChange={(e) => handleAddReportChange('waterTax', parseFloat(e.target.value))}
+                placeholder="Tax Rate"
+                value={newReport.taxRate}
+                onChange={(e) => handleAddReportChange('taxRate', parseFloat(e.target.value))}
             />
-            <label htmlFor="report-airTax">Air Tax:</label>
+            <label htmlFor="report-taxType">Tax Type:</label>
             <input
-                id={"report-airTax"}
-                type="number"
-                placeholder="Air Tax"
-                value={newReport.airTax}
-                onChange={(e) => handleAddReportChange('airTax', parseFloat(e.target.value))}
+                id={"report-taxType"}
+                type="text"
+                placeholder="Tax Type"
+                value={newReport.taxType}
+                onChange={(e) => handleAddReportChange('taxType', e.target.value)}
             />
             <button onClick={handleAddReport}>Add Report</button>
         </div>

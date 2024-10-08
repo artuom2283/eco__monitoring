@@ -48,7 +48,6 @@ public static class ServiceCollectionExtension
         services.AddScoped<IPollutionService, PollutionService>();
         services.AddScoped<IIndustrialFacilityService, IndustrialFacilityService>();
         services.AddScoped<IReportService, ReportService>();
-        services.AddScoped<ICalculationService, CalculationService>();
 
         return services;
     }

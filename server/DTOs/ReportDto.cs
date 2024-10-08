@@ -7,6 +7,6 @@ public class ReportDto
     public long PollutionId { get; set; }
     public int Year { get; set; }
     public float Volume { get; set; }
-    public float WaterTax { get; set; }
-    public float AirTax { get; set; }
+    public float TaxRate { get; set; }
+    public string TaxType { get; set; }
 }

@@ -161,23 +161,19 @@ const PollutionPage: React.FC = () => {
                         </th>
                         <th>
                             <div className="sorting-buttons">
-                                Water Tax, grn
-                                <AscButton param={SortBy.WaterTax} sort={handleSort}/>
-                                <DescButton param={SortBy.WaterTax} sort={handleSort}/>
+                                Tax Rate, grn
+                                <AscButton param={SortBy.TaxRate} sort={handleSort}/>
+                                <DescButton param={SortBy.TaxRate} sort={handleSort}/>
                             </div>
                         </th>
                         <th>
-                            <div className="sorting-buttons">
-                                Air Tax, grn
-                                <AscButton param={SortBy.AirTax} sort={handleSort}/>
-                                <DescButton param={SortBy.AirTax} sort={handleSort}/>
-                            </div>
+                            Tax Type
                         </th>
                         <th>
                             <div className="sorting-buttons">
-                                Total Tax, grn
-                                <AscButton param={SortBy.TotalTax} sort={handleSort}/>
-                                <DescButton param={SortBy.TotalTax} sort={handleSort}/>
+                                Tax Amount, grn
+                                <AscButton param={SortBy.TaxAmount} sort={handleSort}/>
+                                <DescButton param={SortBy.TaxAmount} sort={handleSort}/>
                             </div>
                         </th>
                         <th>Actions</th>
@@ -210,18 +206,17 @@ const PollutionPage: React.FC = () => {
                             /></td>
                             <td><input
                                 type="text"
-                                value={editReport[report.id]?.waterTax ?? report.waterTax}
-                                onChange={(e) => handleInputChangeReport(report.id, 'waterTax', e.target.value)}
+                                value={editReport[report.id]?.taxRate ?? report.taxRate}
+                                onChange={(e) => handleInputChangeReport(report.id, 'taxRate', e.target.value)}
                             /></td>
-                            <td><input
+                            <td>
+                                {report.taxType}
+                            </td>
+                            <td>
+                                <input
                                 type="text"
-                                value={editReport[report.id]?.airTax ?? report.airTax}
-                                onChange={(e) => handleInputChangeReport(report.id, 'airTax', e.target.value)}
-                            /></td>
-                            <td><input
-                                type="text"
-                                value={editReport[report.id]?.totalTax ?? report.totalTax}
-                                onChange={(e) => handleInputChangeReport(report.id, 'totalTax', e.target.value)}
+                                value={editReport[report.id]?.taxAmount ?? report.taxAmount}
+                                onChange={(e) => handleInputChangeReport(report.id, 'taxAmount', e.target.value)}
                             /></td>
                             <td>
                                 <button

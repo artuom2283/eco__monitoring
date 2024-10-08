@@ -4,8 +4,8 @@
     industrialFacilityId: number;
     year: number;
     volume: number;
-    waterTax: number;
-    airTax: number;
+    taxRate: number;
+    taxType: string;
 }
 
 export interface FullReportDto{
@@ -16,7 +16,7 @@ export interface FullReportDto{
     volume: number;
     massFlowRate: number;
     emissionsLimit: number;
-    waterTax: number;
-    airTax: number;
-    totalTax: number;
+    taxRate: number;
+    taxType: string;
+    taxAmount: number;
 }

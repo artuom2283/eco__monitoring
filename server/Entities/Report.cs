@@ -17,10 +17,10 @@ public class Report
     public int Year { get; set; }
     [Column("volume")]
     public float Volume { get; set; }
-    [Column("water_tax")]
-    public float? WaterTax { get; set; }
-    [Column("air_tax")]
-    public float? AirTax { get; set; }
-    [Column("total_tax")]
-    public float? TotalTax { get; set; }
+    [Column("tax_rate")]
+    public float TaxRate { get; set; }
+    [Column("tax_type")]
+    public string TaxType { get; set; }
+    [Column("tax_amount")]
+    public float? TaxAmount { get; set; }
 }

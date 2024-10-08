@@ -9,7 +9,7 @@ public class FullReportDto
     public float Volume { get; set; }
     public float MassFlowRate { get; set; }
     public float EmissionsLimit { get; set; }
-    public float WaterTax { get; set; }
-    public float AirTax { get; set; }
-    public float TotalTax { get; set; }
+    public string TaxType { get; set; }
+    public float TaxRate { get; set; }
+    public float TaxAmount { get; set; }
 }

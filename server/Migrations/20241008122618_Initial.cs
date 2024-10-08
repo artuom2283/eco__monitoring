@@ -50,9 +50,9 @@ namespace server.Migrations
                     pollution_id = table.Column<long>(type: "bigint", nullable: false),
                     year = table.Column<int>(type: "integer", nullable: false),
                     volume = table.Column<float>(type: "real", nullable: false),
-                    water_tax = table.Column<float>(type: "real", nullable: true),
-                    air_tax = table.Column<float>(type: "real", nullable: true),
-                    total_tax = table.Column<float>(type: "real", nullable: true)
+                    tax_rate = table.Column<float>(type: "real", nullable: false),
+                    tax_type = table.Column<string>(type: "text", nullable: true),
+                    tax_amount = table.Column<float>(type: "real", nullable: true)
                 },
                 constraints: table =>
                 {

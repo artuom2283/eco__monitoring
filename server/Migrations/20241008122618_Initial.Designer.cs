@@ -12,7 +12,7 @@ using server.Data;
 namespace server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241003102418_Initial")]
+    [Migration("20241008122618_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -82,10 +82,6 @@ namespace server.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<float?>("AirTax")
-                        .HasColumnType("real")
-                        .HasColumnName("air_tax");
-
                     b.Property<long>("IndustrialFacilityId")
                         .HasColumnType("bigint")
                         .HasColumnName("industrial_facility_id");
@@ -94,17 +90,21 @@ namespace server.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("pollution_id");
 
-                    b.Property<float?>("TotalTax")
+                    b.Property<float?>("TaxAmount")
                         .HasColumnType("real")
-                        .HasColumnName("total_tax");
+                        .HasColumnName("tax_amount");
+
+                    b.Property<float>("TaxRate")
+                        .HasColumnType("real")
+                        .HasColumnName("tax_rate");
+
+                    b.Property<string>("TaxType")
+                        .HasColumnType("text")
+                        .HasColumnName("tax_type");
 
                     b.Property<float>("Volume")
                         .HasColumnType("real")
                         .HasColumnName("volume");
-
-                    b.Property<float?>("WaterTax")
-                        .HasColumnType("real")
-                        .HasColumnName("water_tax");
 
                     b.Property<int>("Year")
                         .HasColumnType("integer")
