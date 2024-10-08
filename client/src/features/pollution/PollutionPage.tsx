@@ -140,42 +140,42 @@ const PollutionPage: React.FC = () => {
                         </th>
                         <th>
                             <div className="sorting-buttons">
-                                Volume
+                                Volume, tons
                                 <AscButton param={SortBy.Volume} sort={handleSort}/>
                                 <DescButton param={SortBy.Volume} sort={handleSort}/>
                             </div>
                         </th>
                         <th>
                             <div className="sorting-buttons">
-                                Mass Flow Rate
+                                Mass Flow Rate, gram/hour
                                 <AscButton param={SortBy.MassFlowRate} sort={handleSort}/>
                                 <DescButton param={SortBy.MassFlowRate}  sort={handleSort}/>
                             </div>
                         </th>
                         <th>
                             <div className="sorting-buttons">
-                                Emissions Limit
+                                Emissions Limit, mg/m^3
                                 <AscButton param={SortBy.EmissionsLimit} sort={handleSort}/>
                                 <DescButton param={SortBy.EmissionsLimit} sort={handleSort}/>
                             </div>
                         </th>
                         <th>
                             <div className="sorting-buttons">
-                                Water Tax
+                                Water Tax, grn
                                 <AscButton param={SortBy.WaterTax} sort={handleSort}/>
                                 <DescButton param={SortBy.WaterTax} sort={handleSort}/>
                             </div>
                         </th>
                         <th>
                             <div className="sorting-buttons">
-                                Air Tax
+                                Air Tax, grn
                                 <AscButton param={SortBy.AirTax} sort={handleSort}/>
                                 <DescButton param={SortBy.AirTax} sort={handleSort}/>
                             </div>
                         </th>
                         <th>
                             <div className="sorting-buttons">
-                                Total Tax
+                                Total Tax, grn
                                 <AscButton param={SortBy.TotalTax} sort={handleSort}/>
                                 <DescButton param={SortBy.TotalTax} sort={handleSort}/>
                             </div>

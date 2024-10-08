@@ -64,8 +64,8 @@ export const PollutionInfoTable = () => {
                 <thead>
                 <tr>
                     <th>Pollution Name</th>
-                    <th>Mass Flow Rate</th>
-                    <th>Emissions Limit</th>
+                    <th>Mass Flow Rate, gram/hour</th>
+                    <th>Emissions Limit, mg/m^3</th>
                     <th>Danger Class</th>
                     <th>Actions</th>
                 </tr>
