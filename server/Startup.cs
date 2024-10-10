@@ -47,6 +47,8 @@ public class Startup
         app.UseCors("AllowSpecificOrigin");
         
         app.UseSerilogRequestLogging();
+        
+        app.UseExceptionHandler();
 
         app.UseAuthorization();
 

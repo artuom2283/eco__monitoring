@@ -88,6 +88,7 @@ public static class ServiceCollectionExtension
     {
         services.AddExceptionHandler<AlreadyExistsExceptionHandler>();
         services.AddExceptionHandler<NotFoundExceptionHandler>();
+        services.AddProblemDetails();
 
         return services;
     }
