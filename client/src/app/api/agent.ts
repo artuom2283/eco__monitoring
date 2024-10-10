@@ -32,13 +32,13 @@ const Facilities = {
 }
 
 const Reports = {
-    getReports: () => requests.get("reports"),
-    getReport: (id: number) => requests.get("reports/${id}"),
-    addReport: (body: object) => requests.post("reports", body),
-    delReport: (id: number) => requests.del(`reports/${id}`),
-    putReport: (body: object) => requests.put("reports", body),
-    getReportsByName: (name: string) => requests.get(`reports/name-${name}`),
-    getSortedReports: (param: string, orderBy: string) => requests.get(`reports/sort/${param}-${orderBy}`)
+  getReports: () => requests.get("reports"),
+  getReport: (id: number) => requests.get(`reports/${id}`),
+  addReport: (body: object) => requests.post("reports", body),
+  delReport: (id: number) => requests.del(`reports/${id}`),
+  putReport: (body: object) => requests.put("reports", body),
+  getReportsByName: (name: string) => requests.get(`reports/name-${name}`),
+  getSortedReports: (param: string, orderBy: string) => requests.get(`reports/sort/${param}-${orderBy}`)
 }
 
 const agent = {
