@@ -7,7 +7,7 @@ import {
     deleteReportAsync,
     fetchPollutionsAsync,
     fetchFacilitiesAsync,
-    updateReportAsync, fetchReportsByNameAsync, fetchSortedReportsAsync,
+    updateReportAsync, fetchReportsByNameAsync, fetchSortedReportsAsync, updatePollutionAsync,
 } from './pollutionSlice';
 import {AddFacilityForm} from "../../components/Forms/AddFacilityForm";
 import {AddPollutionForm} from "../../components/Forms/AddPollutionForm";
@@ -21,6 +21,7 @@ import {useDispatch} from "react-redux";
 import {SortBy} from "../../app/Enums/SortBy";
 import {AscButton} from "../../components/Buttons/AscButton";
 import {DescButton} from "../../components/Buttons/DescButton";
+import {PollutionDto} from "../../app/models/Pollution";
 
 const PollutionPage: React.FC = () => {
     const dispatch = useDispatch<any>();
@@ -28,12 +29,14 @@ const PollutionPage: React.FC = () => {
     const facilitiesLoaded = useAppSelector(state => state.pollution.facilitiesLoaded);
     const pollutionsLoaded = useAppSelector(state => state.pollution.pollutionsLoaded);
     const reports = useAppSelector((state: any) => state.pollution.reports);
+    const pollutions = useAppSelector(state => state.pollution.pollutions);
     const [_, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     console.log(reports);
 
     const [searchResults, setSearchResults] = useState<FullReportDto[]>([]);
     const [editReport, setEditReport] = useState<{ [key: number]: FullReportDto }>({});
+    const [editPollution, setEditPollution] = useState<{ [key: string]: PollutionDto }>({});
 
     useEffect(() => {
         const loadData = async () => {
@@ -62,13 +65,29 @@ const PollutionPage: React.FC = () => {
             console.log("Report not found!");
             return;
         }
+        const pollution = pollutions.find((p: PollutionDto) => p.name === report.pollutionName);
+
+        if(editPollution!==undefined){
+            for (const key in editPollution) {
+                const updatedPollution = {
+                    ...pollution,
+                    ...editPollution[key],
+                };
+
+                console.log("Saving pollution data:", updatedPollution);
+                await dispatch(updatePollutionAsync(updatedPollution));
+                console.log("Changes saved successfully!");
+                await dispatch(fetchPollutionsAsync());
+                await dispatch(fetchReportsAsync());
+            }
+        }
 
         try {
             const updatedReport = {
                 ...report,
                 ...editReport[reportId],
             };
-            console.log("Saving pollution data:", updatedReport);
+            console.log("Saving report data:", updatedReport);
             await dispatch(updateReportAsync(updatedReport));
             console.log("Changes saved successfully!");
             await dispatch(fetchReportsAsync());
@@ -103,6 +122,16 @@ const PollutionPage: React.FC = () => {
             setSearchResults(search.payload || []);
         }
     };
+
+    const handleInputChange = (id: string, field: keyof PollutionDto, value: any) => {
+        setEditPollution((prevValues) => ({
+            ...prevValues,
+            [id]: {
+                ...prevValues[id],
+                [field]: value,
+            },
+        }));
+    }
 
     const handleInputChangeReport = (id: number, field: keyof FullReportDto, value: any) => {
         setEditReport((prevValues) => ({
@@ -196,13 +225,13 @@ const PollutionPage: React.FC = () => {
                             /></td>
                             <td><input
                                 type="text"
-                                value={editReport[report.id]?.massFlowRate ?? report.massFlowRate}
-                                onChange={(e) => handleInputChangeReport(report.id, 'massFlowRate', e.target.value)}
+                                value={editPollution[report.pollutionName]?.massFlowRate ?? report.massFlowRate}
+                                onChange={(e) => handleInputChange(report.pollutionName, 'massFlowRate', e.target.value)}
                             /></td>
                             <td><input
                                 type="text"
-                                value={editReport[report.id]?.emissionsLimit ?? report.emissionsLimit}
-                                onChange={(e) => handleInputChangeReport(report.id, 'emissionsLimit', e.target.value)}
+                                value={editPollution[report.pollutionName]?.emissionsLimit ?? report.emissionsLimit}
+                                onChange={(e) => handleInputChange(report.pollutionName, 'emissionsLimit', e.target.value)}
                             /></td>
                             <td><input
                                 type="text"
@@ -214,10 +243,10 @@ const PollutionPage: React.FC = () => {
                             </td>
                             <td>
                                 <input
-                                type="text"
-                                value={editReport[report.id]?.taxAmount ?? report.taxAmount}
-                                onChange={(e) => handleInputChangeReport(report.id, 'taxAmount', e.target.value)}
-                            /></td>
+                                    type="text"
+                                    value={editReport[report.id]?.taxAmount ?? report.taxAmount}
+                                    onChange={(e) => handleInputChangeReport(report.id, 'taxAmount', e.target.value)}
+                                /></td>
                             <td>
                                 <button
                                     onClick={() => handleSave(report.id)}>Save

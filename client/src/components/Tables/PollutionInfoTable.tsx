@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useAppSelector} from "../../app/store/configureStore";
 import React, {useEffect, useState} from "react";
 import {
-    deletePollutionAsync, fetchPollutionsAsync,
+    deletePollutionAsync, fetchPollutionsAsync, fetchReportsAsync,
     updatePollutionAsync,
 } from "../../features/pollution/pollutionSlice";
 import {PollutionDto} from "../../app/models/Pollution";
@@ -42,6 +42,7 @@ export const PollutionInfoTable = () => {
             await dispatch(updatePollutionAsync(updatedPollution));
             console.log("Pollution updated successfully!");
             await dispatch(fetchPollutionsAsync());
+            await dispatch(fetchReportsAsync());
         } catch (error) {
             console.log("Failed to update pollution.");
         }
@@ -52,6 +53,7 @@ export const PollutionInfoTable = () => {
             await dispatch(deletePollutionAsync(pollutionId));
             console.log("Pollution deleted successfully!");
             await dispatch(fetchPollutionsAsync());
+            await dispatch(fetchReportsAsync());
         } catch (error) {
             console.log("Failed to delete pollution.");
         }

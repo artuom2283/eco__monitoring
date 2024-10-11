@@ -67,14 +67,13 @@ public class ReportRepository : IReportRepository
     public async Task UpdateAsync(Report report)
     {
         var existingReport = await GetByIdAsync(report.Id);
-
-        existingReport.IndustrialFacilityId = report.IndustrialFacilityId;
-        existingReport.PollutionId = report.PollutionId;
+        
         existingReport.Year = report.Year;
         existingReport.Volume = report.Volume;
         existingReport.TaxAmount = report.TaxAmount;
         existingReport.TaxType = report.TaxType;
         existingReport.TaxRate = report.TaxRate;
+        existingReport.TaxAmount = report.TaxAmount;
 
         await _context.SaveChangesAsync();
         

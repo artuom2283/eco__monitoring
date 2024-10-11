@@ -2,7 +2,7 @@
 import {useAppSelector} from "../../app/store/configureStore";
 import React, {useEffect, useState} from "react";
 import {
-    deleteFacilityAsync, fetchFacilitiesAsync,
+    deleteFacilityAsync, fetchFacilitiesAsync, fetchReportsAsync,
     updateFacilityAsync,
 } from "../../features/pollution/pollutionSlice";
 import {IndustrialFacilityDto} from "../../app/models/Facility";
@@ -39,6 +39,7 @@ export const FacilityInfoTable = () => {
             await dispatch(updateFacilityAsync(updatedFacility));
             console.log("Facility updated successfully!");
             await dispatch(fetchFacilitiesAsync());
+            await dispatch(fetchReportsAsync());
         } catch (error) {
             console.log("Failed to update facility.");
         }
@@ -49,6 +50,7 @@ export const FacilityInfoTable = () => {
             await dispatch(deleteFacilityAsync(facilityId));
             console.log("Facility deleted successfully!");
             await dispatch(fetchFacilitiesAsync());
+            await dispatch(fetchReportsAsync());
         } catch (error) {
             console.log("Failed to delete facility.");
         }
