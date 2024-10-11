@@ -1,6 +1,6 @@
 ﻿namespace server.DTOs;
 
-public class ReportDto
+public class UpdateReportDto
 {
     public long Id { get; set; }
     public int Year { get; set; }

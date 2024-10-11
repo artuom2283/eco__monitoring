@@ -4,10 +4,10 @@ namespace server.Services.Interfaces;
 
 public interface IReportService
 {
-    Task AddReport(ReportDto reportDto);
+    Task AddReport(AddReportDto updateReportDto);
     Task DeleteReport(long id);
     Task<IEnumerable<FullReportDto>> GetAllReports();
     Task<IEnumerable<FullReportDto>> GetReportsByName(string name);
     Task<IEnumerable<FullReportDto>> GetSortedReports(string param, string orderBy);
-    Task UpdateReport(ReportDto reportDto);
+    Task UpdateReport(UpdateReportDto updateReportDto);
 }

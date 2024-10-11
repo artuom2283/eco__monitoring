@@ -12,17 +12,20 @@ namespace server.Controllers;
 public class ReportController : ControllerBase
 {
     private readonly IReportService _reportService;
-    private readonly ReportValidator _reportValidator;
+    private readonly UpdateReportValidator _updateReportValidator;
+    private readonly AddReportValidator _addReportValidator;
     private readonly SearchValidator _searchValidator;
 
     public ReportController(
         IReportService reportService,
-        ReportValidator reportValidator,
-        SearchValidator searchValidator)
+        UpdateReportValidator updateReportValidator,
+        SearchValidator searchValidator,
+        AddReportValidator addReportValidator)
     {
         _reportService = reportService;
-        _reportValidator = reportValidator;
+        _updateReportValidator = updateReportValidator;
         _searchValidator = searchValidator;
+        _addReportValidator = addReportValidator;
     }
 
     [HttpGet("reports")]
@@ -73,9 +76,9 @@ public class ReportController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<ActionResult> AddReport(ReportDto reportDto)
+    public async Task<ActionResult> AddReport(AddReportDto updateReportDto)
     {
-        var validationResult = await _reportValidator.ValidateAsync(reportDto);
+        var validationResult = await _addReportValidator.ValidateAsync(updateReportDto);
         if (validationResult.IsValid == false)
             return BadRequest(new ValidationResponse
             {
@@ -83,7 +86,7 @@ public class ReportController : ControllerBase
                 Errors = validationResult.Errors
             });
 
-        await _reportService.AddReport(reportDto);
+        await _reportService.AddReport(updateReportDto);
 
         return Ok();
     }
@@ -92,9 +95,9 @@ public class ReportController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> UpdateReport(ReportDto reportDto)
+    public async Task<ActionResult> UpdateReport(UpdateReportDto updateReportDto)
     {
-        var validationResult = await _reportValidator.ValidateAsync(reportDto);
+        var validationResult = await _updateReportValidator.ValidateAsync(updateReportDto);
         if (validationResult.IsValid == false)
             return BadRequest(new ValidationResponse
             {
@@ -102,7 +105,7 @@ public class ReportController : ControllerBase
                 Errors = validationResult.Errors
             });
 
-        await _reportService.UpdateReport(reportDto);
+        await _reportService.UpdateReport(updateReportDto);
 
         return Ok();
     }

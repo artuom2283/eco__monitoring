@@ -20,9 +20,9 @@ public class ReportService : IReportService
         _mapper = mapper;
     }
 
-    public async Task AddReport(ReportDto reportDto)
+    public async Task AddReport(AddReportDto addReportDto)
     {
-        var reportEntity = _mapper.Map<Report>(reportDto);
+        var reportEntity = _mapper.Map<Report>(addReportDto);
         
         var reportExist = await _reportRepository.GetByParamsAsync(reportEntity);
         if (reportExist != null)
@@ -51,15 +51,15 @@ public class ReportService : IReportService
         return _mapper.Map<IEnumerable<FullReportDto>>(reports);
     }
     
-    public async Task UpdateReport(ReportDto reportDto)
+    public async Task UpdateReport(UpdateReportDto updateReportDto)
     {
-        var report = await _reportRepository.GetByIdAsync(reportDto.Id);
+        var report = await _reportRepository.GetByIdAsync(updateReportDto.Id);
         if (report == null)
         {
             throw new EntityNotFoundException();
         }
         
-        var reportEntity = _mapper.Map<Report>(reportDto);
+        var reportEntity = _mapper.Map<Report>(updateReportDto);
         
         await _reportRepository.UpdateAsync(reportEntity);
     }

@@ -3,10 +3,18 @@ using server.DTOs;
 
 namespace server.Validators;
 
-public class ReportValidator : AbstractValidator<ReportDto>
+public class AddReportValidator : AbstractValidator<AddReportDto>
 {
-    public ReportValidator()
+    public AddReportValidator()
     {
+        RuleFor(x => x.IndustrialFacilityId)
+            .NotEmpty()
+            .GreaterThan(0);
+        
+        RuleFor(x => x.PollutionId)
+            .NotEmpty()
+            .GreaterThan(0);
+        
         RuleFor(p => p.Year)
             .NotEmpty()
             .GreaterThan(0);
