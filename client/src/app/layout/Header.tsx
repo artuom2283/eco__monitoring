@@ -24,7 +24,7 @@ export const Header = () => {
 
     return (
         <header className="header">
-            <h1>{title}</h1>
+            <h1 className="header-title">{title}</h1>
             <nav>
                 <Link to="/" className="nav-link">About</Link>
                 <Link to="/pollution" className="nav-link">Data Management</Link>

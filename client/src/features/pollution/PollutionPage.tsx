@@ -146,123 +146,175 @@ const PollutionPage: React.FC = () => {
     const displayedReports = searchResults.length > 0 ? searchResults : reports;
 
     return (
-        <div>
-            <div className="flex-form">
-                <AddFacilityForm/>
-                <AddPollutionForm/>
+      <div className="page-container">
+        <div className="form-section">
+          <div className="forms-grid">
+            <div className="facility-form">
+              <AddFacilityForm />
             </div>
-            <AddReportForm/>
-            <h1>Reports (Pollution and Facility By Year)</h1>
-            <SearchBar onSearch={handleSearch}/>
-            <div>
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Name of the facility</th>
-                        <th>Name of pollution</th>
-                        <th>
-                            <div className="sorting-buttons">
-                                Year
-                                <AscButton param={SortBy.Year} sort={handleSort}/>
-                                <DescButton param={SortBy.Year} sort={handleSort}/>
-                            </div>
-                        </th>
-                        <th>
-                            <div className="sorting-buttons">
-                                Volume, tons
-                                <AscButton param={SortBy.Volume} sort={handleSort}/>
-                                <DescButton param={SortBy.Volume} sort={handleSort}/>
-                            </div>
-                        </th>
-                        <th>
-                            <div className="sorting-buttons">
-                                Mass Flow Rate, gram/hour
-                                <AscButton param={SortBy.MassFlowRate} sort={handleSort}/>
-                                <DescButton param={SortBy.MassFlowRate}  sort={handleSort}/>
-                            </div>
-                        </th>
-                        <th>
-                            <div className="sorting-buttons">
-                                Emissions Limit, mg/m^3
-                                <AscButton param={SortBy.EmissionsLimit} sort={handleSort}/>
-                                <DescButton param={SortBy.EmissionsLimit} sort={handleSort}/>
-                            </div>
-                        </th>
-                        <th>
-                            <div className="sorting-buttons">
-                                Tax Rate, grn
-                                <AscButton param={SortBy.TaxRate} sort={handleSort}/>
-                                <DescButton param={SortBy.TaxRate} sort={handleSort}/>
-                            </div>
-                        </th>
-                        <th>
-                            Tax Type
-                        </th>
-                        <th>
-                            <div className="sorting-buttons">
-                                Tax Amount, grn
-                                <AscButton param={SortBy.TaxAmount} sort={handleSort}/>
-                                <DescButton param={SortBy.TaxAmount} sort={handleSort}/>
-                            </div>
-                        </th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {displayedReports.map((report: FullReportDto) => (
-                        <tr>
-                            <td>{report.facilityName}</td>
-                            <td>{report.pollutionName}</td>
-                            <td><input
-                                type="text"
-                                value={editReport[report.id]?.year ?? report.year}
-                                onChange={(e) => handleInputChangeReport(report.id, 'year', e.target.value)}
-                            /></td>
-                            <td><input
-                                type="text"
-                                value={editReport[report.id]?.volume ?? report.volume}
-                                onChange={(e) => handleInputChangeReport(report.id, 'volume', e.target.value)}
-                            /></td>
-                            <td><input
-                                type="text"
-                                value={editPollution[report.pollutionName]?.massFlowRate ?? report.massFlowRate}
-                                onChange={(e) => handleInputChange(report.pollutionName, 'massFlowRate', e.target.value)}
-                            /></td>
-                            <td><input
-                                type="text"
-                                value={editPollution[report.pollutionName]?.emissionsLimit ?? report.emissionsLimit}
-                                onChange={(e) => handleInputChange(report.pollutionName, 'emissionsLimit', e.target.value)}
-                            /></td>
-                            <td><input
-                                type="text"
-                                value={editReport[report.id]?.taxRate ?? report.taxRate}
-                                onChange={(e) => handleInputChangeReport(report.id, 'taxRate', e.target.value)}
-                            /></td>
-                            <td>
-                                {report.taxType}
-                            </td>
-                            <td>
-                                <input
-                                    type="text"
-                                    value={editReport[report.id]?.taxAmount ?? report.taxAmount}
-                                    onChange={(e) => handleInputChangeReport(report.id, 'taxAmount', e.target.value)}
-                                /></td>
-                            <td>
-                                <button
-                                    onClick={() => handleSave(report.id)}>Save
-                                </button>
-                                <button onClick={() => handleDelete(report.id)}>Delete</button>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
+            <div className="pollution-form">
+              <AddPollutionForm />
             </div>
-            <FacilityInfoTable/>
-            <PollutionInfoTable/>
-            <TopButton/>
+            <div className="report-form">
+              <AddReportForm />
+            </div>
+          </div>
         </div>
-    );
+    
+        <div className="reports-section">
+          <h1>Reports (Pollution and Facility By Year)</h1>
+          <SearchBar onSearch={handleSearch} />
+          <div className="table-wrapper">
+            <table>
+            <thead>
+                <tr>
+                  <th>Name of the facility</th>
+                  <th>Name of pollution</th>
+                  <th>
+                    <div className="sorting-buttons">
+                      <span>Year</span>
+                      <div className="sort-button-container">
+                        <div className="sort-button">
+                          <AscButton param={SortBy.Year} sort={handleSort} />
+                        </div>
+                        <div className="sort-button">
+                          <DescButton param={SortBy.Year} sort={handleSort} />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th>
+                    <div className="sorting-buttons">
+                      <span>Volume, tons</span>
+                      <div className="sort-button-container">
+                        <div className="sort-button">
+                          <AscButton param={SortBy.Volume} sort={handleSort} />
+                        </div>
+                        <div className="sort-button">
+                          <DescButton param={SortBy.Volume} sort={handleSort} />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th>
+                    <div className="sorting-buttons">
+                      <span>Mass Flow Rate, gram/hour</span>
+                      <div className="sort-button-container">
+                        <div className="sort-button">
+                          <AscButton param={SortBy.MassFlowRate} sort={handleSort} />
+                        </div>
+                        <div className="sort-button">
+                          <DescButton param={SortBy.MassFlowRate} sort={handleSort} />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th>
+                    <div className="sorting-buttons">
+                      <span>Emissions Limit, mg/m^3</span>
+                      <div className="sort-button-container">
+                        <div className="sort-button">
+                          <AscButton param={SortBy.EmissionsLimit} sort={handleSort} />
+                        </div>
+                        <div className="sort-button">
+                          <DescButton param={SortBy.EmissionsLimit} sort={handleSort} />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th>
+                    <div className="sorting-buttons">
+                      <span>Tax Rate, grn</span>
+                      <div className="sort-button-container">
+                        <div className="sort-button">
+                          <AscButton param={SortBy.TaxRate} sort={handleSort} />
+                        </div>
+                        <div className="sort-button">
+                          <DescButton param={SortBy.TaxRate} sort={handleSort} />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th>Tax Type</th>
+                  <th>
+                    <div className="sorting-buttons">
+                      <span>Tax Amount, grn</span>
+                      <div className="sort-button-container">
+                        <div className="sort-button">
+                          <AscButton param={SortBy.TaxAmount} sort={handleSort} />
+                        </div>
+                        <div className="sort-button">
+                          <DescButton param={SortBy.TaxAmount} sort={handleSort} />
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {displayedReports.map((report: FullReportDto) => (
+                  <tr key={report.id}>
+                    <td>{report.facilityName}</td>
+                    <td>{report.pollutionName}</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={editReport[report.id]?.year ?? report.year}
+                        onChange={(e) => handleInputChangeReport(report.id, 'year', e.target.value)}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={editReport[report.id]?.volume ?? report.volume}
+                        onChange={(e) => handleInputChangeReport(report.id, 'volume', e.target.value)}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={editPollution[report.pollutionName]?.massFlowRate ?? report.massFlowRate}
+                        onChange={(e) => handleInputChange(report.pollutionName, 'massFlowRate', e.target.value)}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={editPollution[report.pollutionName]?.emissionsLimit ?? report.emissionsLimit}
+                        onChange={(e) => handleInputChange(report.pollutionName, 'emissionsLimit', e.target.value)}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        value={editReport[report.id]?.taxRate ?? report.taxRate}
+                        onChange={(e) => handleInputChangeReport(report.id, 'taxRate', e.target.value)}
+                      />
+                    </td>
+                    <td>{report.taxType}</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={editReport[report.id]?.taxAmount ?? report.taxAmount}
+                        onChange={(e) => handleInputChangeReport(report.id, 'taxAmount', e.target.value)}
+                      />
+                    </td>
+                    <td>
+                      <button onClick={() => handleSave(report.id)}>Save</button>
+                      <button onClick={() => handleDelete(report.id)}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <FacilityInfoTable />
+          <PollutionInfoTable />
+        </div>
+        <TopButton />
+      </div>
+    );    
 };
 
 export default PollutionPage;

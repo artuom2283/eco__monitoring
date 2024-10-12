@@ -7,7 +7,7 @@ h1, h2 {
 }
 
 table {
-  width: 98%;
+  width: 100%;
   border-collapse: collapse;
   margin: auto;
   margin-bottom: 30px;
@@ -78,7 +78,7 @@ button:active {
   background: none;
   border: none;
   cursor: pointer;
-  margin: 0 5px;
+  margin: 0 3px;
   background-color: #b6b6b6;
   display: flex;
   align-items: center;
@@ -91,7 +91,7 @@ button:active {
 }
 
 .sort-ascending {
-  margin-left: 50px;
+  margin-left: auto;
 }
 
 .sort-button:hover {
@@ -123,7 +123,7 @@ td button:nth-child(2):active {
 }
 
 .add-form {
-  width: 45%;
+  width: 44%;
   height: max-content;
   margin: 20px auto;
   padding: 20px;
@@ -238,4 +238,158 @@ td button:nth-child(2):active {
 .flex-form{
     display: flex;
     justify-content: center;
+}
+
+.form-section {
+  display: grid;
+  grid-template-areas: 
+    "Facility Report"
+    "Pollution Report";
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.forms-grid {
+  display: contents;
+}
+
+select {
+  width: 96%;
+}
+
+.facility-form {
+  grid-area: Facility;
+}
+
+.pollution-form {
+  grid-area: Pollution;
+}
+
+.report-form {
+  align-content: center;
+  grid-area: Report;
+}
+
+.add-forms {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.search-bar {
+  margin-bottom: 40px;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 5px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th:nth-child(1), td:nth-child(1) {
+  width: 10%;
+}
+
+th:nth-child(2), td:nth-child(2) {
+  width: 6%;
+}
+
+th:nth-child(3), td:nth-child(3) {
+  width: 4%;
+}
+
+th:nth-child(4), td:nth-child(4) {
+  width: 4%;
+}
+
+th:nth-child(5), td:nth-child(5) {
+  width: 4%;
+}
+
+th:nth-child(6), td:nth-child(6) {
+  width: 4%;
+}
+
+th:nth-child(7), td:nth-child(7) {
+  width: 4%;
+}
+
+th:nth-child(6), td:nth-child(6) {
+  width: 4%;
+}
+
+th:nth-child(7), td:nth-child(7) {
+  width: 4%;
+}
+
+th:nth-child(8), td:nth-child(8) {
+  width: 6%;
+}
+
+th:nth-child(9), td:nth-child(9) {
+  width: 4%;
+}
+
+th:nth-child(10), td:nth-child(10) {
+  width: 5%; 
+}
+
+.table-wrapper input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+}
+
+.sorting-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sort-button-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+}
+
+.sort-button {
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: 1px solid #b6b6b6;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #b6b6b6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px 0;
+}
+
+.facility-info-table {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.facility-info-table input {
+  width: 80%;
+}
+
+.pollution-info-table {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.pollution-info-table input {
+  width: 80%;
+  overflow-x: auto;
 }

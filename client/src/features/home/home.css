@@ -7,28 +7,12 @@
     min-height: 100vh;
 }
 
-.header {
-    background-color: #4caf50;
-    color: white;
-    padding: 20px;
-    text-align: center;
-}
-
-.header h1 {
-    margin: 0;
-    font-size: 2em;
-}
-
 .nav-link {
     color: white;
     text-decoration: none;
     font-size: 1.2em;
     margin-top: 10px;
     display: block;
-}
-
-.nav-link:hover {
-    text-decoration: underline;
 }
 
 .main {
