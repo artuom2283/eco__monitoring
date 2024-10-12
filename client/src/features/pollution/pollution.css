@@ -242,7 +242,7 @@ td button:nth-child(2):active {
 
 .form-section {
   display: grid;
-  grid-template-areas: 
+  grid-template-areas:
     "Facility Report"
     "Pollution Report";
   grid-template-columns: 1fr 1fr;
@@ -257,6 +257,11 @@ td button:nth-child(2):active {
 
 select {
   width: 96%;
+}
+
+.forms-flex {
+  display: flex;
+  flex-direction: column;
 }
 
 .facility-form {

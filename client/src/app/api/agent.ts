@@ -1,7 +1,30 @@
-import axios, { AxiosResponse } from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
+import { toast } from "react-toastify";
 
 axios.defaults.baseURL = `http://localhost:8080/api/`;
 axios.defaults.withCredentials = true;
+axios.interceptors.response.use(null, error => {
+    const expectedError =
+        error.response &&
+        error.response >= 400 &&
+        error.response < 500;
+
+    if(!expectedError){
+        toast.error("An unexpected error occured!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        })
+    }
+
+    return Promise.reject(error)
+})
+
 const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {
