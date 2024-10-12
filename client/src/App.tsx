@@ -7,22 +7,27 @@ import { Header } from './app/layout/Header';
 import { Footer } from './app/layout/Footer';
 import { Provider } from 'react-redux';
 import { store } from './app/store/configureStore';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 
 const App: React.FC = () => {
     return (
-        <Provider store={store}>
-            <Router>
-                <Header/>
-                <div className="App">
-                    <Routes>
-                        <Route path="/" element={<HomePage/>}/>
-                        <Route path="/pollution" element={<PollutionPage/>}/>
-                        <Route path="/calculation" element={<CalculationPage/>}/>
-                    </Routes>
-                </div>
-                <Footer/>
-            </Router>
-        </Provider>
+        <>
+            <Provider store={store}>
+                <ToastContainer position="bottom-right" hideProgressBar theme="colored" />
+                <Router>
+                    <Header />
+                    <div className="App">
+                        <Routes>
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/pollution" element={<PollutionPage />} />
+                            <Route path="/calculation" element={<CalculationPage />} />
+                        </Routes>
+                    </div>
+                    <Footer />
+                </Router>
+            </Provider >
+        </>
     );
 };
 
