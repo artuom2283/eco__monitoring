@@ -2,6 +2,7 @@
 import {PollutionDto} from "../../app/models/Pollution";
 import {addPollutionAsync, fetchPollutionsAsync} from "../../features/pollution/pollutionSlice";
 import {useAppDispatch} from "../../app/store/configureStore";
+import {SuccessNotification} from "../SuccessNotification";
 
 export const AddPollutionForm = () => {
     const dispatch = useAppDispatch();
@@ -24,7 +25,8 @@ export const AddPollutionForm = () => {
     const handleAddPollution = async () => {
         try {
             console.log("Adding new pollution:", newPollution);
-            await dispatch(addPollutionAsync(newPollution));
+            await dispatch(addPollutionAsync(newPollution)).unwrap();
+            SuccessNotification();
             console.log("New pollution added successfully!");
             setNewPollution({
                 id: 0,

@@ -1,4 +1,5 @@
 ﻿import React, { useState } from "react";
+import {SuccessNotification} from "./SuccessNotification";
 
 interface SearchBarProps {
     onSearch: (searchTerm: string) => void;
@@ -14,6 +15,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 
     const handleSearch = () => {
         onSearch(searchTerm);
+        setSearchTerm('');
     };
 
     return (

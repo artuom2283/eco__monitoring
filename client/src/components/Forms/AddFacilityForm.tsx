@@ -2,7 +2,7 @@
 import {IndustrialFacilityDto} from "../../app/models/Facility";
 import {addFacilityAsync, fetchFacilitiesAsync} from "../../features/pollution/pollutionSlice";
 import {useAppDispatch} from "../../app/store/configureStore";
-
+import {SuccessNotification} from "../SuccessNotification";
 
 export const AddFacilityForm = ({}) => {
     const dispatch = useAppDispatch();
@@ -22,7 +22,8 @@ export const AddFacilityForm = ({}) => {
     const handleAddFacility = async () => {
         try {
             console.log("Adding new facility:", newFacility);
-            await dispatch(addFacilityAsync(newFacility));
+            await dispatch(addFacilityAsync(newFacility)).unwrap();
+            SuccessNotification();
             console.log("New pollution added successfully!");
             setNewFacility({
                 id: 0,

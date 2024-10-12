@@ -6,6 +6,7 @@ import {
     updateFacilityAsync,
 } from "../../features/pollution/pollutionSlice";
 import {IndustrialFacilityDto} from "../../app/models/Facility";
+import {SuccessNotification} from "../SuccessNotification";
 
 export const FacilityInfoTable = () => {
     const dispatch = useDispatch<any>();
@@ -36,7 +37,8 @@ export const FacilityInfoTable = () => {
                 name: editFacilityNames[facilityId] || facility.name,
             };
 
-            await dispatch(updateFacilityAsync(updatedFacility));
+            await dispatch(updateFacilityAsync(updatedFacility)).unwrap();
+            SuccessNotification();
             console.log("Facility updated successfully!");
             await dispatch(fetchFacilitiesAsync());
             await dispatch(fetchReportsAsync());
@@ -47,7 +49,8 @@ export const FacilityInfoTable = () => {
 
     const handleDelete = async (facilityId: number) => {
         try {
-            await dispatch(deleteFacilityAsync(facilityId));
+            await dispatch(deleteFacilityAsync(facilityId)).unwrap();
+            SuccessNotification();
             console.log("Facility deleted successfully!");
             await dispatch(fetchFacilitiesAsync());
             await dispatch(fetchReportsAsync());

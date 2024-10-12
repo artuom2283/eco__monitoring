@@ -6,6 +6,7 @@ import {
     updatePollutionAsync,
 } from "../../features/pollution/pollutionSlice";
 import {PollutionDto} from "../../app/models/Pollution";
+import {SuccessNotification} from "../SuccessNotification";
 
 export const PollutionInfoTable = () => {
     const dispatch = useDispatch<any>();
@@ -39,7 +40,8 @@ export const PollutionInfoTable = () => {
                 ...editPollution[pollutionId],
             };
 
-            await dispatch(updatePollutionAsync(updatedPollution));
+            await dispatch(updatePollutionAsync(updatedPollution)).unwrap();
+            SuccessNotification();
             console.log("Pollution updated successfully!");
             await dispatch(fetchPollutionsAsync());
             await dispatch(fetchReportsAsync());
@@ -50,7 +52,8 @@ export const PollutionInfoTable = () => {
 
     const handleDelete = async (pollutionId: number) => {
         try {
-            await dispatch(deletePollutionAsync(pollutionId));
+            await dispatch(deletePollutionAsync(pollutionId)).unwrap();
+            SuccessNotification();
             console.log("Pollution deleted successfully!");
             await dispatch(fetchPollutionsAsync());
             await dispatch(fetchReportsAsync());

@@ -4,6 +4,7 @@ import {ReportDto} from "../../app/models/Report";
 import {addReportAsync, fetchPollutionsAsync, fetchReportsAsync} from "../../features/pollution/pollutionSlice";
 import {PollutionDto} from "../../app/models/Pollution";
 import {IndustrialFacilityDto} from "../../app/models/Facility";
+import {SuccessNotification} from "../SuccessNotification";
 
 export const AddReportForm = () => {
     const dispatch = useAppDispatch();
@@ -60,7 +61,8 @@ export const AddReportForm = () => {
         try {
             console.log("Adding new report:", newReport);
             newReport.taxAmount = calculateTaxAmount();
-            await dispatch(addReportAsync(newReport));
+            await dispatch(addReportAsync(newReport)).unwrap();
+            SuccessNotification();
             console.log("New report added successfully!");
             setNewReport({
                 id: 0,

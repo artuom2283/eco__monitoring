@@ -22,6 +22,7 @@ import {SortBy} from "../../app/Enums/SortBy";
 import {AscButton} from "../../components/Buttons/AscButton";
 import {DescButton} from "../../components/Buttons/DescButton";
 import {PollutionDto} from "../../app/models/Pollution";
+import {SuccessNotification} from "../../components/SuccessNotification";
 
 const PollutionPage: React.FC = () => {
     const dispatch = useDispatch<any>();
@@ -52,9 +53,11 @@ const PollutionPage: React.FC = () => {
         if (searchTerm.trim()) {
             const result = await dispatch(fetchReportsByNameAsync(searchTerm));
             setSearchResults(result.payload || []);
+            SuccessNotification();
         } else {
             setSearchResults([]);
             await dispatch(fetchReportsAsync());
+            SuccessNotification();
         }
     };
 
@@ -75,7 +78,7 @@ const PollutionPage: React.FC = () => {
                 };
 
                 console.log("Saving pollution data:", updatedPollution);
-                await dispatch(updatePollutionAsync(updatedPollution));
+                await dispatch(updatePollutionAsync(updatedPollution)).unwrap();
                 console.log("Changes saved successfully!");
                 await dispatch(fetchPollutionsAsync());
                 await dispatch(fetchReportsAsync());
@@ -88,7 +91,8 @@ const PollutionPage: React.FC = () => {
                 ...editReport[reportId],
             };
             console.log("Saving report data:", updatedReport);
-            await dispatch(updateReportAsync(updatedReport));
+            await dispatch(updateReportAsync(updatedReport)).unwrap();
+            SuccessNotification();
             console.log("Changes saved successfully!");
             await dispatch(fetchReportsAsync());
         } catch (error) {
@@ -99,9 +103,10 @@ const PollutionPage: React.FC = () => {
 
     const handleDelete = async (reportId: number) => {
         try {
-            await dispatch(deleteReportAsync(reportId));
+            await dispatch(deleteReportAsync(reportId)).unwrap();
             console.log("Report deleted successfully!");
             await dispatch(fetchReportsAsync());
+            SuccessNotification();
         } catch (error) {
             console.log("Failed to delete report.");
         }
