@@ -66,19 +66,19 @@ export const FacilityInfoTable = () => {
                 <thead>
                 <tr>
                     <th>Facility Name</th>
-                    <th>Actions</th>
+                    <th className="actions-column">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 {facilities?.map((facility: IndustrialFacilityDto) => (
-                    <tr key={facility.id}>
-                        <td>
+                    <tr className="facility-info-table__inside" key={facility.id}>
+                        <td className="facility-info-table__input">
                             <input
                                 type="text"
                                 value={editFacilityNames[facility.id] || facility.name}
                                 onChange={(e) => handleInputChange(facility.id, e.target.value)}/>
                         </td>
-                        <td>
+                        <td className="actions-column">
                             <button onClick={() => handleSave(facility.id)}>
                                 Save
                             </button>

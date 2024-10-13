@@ -311,6 +311,7 @@ export const AddReportForm = () => {
             <h2>Add New Report</h2>
             <label htmlFor="facility-id">Facility Name:</label>
             <select
+                className="select-css"
                 id="facility-id"
                 value={newReport.industrialFacilityId}
                 onChange={(e) => handleAddReportChange('industrialFacilityId', parseInt(e.target.value))}
@@ -324,6 +325,7 @@ export const AddReportForm = () => {
             </select>
             <label htmlFor="pollution-id">Pollution Name:</label>
             <select
+                className="select-css"
                 id="pollution-id"
                 value={newReport.pollutionId}
                 onChange={(e) => handleAddReportChange('pollutionId', parseInt(e.target.value))}
@@ -361,6 +363,7 @@ export const AddReportForm = () => {
             />
             <label htmlFor="report-taxType">Tax Type:</label>
             <select
+                className="select-css"
                 id={"report-taxType"}
                 value={newReport.taxType}
                 onChange={(e) => handleAddReportChange('taxType', e.target.value)}
