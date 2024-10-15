@@ -33,6 +33,31 @@ const PollutionPage: React.FC = () => {
     const pollutions = useAppSelector(state => state.pollution.pollutions);
     const [_, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
+    const [showScrollToTop, setShowScrollToTop] = useState(false);
+
+    const handleScroll = () => {
+        if (window.scrollY > 300) {
+            setShowScrollToTop(true);
+        } else {
+            setShowScrollToTop(false);
+        }
+    };
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     console.log(reports);
 
     const [searchResults, setSearchResults] = useState<FullReportDto[]>([]);
@@ -315,12 +340,19 @@ const PollutionPage: React.FC = () => {
                         ))}
                         </tbody>
                     </table>
+                  <div className="page-container">
+                    {showScrollToTop && (
+                      <button className="scroll-to-top" onClick={scrollToTop}>
+                        Top
+                      </button>
+                  )}
+                  </div>
                 </div>
                 <FacilityInfoTable/>
                 <PollutionInfoTable/>
             </div>
-            <TopButton/>
-        </div>
+            {/* <TopButton/> */}
+        </div>  
     );
 };
 

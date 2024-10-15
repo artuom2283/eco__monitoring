@@ -441,4 +441,35 @@ th:nth-child(10), td:nth-child(10) {
    *[dir="rtl"] .select-css, :root:lang(ar) .select-css, :root:lang(iw) .select-css { 
   background-position: left .7em top 50%, 0 0; 
   padding: .6em .8em .5em 1.4em; 
-  }
+}
+
+.scroll-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background-color: #ff6347;
+  color: white;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  z-index: 1000;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.scroll-to-top:hover {
+  opacity: 1;
+  background-color: #ff4500;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+  transform: scale(1.05);
+}
+
+.scroll-to-top:active {
+  transform: scale(0.95);
+}
+
+
