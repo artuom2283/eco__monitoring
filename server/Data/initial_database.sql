@@ -1,4 +1,47 @@
-﻿-- Додаємо виробництва
+﻿CREATE TABLE tax_sum_amount (
+id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+facility_name VARCHAR(255) NOT NULL,
+year INTEGER NOT NULL,
+total_tax_amount REAL,
+UNIQUE (facility_name, year)
+);
+
+CREATE OR REPLACE FUNCTION update_tax_sum()
+RETURNS TRIGGER AS $$
+DECLARE
+facility_name_record VARCHAR(255);
+BEGIN
+SELECT name INTO facility_name_record
+FROM industrial_facilities
+WHERE id = NEW.industrial_facility_id;
+
+IF EXISTS (SELECT 1 FROM tax_sum_amount WHERE facility_name = facility_name_record AND year = NEW.year) THEN
+UPDATE tax_sum_amount
+SET total_tax_amount = total_tax_amount + NEW.tax_amount
+WHERE facility_name = facility_name_record AND year = NEW.year;
+ELSE
+        INSERT INTO tax_sum_amount (facility_name, year, total_tax_amount)
+        VALUES (facility_name_record, NEW.year, NEW.tax_amount);
+END IF;
+RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER Reports_Insert_TaxSum_Trigger
+    AFTER INSERT ON reports
+    FOR EACH ROW
+    EXECUTE FUNCTION update_tax_sum();
+
+CREATE TABLE calculations(
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    substance_name TEXT,
+    calculation_type TEXT,
+    result INT
+);
+
+
+-- Додаємо виробництва
 INSERT INTO industrial_facilities(name) VALUES ('ПАТ «АрселорМіттал Кривий Ріг»');
 INSERT INTO industrial_facilities(name) VALUES ('АТ «Південний гірничо - збагачувальний комбінат»');
 INSERT INTO industrial_facilities(name) VALUES ('ДТЕК «Придніпровська ТЕС»');
@@ -8,7 +51,6 @@ INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class) VALU
 INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class) VALUES ('Сірки діоксид', 5000, 500, 4);
 INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class) VALUES ('Оксид вуглецю', 5000, 250, 4);
 INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class) VALUES ('Речовини у вигляді суспендованих твердих частинок ', 500, 50, 0);
-
 
 -- Звіти 
 -- 2023 рік

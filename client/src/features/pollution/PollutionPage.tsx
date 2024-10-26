@@ -281,6 +281,19 @@ const PollutionPage: React.FC = () => {
                                     </div>
                                 </div>
                             </th>
+                            <th>
+                                <div className="sorting-buttons">
+                                    <span>Tax by Year, grn</span>
+                                    <div className="sort-button-container">
+                                        <div className="sort-button">
+                                            <AscButton param={SortBy.TaxByYear} sort={handleSort}/>
+                                        </div>
+                                        <div className="sort-button">
+                                            <DescButton param={SortBy.TaxByYear} sort={handleSort}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
                             <th>Actions</th>
                         </tr>
                         </thead>
@@ -332,6 +345,7 @@ const PollutionPage: React.FC = () => {
                                         onChange={(e) => handleInputChangeReport(report.id, 'taxAmount', e.target.value)}
                                     />
                                 </td>
+                                <td>{report.taxByYear}</td>
                                 <td>
                                     <button onClick={() => handleSave(report.id)}>Save</button>
                                     <button onClick={() => handleDelete(report.id)}>Delete</button>

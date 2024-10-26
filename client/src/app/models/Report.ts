@@ -19,4 +19,5 @@ export interface FullReportDto{
     taxRate: number;
     taxType: string;
     taxAmount: number;
+    taxByYear: number;
 }

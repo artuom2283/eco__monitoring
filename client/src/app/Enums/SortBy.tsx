@@ -5,4 +5,5 @@
     EmissionsLimit: 'pollutions.emissions_limit',
     TaxRate: 'reports.tax_rate',
     TaxAmount: 'reports.tax_amount',
+    TaxByYear: 'tax_sum_amount.total_tax_amount'
 };

@@ -12,4 +12,5 @@ public class FullReportDto
     public string TaxType { get; set; }
     public float TaxRate { get; set; }
     public float TaxAmount { get; set; }
+    public float TaxByYear { get; set; }
 }

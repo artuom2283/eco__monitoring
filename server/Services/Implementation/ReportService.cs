@@ -4,6 +4,7 @@ using server.Entities;
 using server.Exceptions;
 using server.Repository.Interfaces;
 using server.Services.Interfaces;
+using server.Validators;
 
 namespace server.Services;
 
@@ -11,13 +12,16 @@ public class ReportService : IReportService
 {
     private readonly IReportRepository _reportRepository;
     private readonly IMapper _mapper;
+    private readonly SortValidator _sortValidator;
 
     public ReportService(
         IReportRepository reportRepository,
-        IMapper mapper)
+        IMapper mapper,
+        SortValidator sortValidator)
     {
         _reportRepository = reportRepository;
         _mapper = mapper;
+        _sortValidator = sortValidator;
     }
 
     public async Task AddReport(AddReportDto addReportDto)
@@ -78,13 +82,7 @@ public class ReportService : IReportService
     
     public async Task<IEnumerable<FullReportDto>> GetSortedReports(string param, string orderBy)
     {
-        var validParams = new List<string> { "reports.year", "reports.volume", "pollutions.mass_flow_rate", "pollutions.emissions_limit", "reports.tax_rate", "reports.tax_amount" };
-        var validOrder = new List<string> { "ASC", "DESC" };
-            
-        if (!validParams.Contains(param.ToLower()) || !validOrder.Contains(orderBy.ToUpper()))
-        {
-            throw new ArgumentException("Invalid parameters");
-        }
+        _sortValidator.ValidateParams(param, orderBy);
         
         var reports = await _reportRepository.GetSortedAsync(param, orderBy);
         

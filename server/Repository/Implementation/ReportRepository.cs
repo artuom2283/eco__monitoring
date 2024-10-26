@@ -90,11 +90,15 @@ public class ReportRepository : IReportRepository
             }
 
             var sqlQuery = @"
-                SELECT public.reports.id as Id, public.industrial_facilities.name as FacilityName, public.pollutions.name as PollutionName, public.reports.year as Year, public.reports.volume as Volume,
+                SELECT public.reports.id as Id, public.industrial_facilities.name as FacilityName, public.pollutions.name as PollutionName,
+     public.reports.year as Year, public.reports.volume as Volume,
        public.pollutions.mass_flow_rate as MassFlowRate, public.pollutions.emissions_limit as EmissionsLimit,
-       public.reports.tax_type as TaxType, public.reports.tax_rate as TaxRate, public.reports.tax_amount as TaxAmount
+       public.reports.tax_type as TaxType, public.reports.tax_rate as TaxRate, public.reports.tax_amount as TaxAmount,
+     public.tax_sum_amount.total_tax_amount as TaxByYear
 FROM reports JOIN public.pollutions on  pollutions.id = reports.pollution_id
              JOIN public.industrial_facilities on industrial_facilities.id = reports.industrial_facility_id
+       JOIN public.tax_sum_amount on industrial_facilities.name = tax_sum_amount.facility_name 
+       AND public.reports.year = tax_sum_amount.year
 ORDER BY reports.id ASC;";
 
             return await connection.QueryAsync<FullReportDto>(sqlQuery);
@@ -111,11 +115,15 @@ ORDER BY reports.id ASC;";
             }
 
             var sqlQuery = @"
-                SELECT public.reports.id as Id, public.industrial_facilities.name as FacilityName, public.pollutions.name as PollutionName, public.reports.year as Year, public.reports.volume as Volume,
+                SELECT public.reports.id as Id, public.industrial_facilities.name as FacilityName, public.pollutions.name as PollutionName,
+		public.reports.year as Year, public.reports.volume as Volume,
        public.pollutions.mass_flow_rate as MassFlowRate, public.pollutions.emissions_limit as EmissionsLimit,
-       public.reports.tax_type as TaxType, public.reports.tax_rate as TaxRate, public.reports.tax_amount as TaxAmount
+       public.reports.tax_type as TaxType, public.reports.tax_rate as TaxRate, public.reports.tax_amount as TaxAmount,
+     public.tax_sum_amount.total_tax_amount as TaxByYear
 FROM reports JOIN public.pollutions on  pollutions.id = reports.pollution_id
              JOIN public.industrial_facilities on industrial_facilities.id = reports.industrial_facility_id
+			 JOIN public.tax_sum_amount on industrial_facilities.name = tax_sum_amount.facility_name 
+       		AND public.reports.year = tax_sum_amount.year
              WHERE public.industrial_facilities.name = @name OR public.pollutions.name = @name
 ORDER BY reports.id ASC;";
 
@@ -135,9 +143,11 @@ ORDER BY reports.id ASC;";
             var sqlQuery = @"
                 SELECT public.reports.id as Id, public.industrial_facilities.name as FacilityName, public.pollutions.name as PollutionName, public.reports.year as Year, public.reports.volume as Volume,
        public.pollutions.mass_flow_rate as MassFlowRate, public.pollutions.emissions_limit as EmissionsLimit,
-       public.reports.tax_type as TaxType, public.reports.tax_rate as TaxRate, public.reports.tax_amount as TaxAmount
+       public.reports.tax_type as TaxType, public.reports.tax_rate as TaxRate, public.reports.tax_amount as TaxAmount, public.tax_sum_amount.total_tax_amount as TaxByYear
 FROM reports JOIN public.pollutions on  pollutions.id = reports.pollution_id
-             JOIN public.industrial_facilities on industrial_facilities.id = reports.industrial_facility_id";
+             JOIN public.industrial_facilities on industrial_facilities.id = reports.industrial_facility_id
+             JOIN public.tax_sum_amount on industrial_facilities.name = tax_sum_amount.facility_name 
+       AND public.reports.year = tax_sum_amount.year";
 
             sqlQuery += $" ORDER BY {param} {orderBy};";
 

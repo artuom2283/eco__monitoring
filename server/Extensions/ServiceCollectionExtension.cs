@@ -64,6 +64,7 @@ public static class ServiceCollectionExtension
         var assembly = typeof(Program).Assembly;
 
         services.AddValidatorsFromAssembly(assembly);
+        services.AddScoped<SortValidator>();
 
         return services;
     }
