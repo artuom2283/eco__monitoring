@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState} from 'react';
 import './pollution.css';
 import '../../App.css';
 import {useAppSelector} from '../../app/store/configureStore';
@@ -364,7 +364,6 @@ const PollutionPage: React.FC = () => {
                 <FacilityInfoTable/>
                 <PollutionInfoTable/>
             </div>
-            {/* <TopButton/> */}
         </div>  
     );
 };

@@ -3,9 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../app/store/configureStore";
 import {
     addRiskAsync,
-    fetchFacilitiesAsync,
-    fetchPollutionsAsync,
-    fetchReportsAsync,
     fetchRisksAsync
 } from "../pollution/pollutionSlice";
 import {SuccessNotification} from "../../components/SuccessNotification";
@@ -13,11 +10,6 @@ import {RiskDto} from "../../app/models/Risk";
 import {RiskInfoTable} from "../../components/Tables/RiskInfoTable";
 
 const CalculationPage = () => {
-
-    const [cancerRisk, setCancerRisk] = useState<number | null>(null);
-    const [nonCancerRisk, setNonCancerRisk] = useState<number | null>(null);
-    const [LADD, setLADD] = useState<number | null>(null);
-
     const [C, setC] = useState<number>(0);
     const [CR, setCR] = useState<number>(0);
     const [EF, setEF] = useState<number>(0);

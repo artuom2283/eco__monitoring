@@ -1,6 +1,6 @@
 ﻿import {useDispatch} from "react-redux";
 import {useAppSelector} from "../../app/store/configureStore";
-import React, {useState} from "react";
+import React from "react";
 import {deleteRiskAsync, fetchRisksAsync} from "../../features/pollution/pollutionSlice";
 import {SuccessNotification} from "../SuccessNotification";
 import {RiskDto} from "../../app/models/Risk";
@@ -11,15 +11,6 @@ export const RiskInfoTable = () => {
     const risks = useAppSelector((state: any) => state.pollution.risks);
 
     console.log(risks);
-
-    const [editFacilityNames, setEditFacilityNames] = useState<{ [key: number]: string }>({});
-
-    const handleInputChange = (id: number, value: string) => {
-        setEditFacilityNames((prevValues) => ({
-            ...prevValues,
-            [id]: value,
-        }));
-    };
 
     const handleDelete = async (riskId: number) => {
         try {

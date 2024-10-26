@@ -1,7 +1,7 @@
 ﻿import {useAppDispatch, useAppSelector} from "../../app/store/configureStore";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {ReportDto} from "../../app/models/Report";
-import {addReportAsync, fetchPollutionsAsync, fetchReportsAsync} from "../../features/pollution/pollutionSlice";
+import {addReportAsync, fetchReportsAsync} from "../../features/pollution/pollutionSlice";
 import {PollutionDto} from "../../app/models/Pollution";
 import {IndustrialFacilityDto} from "../../app/models/Facility";
 import {SuccessNotification} from "../SuccessNotification";

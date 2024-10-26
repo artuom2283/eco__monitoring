@@ -1,5 +1,4 @@
 ﻿import React, { useState } from "react";
-import {SuccessNotification} from "./SuccessNotification";
 
 interface SearchBarProps {
     onSearch: (searchTerm: string) => void;
