@@ -12,11 +12,10 @@ import {
 import {AddFacilityForm} from "../../components/Forms/AddFacilityForm";
 import {AddPollutionForm} from "../../components/Forms/AddPollutionForm";
 import {SearchBar} from "../../components/SearchBar";
-import {TopButton} from "../../components/Buttons/TopButton";
 import {FacilityInfoTable} from "../../components/Tables/FacilityInfoTable";
 import {AddReportForm} from "../../components/Forms/AddReportForm";
 import {PollutionInfoTable} from "../../components/Tables/PollutionInfoTable";
-import {FullReportDto, ReportDto} from "../../app/models/Report";
+import {FullReportDto} from "../../app/models/Report";
 import {useDispatch} from "react-redux";
 import {SortBy} from "../../app/Enums/SortBy";
 import {AscButton} from "../../components/Buttons/AscButton";

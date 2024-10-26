@@ -77,7 +77,6 @@ const Facilities = {
 
 const Reports = {
     getReports: () => requests.get("reports"),
-    getReport: (id: number) => requests.get(`reports/${id}`),
     addReport: (body: object) => requests.post("reports", body),
     delReport: (id: number) => requests.del(`reports/${id}`),
     putReport: (body: object) => requests.put("reports", body),
@@ -85,10 +84,17 @@ const Reports = {
     getSortedReports: (param: string, orderBy: string) => requests.get(`reports/sort/${param}-${orderBy}`)
 }
 
+const Risks = {
+    getRisks: () => requests.get("risks"),
+    addRisk: (body: object) => requests.post("risks", body),
+    delRisk: (id: number) => requests.del(`risks/${id}`),
+}
+
 const agent = {
     Pollution,
     Facilities,
-    Reports
+    Reports,
+    Risks
 }
 
 export default agent;

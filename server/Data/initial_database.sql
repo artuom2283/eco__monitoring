@@ -33,14 +33,6 @@ CREATE TRIGGER Reports_Insert_TaxSum_Trigger
     FOR EACH ROW
     EXECUTE FUNCTION update_tax_sum();
 
-CREATE TABLE calculations(
-    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    substance_name TEXT,
-    calculation_type TEXT,
-    result INT
-);
-
-
 -- Додаємо виробництва
 INSERT INTO industrial_facilities(name) VALUES ('ПАТ «АрселорМіттал Кривий Ріг»');
 INSERT INTO industrial_facilities(name) VALUES ('АТ «Південний гірничо - збагачувальний комбінат»');
