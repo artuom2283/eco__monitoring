@@ -39,6 +39,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IPollutionRepository, PollutionRepository>();
         services.AddScoped<IIndustrialFacilityRepository, IndustrialFacilityRepository>();
         services.AddScoped<IReportRepository, ReportRepository>();
+        services.AddScoped<IRiskRepository, RiskRepository>();
 
         return services;
     }
@@ -48,6 +49,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IPollutionService, PollutionService>();
         services.AddScoped<IIndustrialFacilityService, IndustrialFacilityService>();
         services.AddScoped<IReportService, ReportService>();
+        services.AddScoped<IRiskService, RiskService>();
 
         return services;
     }
