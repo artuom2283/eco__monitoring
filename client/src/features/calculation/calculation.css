@@ -1,0 +1,77 @@
+.calculation-main {
+  max-width: 450px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin: 30px auto;
+}
+
+.calculation-title {
+  font-size: 1.5rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  max-width: 80%;
+}
+
+.calculation-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.calculation-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.calculation-label {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.calculation-input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: border-color 0.3s;
+}
+
+.calculation-input:focus {
+  border-color: #007BFF;
+  outline: none;
+}
+
+.calculation-button {
+  font-size: 1rem;
+}
+
+.calculation-result {
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 10px;
+  text-align: center;
+  color: #333;
+  font-weight: bold;
+}
+
+@media (max-width: 600px) {
+  .calculation-main {
+      max-width: 90%;
+  }
+
+  .calculation-title {
+      font-size: 1.2rem;
+  }
+}
