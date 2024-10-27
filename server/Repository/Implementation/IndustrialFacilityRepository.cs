@@ -15,20 +15,15 @@ namespace server.Repository
     public class IndustrialFacilityRepository : IIndustrialFacilityRepository
     {
         private readonly DatabaseContext _context;
-        private readonly ILogger<IndustrialFacilityRepository> _logger;
 
-        public IndustrialFacilityRepository(DatabaseContext context,
-            ILogger<IndustrialFacilityRepository> logger)
+        public IndustrialFacilityRepository(DatabaseContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public async Task<IEnumerable<IndustrialFacility>> GetAllAsync()
         {
             var facilities =  await _context.Facilities.ToListAsync();
-            
-            _logger.LogInformation("Facilities were fetched from the database");
             
             return facilities;
         }
@@ -37,16 +32,12 @@ namespace server.Repository
         {
             _context.Facilities.Add(facility);
             await _context.SaveChangesAsync();
-            
-            _logger.LogInformation("Facility was added to the database");
         }
 
         public async Task DeleteAsync(IndustrialFacility facility)
         {
             _context.Facilities.Remove(facility);
             await _context.SaveChangesAsync();
-            
-            _logger.LogInformation("Facility was deleted from the database");
         }
 
         public async Task UpdateAsync(IndustrialFacility facility)
@@ -56,15 +47,11 @@ namespace server.Repository
             existingFacility.Name = facility.Name;
             
             await _context.SaveChangesAsync();
-            
-            _logger.LogInformation("Facility was updated in the database");
         }
 
         public async Task<IndustrialFacility> GetByIdAsync(long id)
         {
             var facility =  await _context.Facilities.FindAsync(id);
-            
-            _logger.LogInformation("Facility was fetched from the database");
             
             return facility;
         }
@@ -73,16 +60,12 @@ namespace server.Repository
         {
             var facility = await _context.Facilities.FirstOrDefaultAsync(f => f.Name == name);
             
-            _logger.LogInformation("Facility was fetched from the database by name");
-            
             return facility;
         }
         
         public async Task<long> GetFacilityIdByNameAsync(string name)
         {
-            var facility = await _context.Facilities.FirstOrDefaultAsync(f => f.Name == name);
-            
-            _logger.LogInformation("Facility id was fetched from the database by name");
+            var facility = await GetByNameAsync(name);
             
             return facility.Id;
         }

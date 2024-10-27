@@ -34,6 +34,7 @@ public class RiskService : IRiskService
         }
         
         await _riskRepository.InsertAsync(risk);
+        
         _logger.LogInformation("Risk added");
     }
 
@@ -46,12 +47,14 @@ public class RiskService : IRiskService
         }
         
         await _riskRepository.DeleteAsync(riskExist);
+        
         _logger.LogInformation("Risk deleted");
     }
 
     public async Task<IEnumerable<RiskDto>> GetAllRisks()
     {
         var risks=  await _riskRepository.GetAllAsync();
+        
         _logger.LogInformation("Risks retrieved");
         
         return _mapper.Map<IEnumerable<RiskDto>>(risks);

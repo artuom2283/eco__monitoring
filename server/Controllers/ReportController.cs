@@ -76,9 +76,9 @@ public class ReportController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<ActionResult> AddReport(AddReportDto updateReportDto)
+    public async Task<ActionResult> AddReport(AddReportDto addReportDto)
     {
-        var validationResult = await _addReportValidator.ValidateAsync(updateReportDto);
+        var validationResult = await _addReportValidator.ValidateAsync(addReportDto);
         if (validationResult.IsValid == false)
             return BadRequest(new ValidationResponse
             {
@@ -86,7 +86,7 @@ public class ReportController : ControllerBase
                 Errors = validationResult.Errors
             });
 
-        await _reportService.AddReport(updateReportDto);
+        await _reportService.AddReport(addReportDto);
 
         return Ok();
     }

@@ -13,15 +13,18 @@ public class ReportService : IReportService
     private readonly IReportRepository _reportRepository;
     private readonly IMapper _mapper;
     private readonly SortValidator _sortValidator;
+    private readonly ILogger<ReportService> _logger;
 
     public ReportService(
         IReportRepository reportRepository,
         IMapper mapper,
-        SortValidator sortValidator)
+        SortValidator sortValidator,
+        ILogger<ReportService> logger)
     {
         _reportRepository = reportRepository;
         _mapper = mapper;
         _sortValidator = sortValidator;
+        _logger = logger;
     }
 
     public async Task AddReport(AddReportDto addReportDto)
@@ -35,6 +38,8 @@ public class ReportService : IReportService
         }
 
         await _reportRepository.InsertAsync(reportEntity);
+        
+        _logger.LogInformation($"Adding report to database: {reportEntity.Id}");
     }
     
     public async Task DeleteReport(long id)
@@ -46,11 +51,15 @@ public class ReportService : IReportService
         }
         
         await _reportRepository.DeleteAsync(report);
+        
+        _logger.LogInformation($"Deleting report from database: {id}");
     }
     
     public async Task<IEnumerable<FullReportDto>> GetAllReports()
     {
         var reports = await _reportRepository.GetAllAsync();
+        
+        _logger.LogInformation($"Retrieving all reports from database: {reports.Count()}");
         
         return _mapper.Map<IEnumerable<FullReportDto>>(reports);
     }
@@ -66,6 +75,8 @@ public class ReportService : IReportService
         var reportEntity = _mapper.Map<Report>(updateReportDto);
         
         await _reportRepository.UpdateAsync(reportEntity);
+        
+        _logger.LogInformation($"Updating report from database: {updateReportDto.Id}");
     }
     
     public async Task<IEnumerable<FullReportDto>> GetReportsByName(string name)
@@ -77,6 +88,8 @@ public class ReportService : IReportService
         
         var reports = await _reportRepository.GetAllByNameAsync(name);
         
+        _logger.LogInformation($"Retrieving reports by name from database: {name}");
+        
         return _mapper.Map<IEnumerable<FullReportDto>>(reports);
     }
     
@@ -85,6 +98,8 @@ public class ReportService : IReportService
         _sortValidator.ValidateParams(param, orderBy);
         
         var reports = await _reportRepository.GetSortedAsync(param, orderBy);
+        
+        _logger.LogInformation($"Retrieving sorted reports from database: {param}");
         
         return _mapper.Map<IEnumerable<FullReportDto>>(reports);
     }

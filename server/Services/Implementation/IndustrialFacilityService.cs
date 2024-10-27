@@ -10,13 +10,16 @@ namespace server.Services
     {
         private readonly IIndustrialFacilityRepository _industrialFacilityRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<IndustrialFacilityService> _logger;
 
         public IndustrialFacilityService(
             IIndustrialFacilityRepository industrialFacilityRepository,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<IndustrialFacilityService> logger)
         {
             _industrialFacilityRepository = industrialFacilityRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task AddFacility(IndustrialFacilityDto industrialFacilityDto)
@@ -28,6 +31,8 @@ namespace server.Services
             var industrialFacilityEntity = _mapper.Map<IndustrialFacility>(industrialFacilityDto);
 
             await _industrialFacilityRepository.InsertAsync(industrialFacilityEntity);
+            
+            _logger.LogInformation($"Industrial facility added. - {industrialFacilityDto.Name}");
         }
 
         public async Task<IEnumerable<IndustrialFacilityDto>> GetFacilitiesInfo()
@@ -35,6 +40,8 @@ namespace server.Services
             var facilities = await _industrialFacilityRepository.GetAllAsync();
             
             var facilitiesDto = _mapper.Map<IEnumerable<IndustrialFacilityDto>>(facilities);
+            
+            _logger.LogInformation("Industrial facilities retrieved.");
             
             return facilitiesDto;
         }
@@ -47,6 +54,8 @@ namespace server.Services
 
             var facilityDto = _mapper.Map<IndustrialFacilityDto>(facility);
             
+            _logger.LogInformation($"Industrial facility retrieved. - {id}");
+            
             return facilityDto;
         }
 
@@ -57,6 +66,8 @@ namespace server.Services
                 throw new EntityNotFoundException();
 
             await _industrialFacilityRepository.DeleteAsync(facility);
+            
+            _logger.LogInformation($"Industrial facility deleted. - {id}");
         }
 
         public async Task UpdateFacility(IndustrialFacilityDto industrialFacilityDto)
@@ -68,6 +79,8 @@ namespace server.Services
             var facility = _mapper.Map<IndustrialFacility>(industrialFacilityDto);
 
             await _industrialFacilityRepository.UpdateAsync(facility);
+            
+            _logger.LogInformation($"Industrial facility updated. - {industrialFacilityDto.Name}");
         }
     }
 }
