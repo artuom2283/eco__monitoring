@@ -8,6 +8,7 @@ import {
 import {SuccessNotification} from "../../components/SuccessNotification";
 import {RiskDto} from "../../app/models/Risk";
 import {RiskInfoTable} from "../../components/Tables/RiskInfoTable";
+import {TopButton} from "../../components/Buttons/TopButton";
 
 const CalculationPage = () => {
     const [C, setC] = useState<number>(0);
@@ -182,6 +183,7 @@ const CalculationPage = () => {
 
                     <button className="calculation-button" onClick={handleAddRisk}>Calculate Risk</button>
                 </section>
+                <TopButton/>
             </main>
             <RiskInfoTable/></>
     );

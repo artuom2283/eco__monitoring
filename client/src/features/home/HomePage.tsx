@@ -1,6 +1,7 @@
 import React from 'react';
 import './home.css';
 import {AuthorsList} from "../../components/AuthorsList";
+import {TopButton} from "../../components/Buttons/TopButton";
 
 const Main = () => {
     return (
@@ -32,6 +33,7 @@ const Main = () => {
                     </p>
                 </article>
             </section>
+            <TopButton/>
         </main>
     );
 };

@@ -22,6 +22,7 @@ import {AscButton} from "../../components/Buttons/AscButton";
 import {DescButton} from "../../components/Buttons/DescButton";
 import {PollutionDto} from "../../app/models/Pollution";
 import {SuccessNotification} from "../../components/SuccessNotification";
+import {TopButton} from "../../components/Buttons/TopButton";
 
 const PollutionPage: React.FC = () => {
     const dispatch = useDispatch<any>();
@@ -31,31 +32,6 @@ const PollutionPage: React.FC = () => {
     const reports = useAppSelector((state: any) => state.pollution.reports);
     const pollutions = useAppSelector(state => state.pollution.pollutions);
     const [_, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
-    const [showScrollToTop, setShowScrollToTop] = useState(false);
-
-    const handleScroll = () => {
-        if (window.scrollY > 300) {
-            setShowScrollToTop(true);
-        } else {
-            setShowScrollToTop(false);
-        }
-    };
-
-    const scrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
 
     console.log(reports);
 
@@ -353,13 +329,7 @@ const PollutionPage: React.FC = () => {
                         ))}
                         </tbody>
                     </table>
-                  <div className="page-container">
-                    {showScrollToTop && (
-                      <button className="scroll-to-top" onClick={scrollToTop}>
-                        Top
-                      </button>
-                  )}
-                  </div>
+                    <TopButton/>
                 </div>
                 <FacilityInfoTable/>
                 <PollutionInfoTable/>
