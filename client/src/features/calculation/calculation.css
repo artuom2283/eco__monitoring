@@ -66,6 +66,32 @@
   font-weight: bold;
 }
 
+.risk-info-table {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.risk-info-table td {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.actions-column {
+  width: 10% !important;
+}
+
+.delete {
+  background-color: #f44336;
+}
+
+.delete:hover {
+  background-color: #e53935;
+}
+
+.delete:active {
+  background-color: #c62828;
+}
+
 @media (max-width: 600px) {
   .calculation-main {
       max-width: 90%;
