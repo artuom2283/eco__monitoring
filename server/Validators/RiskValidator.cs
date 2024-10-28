@@ -16,8 +16,8 @@ public class RiskValidator : AbstractValidator<RiskDto>
             .GreaterThan(0)
             .WithMessage("Result is invalid");
 
-        RuleFor(p => p.CalculationType)
+        RuleFor(p => p.SubstanceName)
             .NotEmpty()
-            .WithMessage("Calculation Type is required");
+            .WithMessage("Substance name is required");
     }
 }

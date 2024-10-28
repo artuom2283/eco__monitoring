@@ -29,7 +29,7 @@ public class AddReportValidator : AbstractValidator<AddReportDto>
 
         RuleFor(p => p.TaxType)
             .NotEmpty()
-            .Length(5, 50);
+            .Length(5, 255);
         
         RuleFor(p => p.TaxAmount)
             .NotEmpty()

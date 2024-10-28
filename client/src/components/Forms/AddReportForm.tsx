@@ -35,7 +35,7 @@ export const AddReportForm = () => {
             highWasteAcceptedVolume: 0,
             lowMediumWasteAccumulatedVolume: 0,
             highWasteAccumulatedVolume: 0,
-            category: 0,
+            category: "",
             calendarQuarters: 0
         }
     });
@@ -87,7 +87,7 @@ export const AddReportForm = () => {
                     highWasteAcceptedVolume: 0,
                     lowMediumWasteAccumulatedVolume: 0,
                     highWasteAccumulatedVolume: 0,
-                    category: 0,
+                    category: "",
                     calendarQuarters: 0
                 }
             });
@@ -146,7 +146,7 @@ export const AddReportForm = () => {
             case 'Storage Radioactive Tax':
                 newReport.taxType = "Тимчасове зберігання радіоактивних відходів їх виробниками поза терміном, встановленим спеціальними умовами ліцензії";
                 let tax = 632539.66;
-                if (newReport.additionalFields.category === 2) {
+                if (newReport.additionalFields.category === "Low") {
                     tax = 11807.40;
                 }
 
@@ -166,12 +166,16 @@ export const AddReportForm = () => {
                 return (
                     <>
                         <label htmlFor="isLakeDischarge">Discharge into a lake? (Yes/No):</label>
-                        <input
-                            id="isLakeDischarge"
-                            type="text"
-                            placeholder="Yes/No"
+                        <select
+                            className="select-css"
+                            id={"isLakeDischarge"}
+                            value={newReport.additionalFields.isLakeDischarge}
                             onChange={(e) => handleAddReportChange('isLakeDischarge', e.target.value)}
-                        />
+                        >
+                            <option value="" disabled>Select Option</option>
+                            <option value={"Yes"}>Yes</option>
+                            <option value={"No"}>No </option>
+                        </select>
                     </>
                 );
             case 'Storage Tax':
@@ -180,12 +184,16 @@ export const AddReportForm = () => {
                         <label htmlFor="isUrbanArea">Do not ensure the complete exclusion of atmospheric air pollution
                             or
                             water objects.? (Yes/No):</label>
-                        <input
-                            id="isUrbanArea"
-                            type="text"
-                            placeholder="Yes/No"
+                        <select
+                            className="select-css"
+                            id={"isUrbanArea"}
+                            value={newReport.additionalFields.isUrbanArea}
                             onChange={(e) => handleAddReportChange('isUrbanArea', e.target.value)}
-                        />
+                        >
+                            <option value="" disabled>Select Option</option>
+                            <option value={"Yes"}>Yes</option>
+                            <option value={"No"}>No</option>
+                        </select>
                     </>
                 );
             case 'Radioactive Tax':
@@ -284,13 +292,17 @@ export const AddReportForm = () => {
             case 'Storage Radioactive Tax':
                 return (
                     <>
-                        <label htmlFor="radioactive-category">Category (1 for high, 2 for low):</label>
-                        <input
-                            id="radioactive-category"
-                            type="number"
-                            placeholder="1 or 2"
-                            onChange={(e) => handleAddReportChange('category', parseInt(e.target.value))}
-                        />
+                        <label htmlFor="radioactive-category">Category (high, low):</label>
+                        <select
+                            className="select-css"
+                            id={"radioactive-category"}
+                            value={newReport.additionalFields.category}
+                            onChange={(e) => handleAddReportChange('category', e.target.value)}
+                        >
+                            <option value="" disabled>Select Option</option>
+                            <option value={"High"}>High</option>
+                            <option value={"Low"}>Low</option>
+                        </select>
                         <label htmlFor="calendarQuarters">Full calendar quarters:</label>
                         <input
                             id="calendarQuarters"

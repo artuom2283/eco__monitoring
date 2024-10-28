@@ -61,11 +61,23 @@ const CalculationPage = () => {
                 calculationType: '',
                 result: 0
             });
+            clearFields();
             await dispatch(fetchRisksAsync());
         } catch (error) {
             console.error("Error adding report:", error);
         }
     };
+
+    const clearFields = () => {
+        setC(0);
+        setCR(0);
+        setEF(0);
+        setED(0);
+        setBW(70);
+        setAT(70);
+        setRfC(0);
+        setSF(0);
+    }
 
     const handleCalculate = () => {
         let result;
@@ -126,11 +138,11 @@ const CalculationPage = () => {
     return (
         <>
             <main className="calculation-main">
-                <h3 className="calculation-title">Here you can calculate cancer and non-cancer risk</h3>
+                <h3 className="calculation-title">Here you can carcinogenic and non-carcinogenic risk</h3>
                 <section className="calculation-form">
                     <div className="calculation-field">
                         <label className="calculation-label">Substance name: </label>
-                        <input className="calculation-input" type="text" value={newRisk.substanceName}
+                        <input className="calculation-input" type="text" value={newRisk.substanceName} style={{margin: '0px'}}
                                onChange={(e) => handleAddRiskChange('substanceName', e.target.value)}/>
                     </div>
                     <div className="calculation-field">
@@ -167,7 +179,7 @@ const CalculationPage = () => {
                         <label className="calculation-label">Calculation type: </label>
                         <select
                             className="select-css"
-                            id="calculation-type"
+                            id="big-select"
                             value={calculationType}
                             onChange={(e) => setType(e.target.value)}
                         >

@@ -26,12 +26,35 @@ END IF;
 RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+   
+CREATE OR REPLACE FUNCTION update_tax_sum_on_delete()
+RETURNS TRIGGER AS $$
+DECLARE
+facility_name_record VARCHAR(255);
+BEGIN
+SELECT name INTO facility_name_record
+FROM industrial_facilities
+WHERE id = OLD.industrial_facility_id;
 
+IF EXISTS (SELECT 1 FROM tax_sum_amount WHERE facility_name = facility_name_record AND year = OLD.year) THEN
+UPDATE tax_sum_amount
+SET total_tax_amount = total_tax_amount - OLD.tax_amount
+WHERE facility_name = facility_name_record AND year = OLD.year;
+END IF;
+
+RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TRIGGER Reports_Insert_TaxSum_Trigger
     AFTER INSERT ON reports
     FOR EACH ROW
     EXECUTE FUNCTION update_tax_sum();
+
+CREATE TRIGGER Reports_Delete_TaxSum_Trigger
+    AFTER DELETE ON reports
+    FOR EACH ROW
+    EXECUTE FUNCTION update_tax_sum_on_delete();
 
 -- Додаємо виробництва
 INSERT INTO industrial_facilities(name) VALUES ('ПАТ «АрселорМіттал Кривий Ріг»');
