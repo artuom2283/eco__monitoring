@@ -3498,24 +3498,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Мирослав\\.nuget\\packages\\": {}
+    "C:\\Users\\apuze\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\VScode_projects\\eco__monitoring\\server\\server.csproj",
+      "projectUniqueName": "C:\\КПИ-github\\eco__monitoring\\server\\server.csproj",
       "projectName": "server",
-      "projectPath": "D:\\VScode_projects\\eco__monitoring\\server\\server.csproj",
-      "packagesPath": "C:\\Users\\Мирослав\\.nuget\\packages\\",
-      "outputPath": "D:\\VScode_projects\\eco__monitoring\\server\\obj\\",
+      "projectPath": "C:\\КПИ-github\\eco__monitoring\\server\\server.csproj",
+      "packagesPath": "C:\\Users\\apuze\\.nuget\\packages\\",
+      "outputPath": "C:\\КПИ-github\\eco__monitoring\\server\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Мирослав\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\apuze\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3528,11 +3530,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -3603,7 +3600,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.306/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

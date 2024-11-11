@@ -26,6 +26,11 @@
   gap: 15px;
 }
 
+.calculation-title {
+  text-align: center;
+  margin: 0 auto; 
+}
+
 .calculation-field {
   display: flex;
   flex-direction: column;
