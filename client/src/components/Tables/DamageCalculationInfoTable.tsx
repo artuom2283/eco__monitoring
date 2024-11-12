@@ -30,7 +30,7 @@ export const DamageCalculationInfoTable = () => {
                 <tr>
                     <th>Id</th>
                     <th>Calculation Type</th>
-                    <th>Result</th>
+                    <th>Result (UAN/ton)</th>
                     <th className="actions-column">Actions</th>
                 </tr>
                 </thead>
