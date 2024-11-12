@@ -17,5 +17,6 @@ namespace server.Data
         public DbSet<IndustrialFacility> Facilities { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Risk> Risks { get; set; }
+        public DbSet<Damage> Damages { get; set; }
     }
 }

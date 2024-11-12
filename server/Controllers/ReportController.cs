@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using server.DTOs;
 using server.Exceptions;
 using server.Responses;
@@ -12,15 +13,15 @@ namespace server.Controllers;
 public class ReportController : ControllerBase
 {
     private readonly IReportService _reportService;
-    private readonly UpdateReportValidator _updateReportValidator;
-    private readonly AddReportValidator _addReportValidator;
-    private readonly SearchValidator _searchValidator;
+    private readonly IValidator<UpdateReportDto> _updateReportValidator;
+    private readonly IValidator<AddReportDto> _addReportValidator;
+    private readonly IValidator<long> _searchValidator;
 
     public ReportController(
         IReportService reportService,
-        UpdateReportValidator updateReportValidator,
-        SearchValidator searchValidator,
-        AddReportValidator addReportValidator)
+        IValidator<UpdateReportDto> updateReportValidator,
+        IValidator<long> searchValidator,
+        IValidator<AddReportDto> addReportValidator)
     {
         _reportService = reportService;
         _updateReportValidator = updateReportValidator;
@@ -73,7 +74,7 @@ public class ReportController : ControllerBase
     }
 
     [HttpPost("reports")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(type: typeof(AddReportDto),StatusCodes.Status200OK)]
     [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult> AddReport(AddReportDto addReportDto)
@@ -92,7 +93,7 @@ public class ReportController : ControllerBase
     }
 
     [HttpPut("reports")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(type: typeof(UpdateReportDto),StatusCodes.Status200OK)]
     [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> UpdateReport(UpdateReportDto updateReportDto)
@@ -111,7 +112,7 @@ public class ReportController : ControllerBase
     }
 
     [HttpDelete("reports/{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(type: typeof(long),StatusCodes.Status200OK)]
     [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteReport([FromRoute] long id)

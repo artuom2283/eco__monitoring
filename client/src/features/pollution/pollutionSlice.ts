@@ -4,6 +4,7 @@ import agent from "../../app/api/agent";
 import { PollutionDto } from "../../app/models/Pollution";
 import {FullReportDto, ReportDto} from "../../app/models/Report";
 import {RiskDto} from "../../app/models/Risk";
+import {DamageDto} from "../../app/models/Damage";
 
 interface FetchSortedReportsParams {
     param: string;
@@ -48,6 +49,17 @@ export const fetchRisksAsync = createAsyncThunk<RiskDto[]>(
     async (_, thunkAPI) => {
         try {
             return agent.Risks.getRisks();
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
+export const fetchDamagesAsync = createAsyncThunk<DamageDto[]>(
+    "damages/fetchDamagesAsync",
+    async (_, thunkAPI) => {
+        try {
+            return agent.Damages.getDamages();
         } catch (error: any) {
             return thunkAPI.rejectWithValue({ error: error.data });
         }
@@ -153,6 +165,17 @@ export const addRiskAsync = createAsyncThunk<void, RiskDto>(
     }
 );
 
+export const addDamageAsync = createAsyncThunk<void, DamageDto>(
+    "damages/addDamageAsync",
+    async (damageDto, thunkAPI) => {
+        try {
+            await agent.Damages.addDamage(damageDto);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
 export const deletePollutionAsync = createAsyncThunk<void, number>(
     "pollutions/deletePollutionAsync",
     async (pollutionId, thunkAPI) => {
@@ -180,6 +203,17 @@ export const deleteRiskAsync = createAsyncThunk<void, number>(
     async (riskId, thunkAPI) => {
         try {
             await agent.Risks.delRisk(riskId);
+        } catch (error: any) {
+            return thunkAPI.rejectWithValue({ error: error.data });
+        }
+    }
+);
+
+export const deleteDamageAsync = createAsyncThunk<void, number>(
+    "damages/deleteDamageAsync",
+    async (damageId, thunkAPI) => {
+        try {
+            await agent.Damages.delDamage(damageId);
         } catch (error: any) {
             return thunkAPI.rejectWithValue({ error: error.data });
         }
@@ -227,10 +261,12 @@ export const pollutionSlice = createSlice({
         facilities: [] as IndustrialFacilityDto[],
         reports: [] as FullReportDto[],
         risks : [] as RiskDto[],
+        damages: [] as DamageDto[],
         pollutionsLoaded: false,
         facilitiesLoaded: false,
         reportsLoaded: false,
         risksLoaded: false,
+        damagesLoaded: false,
         status: 'idle',
         error: null as string | null,
     },
@@ -280,6 +316,21 @@ export const pollutionSlice = createSlice({
         builder.addCase(fetchRisksAsync.rejected, (state, action) => {
             state.status = 'failed';
             state.error = action.error.message || 'Failed to fetch risks';
+        });
+
+        // Handle fetchDamagesAsync
+        builder.addCase(fetchDamagesAsync.pending, (state) => {
+            state.status = 'loading';
+            state.damagesLoaded = false;
+        });
+        builder.addCase(fetchDamagesAsync.fulfilled, (state, action) => {
+            state.damages = action.payload;
+            state.damagesLoaded = true;
+            state.status = 'idle';
+        });
+        builder.addCase(fetchDamagesAsync.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message || 'Failed to fetch damages';
         });
 
         // Handle fetchReportsAsync
@@ -366,6 +417,12 @@ export const pollutionSlice = createSlice({
             state.status = 'idle';
         });
 
+        // Handle deletDamageAsync
+        builder.addCase(deleteDamageAsync.fulfilled, (state, action) => {
+            state.damages = state.damages.filter(p => p.id !== action.meta.arg);
+            state.status = 'idle';
+        });
+
         // Handle deleteReportAsync
         builder.addCase(deleteReportAsync.fulfilled, (state, action) => {
             state.reports = state.reports.filter(p => p.id !== action.meta.arg);
@@ -404,6 +461,23 @@ export const pollutionSlice = createSlice({
         builder.addCase(addRiskAsync.rejected, (state, action) => {
             state.status = 'failed';
             state.error = action.error.message || 'Failed to fetch risk';
+        });
+
+        // Handle addDamageAsync
+        builder.addCase(addDamageAsync.pending, (state, action) => {
+            if (action.payload) {
+                state.damages = action.payload;
+            }
+            state.status = 'loading';
+            state.damagesLoaded = false;
+        });
+        builder.addCase(addDamageAsync.fulfilled, (state) => {
+            state.damagesLoaded = true;
+            state.status = 'idle';
+        });
+        builder.addCase(addDamageAsync.rejected, (state, action) => {
+            state.status = 'failed';
+            state.error = action.error.message || 'Failed to fetch damage';
         });
 
         // Handle addFacilityAsync

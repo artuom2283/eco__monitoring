@@ -8,11 +8,8 @@ public class ReportProfile : Profile
 {
     public ReportProfile()
     {
-        CreateMap<Report, UpdateReportDto>();
-        CreateMap<UpdateReportDto, Report>();
-        CreateMap<FullReportDto, Report>();
-        CreateMap<Report, FullReportDto>();
-        CreateMap<Report, AddReportDto>();
-        CreateMap<AddReportDto, Report>();
+        CreateMap<Report, UpdateReportDto>().ReverseMap();
+        CreateMap<Report, FullReportDto>().ReverseMap();
+        CreateMap<Report, AddReportDto>().ReverseMap();
     }
 }

@@ -8,7 +8,6 @@ public class RiskProfile : Profile
 {
     public RiskProfile()
     {
-        CreateMap<Risk, RiskDto>();
-        CreateMap<RiskDto, Risk>();
+        CreateMap<Risk, RiskDto>().ReverseMap();
     }
 }

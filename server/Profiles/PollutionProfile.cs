@@ -7,7 +7,6 @@ public class PollutionProfile : Profile
 {
     public PollutionProfile()
     {
-        CreateMap<PollutionDto, Pollution>();
-        CreateMap<Pollution, PollutionDto>();
+        CreateMap<Pollution, PollutionDto>().ReverseMap();
     }
 }

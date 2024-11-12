@@ -90,11 +90,18 @@ const Risks = {
     delRisk: (id: number) => requests.del(`risks/${id}`),
 }
 
+const Damages = {
+    getDamages: () => requests.get("damages"),
+    addDamage: (body: object) => requests.post("damages", body),
+    delDamage: (id: number) => requests.del(`damages/${id}`),
+}
+
 const agent = {
     Pollution,
     Facilities,
     Reports,
-    Risks
+    Risks,
+    Damages
 }
 
 export default agent;

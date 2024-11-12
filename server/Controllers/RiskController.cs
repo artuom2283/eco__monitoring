@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using server.DTOs;
 using server.Responses;
 using server.Services.Interfaces;
@@ -11,9 +12,9 @@ namespace server.Controllers;
 public class RiskController : ControllerBase
 {
     private readonly IRiskService _riskService;
-    private readonly RiskValidator _riskValidator;
+    private readonly IValidator<RiskDto> _riskValidator;
 
-    public RiskController(IRiskService riskService, RiskValidator riskValidator)
+    public RiskController(IRiskService riskService, IValidator<RiskDto> riskValidator)
     {
         _riskValidator = riskValidator;
         _riskService = riskService;
@@ -49,7 +50,6 @@ public class RiskController : ControllerBase
     
     [HttpDelete("risks/{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult> DeleteRisk([FromRoute] long id)
     {

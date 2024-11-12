@@ -17,12 +17,12 @@ namespace server.Controllers
     {
         private readonly IPollutionService _pollutionService;
         private readonly PollutionValidator _pollutionValidator;
-        private readonly SearchValidator _searchValidator;
+        private readonly IValidator<long> _searchValidator;
 
         public PollutionController(
             IPollutionService pollutionService,
             PollutionValidator pollutionValidator,
-            SearchValidator searchValidator)
+            IValidator<long> searchValidator)
         {
             _pollutionService = pollutionService;
             _pollutionValidator = pollutionValidator;
@@ -58,7 +58,7 @@ namespace server.Controllers
         }
 
         [HttpPost("pollutions")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(PollutionDto),StatusCodes.Status200OK)]
         [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult> AddPollution(PollutionDto pollutionDto)
@@ -77,7 +77,7 @@ namespace server.Controllers
         }
 
         [HttpPut("pollutions")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(PollutionDto),StatusCodes.Status200OK)]
         [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> UpdatePollution(PollutionDto pollutionDto)
@@ -96,7 +96,7 @@ namespace server.Controllers
         }
 
         [HttpDelete("pollutions/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(long),StatusCodes.Status200OK)]
         [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeletePollution([FromRoute] long id)

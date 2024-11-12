@@ -7,7 +7,6 @@ public class IndustrialFacilityProfile : Profile
 {
     public IndustrialFacilityProfile()
     {
-        CreateMap<IndustrialFacilityDto, IndustrialFacility>();
-        CreateMap<IndustrialFacility, IndustrialFacilityDto>();
+        CreateMap<IndustrialFacility, IndustrialFacilityDto>().ReverseMap();
     }
 }

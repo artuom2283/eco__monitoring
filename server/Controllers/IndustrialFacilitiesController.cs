@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using server.Entities;
 using server.Responses;
@@ -11,13 +12,13 @@ namespace server.Controllers
     public class IndustrialFacilitiesController : ControllerBase
     {
         private readonly IIndustrialFacilityService _industrialFacilityService;
-        private readonly IndustrialFacilityValidator _facilityValidator;
-        private readonly SearchValidator _searchValidator;
+        private readonly IValidator<IndustrialFacilityDto> _facilityValidator;
+        private readonly IValidator<long> _searchValidator;
 
         public IndustrialFacilitiesController(
             IIndustrialFacilityService industrialFacilityService,
-            IndustrialFacilityValidator facilityValidator,
-            SearchValidator searchValidator)
+            IValidator<IndustrialFacilityDto> facilityValidator,
+            IValidator<long> searchValidator)
         {
             _industrialFacilityService = industrialFacilityService;
             _facilityValidator = facilityValidator;
@@ -34,7 +35,7 @@ namespace server.Controllers
         }
 
         [HttpGet("facilities/{id}")]
-        [ProducesResponseType(type: typeof(IndustrialFacility), StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(IndustrialFacilityDto), StatusCodes.Status200OK)]
         [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IndustrialFacilityDto>> GetFacility([FromRoute] long id)
@@ -53,7 +54,7 @@ namespace server.Controllers
         }
 
         [HttpPost("facilities")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(IndustrialFacilityDto),StatusCodes.Status200OK)]
         [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult> AddNewFacility(IndustrialFacilityDto industrialFacilityDto)
@@ -72,7 +73,7 @@ namespace server.Controllers
         }
 
         [HttpPut("facilities")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(IndustrialFacilityDto),StatusCodes.Status200OK)]
         [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> UpdateFacility(IndustrialFacilityDto industrialFacilityDto)
@@ -91,7 +92,7 @@ namespace server.Controllers
         }
 
         [HttpDelete("facilities/{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(type: typeof(long),StatusCodes.Status200OK)]
         [ProducesResponseType(type: typeof(ValidationResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> DeleteFacility([FromRoute] long id)
