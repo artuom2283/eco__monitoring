@@ -7,10 +7,25 @@ import {
 import {SuccessNotification} from "../SuccessNotification";
 import React from "react";
 import {DamageDto} from "../../app/models/Damage";
+import {IndustrialFacilityDto} from "../../app/models/Facility";
+import {PollutionDto} from "../../app/models/Pollution";
 
 export const DamageCalculationInfoTable = () => {
     const dispatch = useDispatch<any>();
     const damages = useAppSelector((state: any) => state.pollution.damages);
+
+    const pollutions = useAppSelector(state => state.pollution.pollutions);
+    const facilities = useAppSelector((state: any) => state.pollution.facilities);
+
+    const getFacilityName = (facilityId: number) => {
+        const facility = facilities.find((f: IndustrialFacilityDto) => f.id === facilityId);
+        return facility ? facility.name : "Unknown Facility";
+    };
+
+    const getPollutionName = (pollutionId: number) => {
+        const pollution = pollutions.find((p: PollutionDto) => p.id === pollutionId);
+        return pollution ? pollution.name : "Unknown Pollution";
+    };
 
     const handleDelete = async (damageId: number) => {
         try {
@@ -28,7 +43,9 @@ export const DamageCalculationInfoTable = () => {
             <table>
                 <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>Facility</th>
+                    <th>Pollution</th>
+                    <th>Year</th>
                     <th>Calculation Type</th>
                     <th>Result (UAN/ton)</th>
                     <th className="actions-column">Actions</th>
@@ -38,7 +55,13 @@ export const DamageCalculationInfoTable = () => {
                 {damages?.map((damage: DamageDto) => (
                     <tr className="risk-info-table__inside" key={damage.id}>
                         <td className="risk-info-table__cell-first">
-                            <div>{damage.id}</div>
+                            <div>{getFacilityName(damage.industrialFacilityId)}</div>
+                        </td>
+                        <td className="risk-info-table__cell-first">
+                            <div>{getPollutionName(damage.pollutionId)}</div>
+                        </td>
+                        <td className="risk-info-table__cell-first">
+                            <div>{damage.year}</div>
                         </td>
                         <td className="risk-info-table__cell-second">
                             <div>{damage.type === 'airEmission' ? 'Air Emission' :

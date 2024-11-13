@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using server.Data;
 using server.DTOs;
 using server.Entities;
 using server.Exceptions;
@@ -12,15 +13,18 @@ public class DamageService : IDamageService
     private readonly IDamageRepository _repository;
     private readonly ILogger<DamageService> _logger;
     private readonly IMapper _mapper;
+    private readonly DatabaseContext _context;
 
     public DamageService(
         IDamageRepository repository,
         ILogger<DamageService> logger,
-        IMapper mapper)
+        IMapper mapper,
+        DatabaseContext context)
     {
         _repository = repository;
         _logger = logger;
         _mapper = mapper;
+        _context = context;
     }
     
     public async Task AddDamage(DamageDto damageDto)
@@ -45,9 +49,20 @@ public class DamageService : IDamageService
         _logger.LogInformation("Damage deleted");
     }
 
-    public async Task<IEnumerable<DamageDto>> GetAllDamages()
+    public IEnumerable<DamageDto> GetAllDamages()
     {
-        var damages=  await _repository.GetAllAsync();
+        var damages = from damage in _context.Damages 
+                join pollution in _context.Pollutions on damage.PollutionId equals pollution.Id
+                join facility in _context.Facilities on damage.IndustrialFacilityId equals facility.Id
+                select new DamageDto
+                {
+                    Id = damage.Id,
+                    IndustrialFacilityId = facility.Id,
+                    PollutionId = pollution.Id,
+                    Type = damage.Type,
+                    Year = damage.Year,
+                    Result = damage.Result
+                };
         
         _logger.LogInformation("Damages retrieved");
         

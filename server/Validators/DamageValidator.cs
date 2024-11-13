@@ -14,5 +14,17 @@ public class DamageValidator : AbstractValidator<DamageDto>
         RuleFor(x => x.Type)
             .NotEmpty()
             .WithMessage("Damage type can't be empty");
+        
+        RuleFor(x => x.Year)
+            .NotEmpty()
+            .WithMessage("Year can't be empty");
+        
+        RuleFor(x => x.IndustrialFacilityId)
+            .NotEmpty()
+            .WithMessage("Facility id can't be empty");
+        
+        RuleFor(x => x.PollutionId)
+            .NotEmpty()
+            .WithMessage("Pollution id can't be empty");
     }
 }

@@ -38,6 +38,7 @@ public class DamageRepository : IDamageRepository
 
         damageEntity.Result = damage.Result;
         damageEntity.Type = damage.Type;
+        damageEntity.Year = damage.Year;
         
         await _context.SaveChangesAsync();
     }

@@ -2,22 +2,31 @@
 import {useAppDispatch, useAppSelector} from "../../app/store/configureStore";
 import {
     addDamageAsync,
-    fetchDamagesAsync,
+    fetchDamagesAsync, fetchFacilitiesAsync, fetchPollutionsAsync,
 } from "../../features/pollution/pollutionSlice";
 import {SuccessNotification} from "../SuccessNotification";
+import {IndustrialFacilityDto} from "../../app/models/Facility";
+import {PollutionDto} from "../../app/models/Pollution";
+import {DamageDto} from "../../app/models/Damage";
 
 export const EnvironmentalCalculationForm: React.FC = () => {
 
     const dispatch = useAppDispatch();
+    const pollutions = useAppSelector(state => state.pollution.pollutions);
+    const facilities = useAppSelector((state: any) => state.pollution.facilities);
     const damagesLoaded = useAppSelector(state => state.pollution.damagesLoaded);
+    const facilitiesLoaded = useAppSelector(state => state.pollution.facilitiesLoaded);
+    const pollutionsLoaded = useAppSelector(state => state.pollution.pollutionsLoaded);
 
     useEffect(() => {
         const loadData = async () => {
             if (!damagesLoaded) await dispatch(fetchDamagesAsync());
+            if (!pollutionsLoaded) await dispatch(fetchPollutionsAsync());
+            if (!facilitiesLoaded) await dispatch(fetchFacilitiesAsync());
         };
 
         loadData();
-    }, [damagesLoaded, dispatch]);
+    }, [damagesLoaded, pollutionsLoaded, facilitiesLoaded, dispatch]);
 
     const [damageType, setType] = useState<string>('');
 
@@ -25,6 +34,9 @@ export const EnvironmentalCalculationForm: React.FC = () => {
         id: 0,
         type: '',
         result: 0,
+        pollutionId: 0,
+        industrialFacilityId: 0,
+        year: 0
     });
 
     const [inputValues, setInputValues] = useState({
@@ -61,11 +73,21 @@ export const EnvironmentalCalculationForm: React.FC = () => {
                 id: 0,
                 type: '',
                 result: 0,
+                pollutionId: 0,
+                industrialFacilityId: 0,
+                year: 0
             });
             await dispatch(fetchDamagesAsync());
         } catch (error) {
             console.error("Error adding damage:", error);
         }
+    };
+
+    const handleDamageChange = (field: keyof DamageDto | string, value: any) => {
+        setNewDamage(prev => ({
+            ...prev,
+            [field]: value
+        }));
     };
 
     const handleChange = (name: string, value: number) => {
@@ -100,6 +122,43 @@ export const EnvironmentalCalculationForm: React.FC = () => {
             <h2 className="calculation-title">Environmental Damage Calculation</h2>
             <section className="calculation-form">
                 <div className="calculation-field">
+                    <label htmlFor="facility-id">Facility Name:</label>
+                    <select
+                        className="select-css"
+                        id="facility-id"
+                        value={newDamage.industrialFacilityId}
+                        onChange={(e) => handleDamageChange('industrialFacilityId', parseInt(e.target.value))}
+                    >
+                        <option value={0} disabled>Select Facility</option>
+                        {facilities.map((facility: IndustrialFacilityDto) => (
+                            <option key={facility.id} value={facility.id}>
+                                {facility.name}
+                            </option>
+                        ))}
+                    </select>
+                    <label htmlFor="pollution-id">Pollution Name:</label>
+                    <select
+                        className="select-css"
+                        id="pollution-id"
+                        value={newDamage.pollutionId}
+                        onChange={(e) => handleDamageChange('pollutionId', parseInt(e.target.value))}
+                    >
+                        <option value={0} disabled>Select Pollution</option>
+                        {pollutions.map((pollution: PollutionDto) => (
+                            <option key={pollution.id} value={pollution.id}>
+                                {pollution.name}
+                            </option>
+                        ))}
+                    </select>
+                    <label htmlFor="report-year">Year:</label>
+                    <input className="calculation-input"
+                        id={"report-year"}
+                        type="number"
+                        placeholder="Report Year"
+                        value={newDamage.year}
+                        onChange={(e) => handleDamageChange('year', parseFloat(e.target.value))}
+                    />
+
                     <label className="calculation-label">Calculation Type:</label>
                     <select
                         id="big-select"
@@ -118,15 +177,18 @@ export const EnvironmentalCalculationForm: React.FC = () => {
                     <>
                         <div className="calculation-field">
                             <label className="calculation-label">rBi (mg/m³):</label>
-                            <input className="calculation-input" name="rBi" type="number" placeholder="rBi" onChange={(e) => handleChange(e.target.name, parseFloat(e.target.value) || 0)} />
+                            <input className="calculation-input" name="rBi" type="number" placeholder="rBi"
+                                   onChange={(e) => handleChange(e.target.name, parseFloat(e.target.value) || 0)}/>
                         </div>
                         <div className="calculation-field">
                             <label className="calculation-label">rBnorm (mg/m³):</label>
-                            <input className="calculation-input" name="rBnorm" type="number" placeholder="rBnorm" onChange={(e) => handleChange(e.target.name, parseFloat(e.target.value) || 0)} />
+                            <input className="calculation-input" name="rBnorm" type="number" placeholder="rBnorm"
+                                   onChange={(e) => handleChange(e.target.name, parseFloat(e.target.value) || 0)}/>
                         </div>
                         <div className="calculation-field">
                             <label className="calculation-label">qv (m³/s):</label>
-                            <input className="calculation-input" name="qv" type="number" placeholder="qv" onChange={(e) => handleChange(e.target.name, parseFloat(e.target.value) || 0)} />
+                            <input className="calculation-input" name="qv" type="number" placeholder="qv"
+                                   onChange={(e) => handleChange(e.target.name, parseFloat(e.target.value) || 0)}/>
                         </div>
                         <div className="calculation-field">
                             <label className="calculation-label">T (hours):</label>

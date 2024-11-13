@@ -21,9 +21,9 @@ public class DamageController : ControllerBase
     
     [HttpGet("damages")]
     [ProducesResponseType(type: typeof(IEnumerable<DamageDto>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<DamageDto>>> GetDamages()
+    public ActionResult<IEnumerable<DamageDto>> GetDamages()
     {
-        var damages = await _damageService.GetAllDamages();
+        var damages = _damageService.GetAllDamages();
 
         return Ok(damages);
     }

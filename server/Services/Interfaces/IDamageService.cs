@@ -6,5 +6,5 @@ public interface IDamageService
 {
     public Task AddDamage(DamageDto damageDto);
     public Task DeleteDamage(long id);
-    public Task<IEnumerable<DamageDto>> GetAllDamages();
+    public IEnumerable<DamageDto> GetAllDamages();
 }
