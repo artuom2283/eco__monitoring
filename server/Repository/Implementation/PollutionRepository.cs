@@ -53,6 +53,9 @@ namespace server.Repository
             existingPollution.MassFlowRate = pollution.MassFlowRate;
             existingPollution.EmissionsLimit = pollution.EmissionsLimit;
             existingPollution.DangerClass = pollution.DangerClass;
+            existingPollution.HazardCoefficient = pollution.HazardCoefficient;
+            existingPollution.SpecificEmissions = pollution.SpecificEmissions;
+            existingPollution.HazardClassCoefficient = pollution.HazardClassCoefficient;
             
             await _context.SaveChangesAsync();
         }

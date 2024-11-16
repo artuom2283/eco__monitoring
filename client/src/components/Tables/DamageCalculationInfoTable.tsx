@@ -33,7 +33,7 @@ export const DamageCalculationInfoTable = () => {
             SuccessNotification();
             await dispatch(fetchDamagesAsync());
         } catch (error) {
-            console.log("Failed to delete deamage.");
+            console.log("Failed to delete damage.");
         }
     };
 
@@ -66,6 +66,10 @@ export const DamageCalculationInfoTable = () => {
                         <td className="risk-info-table__cell-second">
                             <div>{damage.type === 'airEmission' ? 'Air Emission' :
                                 damage.type === 'waterDamage' ? 'Water Damage' :
+                                damage.type === 'waterDischarge' ? 'Water Discharge' :
+                                    damage.type === 'airEmissions' ? 'Шкода для атмосферного повітря' :
+                                damage.type === 'waterEmissions' ? 'Розмір шкоди для водних ресурсів' :
+                                damage.type === 'landEmissions' ? 'Розмір шкоди для земельних ресурсів' :
                                     'Water Discharge'}</div>
                         </td>
                         <td className="risk-info-table__cell-third">

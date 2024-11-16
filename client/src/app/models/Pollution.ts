@@ -4,4 +4,7 @@ export interface PollutionDto {
     massFlowRate: number;
     emissionsLimit: number;
     dangerClass: number;
+    specificEmissions : number;
+    hazardClassCoefficient : number;
+    hazardCoefficient : number;
 }

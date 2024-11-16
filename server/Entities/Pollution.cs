@@ -20,5 +20,11 @@ namespace server.Entities
         public int DangerClass { get; set; }
         [Column("emissions_limit")]
         public float EmissionsLimit { get; set; }
+        [Column("specific_emissions")]
+        public float SpecificEmissions { get; set; }
+        [Column("hazard_class_coefficient")]
+        public int HazardClassCoefficient { get; set; }
+        [Column("hazard_coefficient")]
+        public float HazardCoefficient { get; set; }
     }
 }

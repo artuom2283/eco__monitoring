@@ -11,6 +11,7 @@ import { RiskInfoTable } from "../../components/Tables/RiskInfoTable";
 import { TopButton } from "../../components/Buttons/TopButton";
 import {DamageCalculationInfoTable} from "../../components/Tables/DamageCalculationInfoTable";
 import {EnvironmentalCalculationForm} from "../../components/Forms/EnvironmentalCalculationForm";
+import {EmergencySituationsDamage} from "../../components/Forms/EmergencySituationsDamage";
 
 const CalculationPage = () => {
     const [C, setC] = useState<number>(0);
@@ -200,9 +201,16 @@ const CalculationPage = () => {
 
                 <TopButton/>
             </main>
+
             <div className="calculation-main">
                 <section className="calculation-form">
                     <EnvironmentalCalculationForm/>
+                </section>
+            </div>
+
+            <div className="calculation-main">
+                <section className="calculation-form">
+                    <EmergencySituationsDamage/>
                 </section>
             </div>
 

@@ -24,5 +24,17 @@ public class PollutionValidator : AbstractValidator<PollutionDto>
             .NotEmpty()
             .GreaterThan(0);
         
+        RuleFor(p => p.SpecificEmissions)
+            .NotEmpty()
+            .GreaterThan(0);
+        
+        RuleFor(p => p.HazardCoefficient)
+            .NotEmpty()
+            .GreaterThan(0);
+        
+        RuleFor(p => p.HazardClassCoefficient)
+            .NotEmpty()
+            .GreaterThan(0);
+        
     }
 }

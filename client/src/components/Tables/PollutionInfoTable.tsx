@@ -72,6 +72,9 @@ export const PollutionInfoTable = () => {
                     <th>Mass Flow Rate, gram/hour</th>
                     <th>Emissions Limit, mg/m^3</th>
                     <th>Danger Class</th>
+                    <th>Specific Emissions (qi), т/т</th>
+                    <th>Hazard Class Coefficient (кнеб)</th>
+                    <th>Hazard Coefficient (кн)</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -97,6 +100,21 @@ export const PollutionInfoTable = () => {
                             type="text"
                             value={editPollution[pollution.id]?.dangerClass ?? pollution.dangerClass}
                             onChange={(e) => handleInputChange(pollution.id, 'dangerClass', e.target.value)}
+                        /></td>
+                        <td><input
+                            type="text"
+                            value={editPollution[pollution.id]?.specificEmissions ?? pollution.specificEmissions}
+                            onChange={(e) => handleInputChange(pollution.specificEmissions, 'specificEmissions', e.target.value)}
+                        /></td>
+                        <td><input
+                            type="text"
+                            value={editPollution[pollution.id]?.hazardClassCoefficient ?? pollution.hazardClassCoefficient}
+                            onChange={(e) => handleInputChange(pollution.hazardClassCoefficient, 'hazardClassCoefficient', e.target.value)}
+                        /></td>
+                        <td><input
+                            type="text"
+                            value={editPollution[pollution.id]?.hazardCoefficient ?? pollution.hazardCoefficient}
+                            onChange={(e) => handleInputChange(pollution.hazardCoefficient, 'hazardCoefficient', e.target.value)}
                         /></td>
                         <td>
                             <button

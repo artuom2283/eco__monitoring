@@ -62,10 +62,10 @@ INSERT INTO industrial_facilities(name) VALUES ('АТ «Південний гі�
 INSERT INTO industrial_facilities(name) VALUES ('ДТЕК «Придніпровська ТЕС»');
 
 -- Додаємо забруднювачі
-INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class) VALUES ('Оксид азоту', 5000, 500, 4);
-INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class) VALUES ('Сірки діоксид', 5000, 500, 4);
-INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class) VALUES ('Оксид вуглецю', 5000, 250, 4);
-INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class) VALUES ('Речовини у вигляді суспендованих твердих частинок ', 500, 50, 0);
+INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class, specific_emissions, hazard_class_coefficient, hazard_coefficient) VALUES ('Оксид азоту', 5000, 500, 4,0.014, 2, 3);
+INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class, specific_emissions, hazard_class_coefficient, hazard_coefficient) VALUES ('Сірки діоксид', 5000, 500, 4, 0.0000016, 2, 3);
+INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class, specific_emissions, hazard_class_coefficient, hazard_coefficient) VALUES ('Оксид вуглецю', 5000, 250, 4, 0.0063, 2, 4);
+INSERT INTO pollutions(name, mass_flow_rate, emissions_limit, danger_class, specific_emissions, hazard_class_coefficient, hazard_coefficient) VALUES ('Речовини у вигляді суспендованих твердих частинок', 500, 50, 0, 0.000003, 3, 1.5);
 
 -- Звіти 
 -- 2023 рік

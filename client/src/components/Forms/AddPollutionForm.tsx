@@ -12,7 +12,10 @@ export const AddPollutionForm = () => {
         name: '',
         massFlowRate: 0,
         emissionsLimit: 0,
-        dangerClass: 0
+        dangerClass: 0,
+        specificEmissions: 0,
+        hazardClassCoefficient: 0,
+        hazardCoefficient: 0
     });
 
     const handleAddPollutionChange = (field: keyof PollutionDto, value: any) => {
@@ -33,7 +36,10 @@ export const AddPollutionForm = () => {
                 name: '',
                 massFlowRate: 0,
                 emissionsLimit: 0,
-                dangerClass: 0
+                dangerClass: 0,
+                specificEmissions: 0,
+                hazardClassCoefficient: 0,
+                hazardCoefficient: 0
             });
             await dispatch(fetchPollutionsAsync());
         } catch (error) {
@@ -75,6 +81,30 @@ export const AddPollutionForm = () => {
                 placeholder="Emissions Limit"
                 value={newPollution.emissionsLimit}
                 onChange={(e) => handleAddPollutionChange('emissionsLimit', parseFloat(e.target.value))}
+            />
+            <label htmlFor="pollution-specificEmissions">Specific Emissions (qi):</label>
+            <input
+                id={"pollution-specificEmissions"}
+                type="number"
+                placeholder="Specific Emissions"
+                value={newPollution.specificEmissions}
+                onChange={(e) => handleAddPollutionChange('specificEmissions', parseFloat(e.target.value))}
+            />
+            <label htmlFor="pollution-hazardClassCoefficient">Hazard Class Coefficient (кнеб):</label>
+            <input
+                id={"pollution-hazardClassCoefficient"}
+                type="number"
+                placeholder="Hazard Class Coefficient"
+                value={newPollution.hazardClassCoefficient}
+                onChange={(e) => handleAddPollutionChange('hazardClassCoefficient', parseFloat(e.target.value))}
+            />
+            <label htmlFor="pollution-hazardCoefficient">Hazard Coefficient (кн):</label>
+            <input
+                id={"pollution-hazardCoefficient"}
+                type="number"
+                placeholder="Hazard Coefficeint"
+                value={newPollution.hazardCoefficient}
+                onChange={(e) => handleAddPollutionChange('hazardCoefficient', parseFloat(e.target.value))}
             />
             <button onClick={handleAddPollution}>Add Pollution</button>
         </div>
