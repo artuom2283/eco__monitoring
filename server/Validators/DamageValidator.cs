@@ -15,8 +15,7 @@ public class DamageValidator : AbstractValidator<DamageDto>
             .NotEmpty()
             .WithMessage("Damage type can't be empty");
         
-        RuleFor(x => x.Year)
-            .LessThan(DateTime.Now.Year)
+        RuleFor(x => x.Year).InclusiveBetween(1, DateTime.Now.Year)
             .WithMessage("Year can't be empty or greater than current date");
         
         RuleFor(x => x.IndustrialFacilityId)
