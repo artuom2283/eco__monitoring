@@ -35,7 +35,7 @@ cd [project-folder]
 docker compose up
 cd ./client
 npm install
-npm start
+npm start```
 
 ## 🌐 Visit in Browser
 
