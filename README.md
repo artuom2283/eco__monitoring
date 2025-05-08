@@ -29,13 +29,13 @@ A web-based platform for monitoring environmental pollution, managing industrial
 
 ## 📥 Installation
 
-```bash
+bash
 git clone [your_repo_url]
 cd [project-folder]
 docker compose up
 cd ./client
 npm install
-npm start```
+npm start
 
 ## 🌐 Visit in Browser
 
